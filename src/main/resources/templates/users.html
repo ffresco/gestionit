@@ -1,0 +1,50 @@
+			<div class="col-sm-3 sidenav">
+				<div th:replace="fragments ::navbarside_users"></div> <!-- Menu Lateral  -->  
+			</div>
+			<!-- Contenido principal 9 columnas -->
+			<div class="col-sm-9">
+
+				<div class="panel panel-default">
+					<div class= "panel-heading row">
+
+						<div class="col-sm-6"><h2>Usuarios</h2></div>
+						<div class="col-sm-3"><a class="btn btn-sm btn-success" th:href="@{/users/create}" >Nuevo</a></div>					
+					</div>	
+					<div class="panel-body"><!--dentro del panel body va mi contenido-->
+
+
+						
+							<table class="table table-responsive table-sm table-striped table-hover table-bordered" id="searchTable">
+								<thead class="bg-success">
+									<tr>
+										<th> Usuario </th>
+										<th> Rol</th>
+										<th> Caja</th>
+										<th> Inicio Session</th>
+										<!--<th> Mnd Base</th>-->
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="sc : ${users}">
+										<td th:text="${sc.user.email}"></td>
+										<td th:text="${sc.user.role}"></td>
+										<td th:text="${sc.caja.valor}"></td>
+										<td th:text="${#temporals.format(sc.inicioSesion, 'dd/MMM/yyyy HH:mm:ss')}"> </td>
+										<!--<td th:text="${cotizacion.monedaBase}"></td>-->									
+										<td>
+										<!--
+										<div class="btn-group pull-right">
+											<a class="btn btn-sm btn-primary" th:href="@{/users/edit/{id}(id=${user.id})}" >Editar</a>
+										</div>
+										-->
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+				</div>
+
+			</div>
+
+		</div> <!-- Fin Contenido principal 9 columnas -->

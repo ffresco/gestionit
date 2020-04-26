@@ -1,0 +1,74 @@
+
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {height: 700px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+
+    }
+    
+.navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+}
+
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #f4511e !important;
+    background-color: #fff !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+}
+.logoMenu {
+  height: 40px;
+  width: 40px;
+  align-content: center;
+
+}
+.disabled{
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: lightgrey;
+}
+.enabled{
+    pointer-events: auto;
+    cursor: auto;
+
+}
+
+
+
+    /*the fixed navbar will overlay your other content, uless you add padding to the top of the body */
+    body {
+    	padding-top:50px;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+
+
+
+    #subNavBar {
+	     color: #000000;
+    }
+
+    .row.content {height: auto;}
+    
+    } /*fin del media query*/ 
+
+

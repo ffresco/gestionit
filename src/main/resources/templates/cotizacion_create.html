@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result"  class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			 
+
+			<!-- Contenido principal full page -->
+			<div class="col-sm-12">
+				
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4>Cotizaciones</<h2></h2></div>
+					</div>
+					<div class="panel-body">
+					    <!--<iframe name="formFrame" th:src="@{/cotizaciones/save}" frameborder="0" style="display:none"></iframe>--> 
+							<form class="form-horizontal" method="POST" th:action="@{/cotizaciones/save}" th:object="${cotizacionDTO.cotizacion}" >
+							<fieldset>
+
+								<!-- Form Name -->
+								<legend>Nueva Cotizacion</legend>
+
+								<input id="id" th:field="*{id}" type="hidden">
+
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtFecha">Fecha</label>  
+									<div class="col-md-4">
+										<input id="fecha" name="fecha" th:value="${#temporals.format(cotizacionDTO.cotizacion.fecha, 'yyyy-MM-dd HH:mm:ss')}" readonly="true"  type="text" placeholder="fecha creacion" class="form-control input-md">
+
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slctEntidad">Entidad</label>
+									<div class="col-md-4">
+										<select id="entidad" th:field="*{entidad}" th:remove="all-but-first"  class="form-control">
+											<option th:each="entidadOption : ${dataMaster.entidades}" 
+											th:value="${entidadOption.id}" th:text="${entidadOption.valor}">  </option>
+											<option value="'Empresa'">Empresa</option>
+											<option value="'Cliente1'">Cliente 1</option>
+										</select>
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slctMoneda">Moneda</label>
+									<div class="col-md-4">
+										<select id="moneda" th:field="*{moneda}" th:remove="all-but-first"  class="form-control">
+											<option th:each="monedaOption : ${dataMaster.monedas}" 
+											th:value="${monedaOption.id}" th:text="${monedaOption.valor}">  </option>							
+											<option value="USD">U$D</option>
+											<option value="REAL">REAL</option>
+										</select>
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slctTipoCambio">Tipo de Cambio</label>
+									<div class="col-md-4">
+										<select id="tipoCambio" th:field="*{tipoCambio}" th:remove="all-but-first"  class="form-control">
+											<option th:each="tipoCambioOption : ${dataMaster.tipoCambios}" 
+											th:value="${tipoCambioOption.id}" th:text="${tipoCambioOption.valor}">  </option>
+											<option value="Agencia">Agencia</option>
+											<option value="Cambista">Cambista</option>
+										</select>
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtCotizacionCmp">Cotizacion Compra</label>  
+									<div class="col-md-4">
+										<input id="cotizacionCmp" th:field="*{cotizacionCmp}" name="txtCotizacionCmp" type="number" step=".01" placeholder="cotizacion de compra" class="form-control input-md" required="">
+
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtCotizacionVta">Cotización Venta</label>  
+									<div class="col-md-4">
+										<input id="cotizacionVta" th:field="*{cotizacionVta}" name="txtCotizacionVta" type="number" step=".01" placeholder="ingrese la cotizacion de venta" class="form-control input-md" required="">
+
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="textComisionCmp">Comisión Compra</label>  
+									<div class="col-md-4">
+										<input id="comisionCmp" th:field="*{comisionCmp}" name="textComisionCmp" type="number" step=".01" placeholder="ingrese la comision de compra" class="form-control input-md" required="">
+
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtComisionVta">Comisión Venta</label>  
+									<div class="col-md-4">
+										<input id="comisionVta" th:field="*{comisionVta}" name="txtComisionVta" type="number" step=".01" placeholder="ingrese cotizacion de venta" class="form-control input-md" required="">
+
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtComisionVta">Canje</label>  
+									<div class="col-md-4">
+										<input id="canje" th:field="*{canje}" name="txtComisionVta" type="number" step=".01" placeholder="ingrese el valor al que toma cada unidad de la moneda seleccionada" class="form-control input-md" required="">
+
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slctInstrumento">Instrumento</label>
+									<div class="col-md-4">
+										<select id="instrumento" th:field="*{instrumento}" th:remove="all-but-first"  class="form-control">  
+										    <option th:each="instrumentoOpt : ${dataMaster.instrumentos}" 
+											th:value="${instrumentoOpt.id}" th:text="${instrumentoOpt.valor}">  </option>
+											<option value="'Billetes'">Billetes</option>
+											<option value="'Cheques'">Cheques</option>
+											<option value="'Cheques-Viaj'">Cheque Viajero</option>
+										</select>
+									</div>
+								</div>
+								
+								
+
+				
+					
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtMonedaBase">Moneda Base</label>  
+									<div class="col-md-4">
+										<input id="monedaBase" th:field="*{monedaBase.valor}"  readonly="true"  type="text" placeholder="muestra la moneda base del sistema" class="form-control input-md">
+										<input type="hidden" th:field="*{monedaBase.id}">
+
+									</div>
+								</div>
+
+								<!-- Button (Double) -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="btnGuardar"></label>
+									<div class="col-md-4">
+										<button id="btnGuardar" name="btnGuardar" class="btn btn-success" type="submit">Guardar</button>
+										<a href="#" onClick="cargarContenido('/cotizaciones/');return false;" class="btn btn-danger">Cancelar</a>
+										
+									</div>
+								</div>
+
+							</fieldset>
+						</form>
+
+					</div>
+				</div>
+				
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila ROW contine menuj lateral 3 col,  principal 9 col -->
+
+	</div>	<!-- fin contenedor de pagina-->
+
+</body>
+</html>

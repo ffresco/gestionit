@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result" class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			
+			<!--
+			<div th:replace="fragments ::navbarside"></div> <!-- Menu Lateral  -->  
+			
+			<!-- Contenido principal 9 columnas -->
+			<div class="col-sm-12">
+		
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading"><h4 th:text="${'Cliente :' + operacionDTO.operacion.cliente.nombre + 
+								',' + operacionDTO.operacion.cliente.apellido + '- DOC: ' + operacionDTO.operacion.cliente.documento + 
+								', Acum Mensual: ' + operacionDTO.operacion.cliente.acumulado.acumuladoMes +
+								'  Acum Anual  : ' + operacionDTO.operacion.cliente.acumulado.acumuladoAno +
+								', Tope Mensual: ' + dataMaster.topeVigente.topeMes + ' Tope Año : '+ dataMaster.topeVigente.topeAno }">Clinente: XXXX DOC: XXX</h4></div>
+								<form th:object="${operacionDTO}" th:action="@{/operaciones/save}" method="POST" ><!--Formulario operacion-->
+
+
+									<!-- Form Name -->
+
+
+									<fieldset>
+
+										<!--datos que necesito bindear al form-->
+										<input type="hidden"  th:field="*{operacion.cliente}">
+										<input type="hidden"  th:field="*{tope}">
+										<input type="hidden"  th:field="*{operacion.montoMndBase}">
+
+
+										<!--datos para funciones js-->
+										<input id="mndBaseId" type="hidden" th:value="${dataMaster.monedaBase.id}">
+											
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="txtNumComprobante">Comprobante</label>  
+											<div class="">
+												<input id="txtNumComprobante" th:field="*{operacion.id}" readonly="yes" name="txtNumComprobante" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+
+											</div>
+										</div>
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="estado">Estado</label>  
+											<div class="">									
+												<input id="estado" th:field="*{operacion.estado.valor}" readonly="yes" name="estado" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+											</div>
+										</div> 
+
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Cajero</label>  
+											<div class="">
+												<input id="cajero" readonly="yes" th:field="*{operacion.caja.valor}" name="cajero" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+											</div>
+										</div>
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="fechaOp">Fecha</label>  
+											<div class="">
+
+												<input id="fechaOp" th:value="${#temporals.format({operacionDTO.operacion.fechaHora}, 'dd/MMM/yyyy HH:mm')}" readonly="yes" type="text" class="form-control input-md" tabIndex="-1">
+												<input type="hidden" th:field="*{operacion.fechaHora}">
+
+
+											</div>
+										</div>
+
+									</fieldset>
+
+									<hr>
+
+									<fieldset>
+										<!-- Select Basic -->
+										<div class="col-sm-6 form-group">
+											<label class=" control-label" for="tipoOp">Operacion</label>											
+											<div class="">
+												<select id="slcTipoOp" th:field="*{operacion.tipoOp}" th:remove="all-but-first" name="tipoOp" class="form-control" th:disabled="*{not modificable}" onchange="changeOnTipoOp()">
+													<option th:each="tipoOp : ${dataMaster.tipoSubOps}" 
+													th:value="${tipoOp.id}" th:text="${tipoOp.valor + ' ' + tipoOp.subValor}">  </option>
+													<option value="1">Compra</option>
+													<option value="2">Venta</option>
+												</select>
+											</div>
+										</div>
+
+
+										<!-- Select Basic -->
+										<div class="col-sm-6 form-group">
+											<label class="control-label" for="tipoCambio">Tipo Cambio</label>
+											<div class="">
+												<select id="tipoCambio" th:field="*{operacion.tipoCambio}" th:remove="all-but-first" name="tipoCambio" 
+												class="form-control" th:disabled="*{not modificable}">
+												<option  th:each="tipoC : ${dataMaster.tipoCambios}" 
+												th:value="${tipoC.id}" th:text="${tipoC.valor}">  </option>
+												<option value="1">Agencia</option>
+												<option value="2">Cambista</option>
+											</select>
+										</div>
+									</div>
+
+									<!--Trabajamos con el ItemO guardamos info util-->
+									<input type="hidden" th:field="*{opO.fuente}">
+									<input type="hidden" th:field="*{opO.movimiento}">
+									<input type="hidden" th:field="*{opO.orden}">
+									<input type="hidden" th:field="*{opO}">
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="ccontrol-label" for="mndOrigen">Moneda O</label>
+										<div class="">
+											<select id="slcMndO" th:field="*{opO.moneda}" th:remove="all-but-first" name="mndOrigen" class="form-control"
+											onchange="mndOrigenChange()" th:disabled="*{not modificable}">
+												<option th:each="tipoM : ${dataMaster.monedas}" 
+												th:value="${tipoM.id}" th:text="${tipoM.valor}">  </option>
+												<option value="1">USD</option>
+												<option value="2">AR$</option>
+											</select>
+										</div>
+									</div>
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="control-label" for="instrumentoO">Instrumento O</label>
+										<div class="">
+											<select id="instrumento" th:field="*{opO.instrumento}" th:remove="all-but-first" name="instrumentoO" class="form-control" th:disabled="*{not modificable}">
+												<option th:each="tipoI : ${dataMaster.instrumentos}" 
+												th:value="${tipoI.id}" th:text="${tipoI.valor}">  </option>
+												<option value="1">Billetes</option>
+												<option value="2">Cheques</option>
+											</select>
+										</div>
+									</div>
+									
+									<!-- Trabajo con el ItemD guardamos algunos utilies-->
+									<input type="hidden" th:field="*{opD.fuente}">
+									<input type="hidden" th:field="*{opD.movimiento}">
+									<input type="hidden" th:field="*{opD.orden}">
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="control-label" for="monedaDst" >Moneda D -</label>
+										<div class="">
+											<select id="slcMndD" th:field="*{opD.moneda}" th:remove="all-but-first" name="monedaDst" class="form-control" onchange="aplicarLabelD()" th:disabled="*{not modificable}">
+												<option th:each="tipoM : ${dataMaster.monedas}" 
+												th:value="${tipoM.id}" th:text="${tipoM.valor}">  </option>
+												<option value="1">USD</option>
+												<option value="2">AR$</option>
+											</select>
+										</div>
+									</div>
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="control-label" for="instrumentoD">Instrumento D</label>
+										<div class="">
+											<select id="instrumentoD" th:field="*{opD.instrumento}" th:remove="all-but-first" name="instrumento" class="form-control" th:disabled="*{not modificable}">
+												<option th:each="tipoI : ${dataMaster.instrumentos}" 
+												th:value="${tipoI.id}" th:text="${tipoI.valor}">  </option>
+												<option value="1">Billetes</option>
+												<option value="2">Cheques</option>
+											</select>
+										</div>
+									</div>
+
+
+									<!-- Text input-->
+									<!--
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="montoRec" id="lblMontoRec">Monto Recibido: </label>  
+										<div class="">
+											<input id="montoRec" required th:readonly="*{not modificable}" th:field="*{opO.montoRecVlt}" type="number" step="0.01" min="0"  class="form-control input-md">
+
+										</div>
+									</div>
+									-->
+
+
+
+
+									<!--informacion sobre cotizacioes-->
+									<!--conservo info-->
+									<input type="hidden" th:field="*{opO.cotizacion.id}">
+									<!-- Text input-->
+									<div class="col-sm-2 form-group" th:class="*{canje&&procesado}? 'col-sm-2 form-group has-success':'col-sm-2 form-group'">
+										<label class="control-label" for="cotizacion">Cot Canje</label>  
+										<div class="">
+											<input id="cotizacion" readonly th:field="*{opO.cotizacion.canje}" type="number"  placeholder="" class="form-control input-md" tabIndex="-1">
+
+										</div>
+									</div>
+
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group" th:class="*{compra&&procesado}? 'col-sm-2 form-group has-success':'col-sm-2 form-group'">
+										<label class="control-label" for="cotizacion">Cot Cmp</label>  
+										<div class="">
+											<input id="cotizacion" readonly th:field="*{opO.cotizacion.cotizacionCmp}" type="number"  placeholder="" class="form-control input-md" tabIndex="-1">
+
+										</div>
+									</div>
+
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group" th:class="*{venta&&procesado}? 'col-sm-2 form-group has-success':'col-sm-2 form-group'">
+										<label class="control-label" for="cotizacion">Cot Vta</label>  
+										<div class="">
+											<input id="cotizacion" readonly th:field="*{opO.cotizacion.cotizacionVta}" type="number" s  class="form-control input-md active" tabIndex="-1">
+
+										</div>
+									</div>
+
+									<!--Muestro esto en caso de un arbitraje es la segunda cotizacion-->
+									<div th:if="*{arbitraje}">
+									<input type="hidden" th:field="*{opD.cotizacion.id}">
+									<!-- Text input-->
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="cotizacion">Cot Canje</label>  
+										<div class="">
+											<input type="hidden" th:field="*{opD.cotizacion.id}">
+											<input id="cotizacion" readonly th:field="*{opD.cotizacion.canje}" type="number"  placeholder="" class="form-control input-md" tabIndex="-1">
+
+										</div>
+									</div>
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group" >
+										<label class="control-label" for="cotizacion">Cot Cmp</label>  
+										<div class="">											
+											<input id="cotizacion" readonly th:field="*{opD.cotizacion.cotizacionCmp}" type="number"  placeholder="" class="form-control input-md" tabIndex="-1">
+
+										</div>
+									</div>
+
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group" >
+										<label class="control-label" for="cotizacion">Cot Vta</label>  
+										<div class="">
+											<input id="cotizacion" readonly th:field="*{opD.cotizacion.cotizacionVta}" type="number" s  class="form-control input-md active" tabIndex="-1">
+
+										</div>
+									</div>										
+									</div>
+									<!--Fin del bloque de arbitraje-->
+									<!--Fin informacion sobre cotizaciones-->
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="montoRec" id="lblMontoOp">Monto a Operar:</label>  
+										<div class="">
+											<input id="montoRec" required th:readonly="*{not modificable}" th:field="*{opO.monto}" type="number" step="0.1" min="0"  class="form-control input-md">
+
+										</div>
+									</div>
+
+									<!--Resultado numerico de la operacion-->
+									<!-- Text input-->
+									<div class="col-sm-2 form-group" >
+										<label class="control-label" for="cotizacion">Cot Aplicada</label>  
+										<div class="">											
+											<input id="cotizacion" readonly  th:field="*{operacion.valCotAplicado}" type="number"  placeholder="" class="form-control input-md" tabIndex="-1">
+
+										</div>
+									</div>
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="montoEntregado" id="lblMontoE">Mont Entregado:</label>  
+										<div class="">
+											<input id="montoEntregado" readonly  th:field="*{opD.monto}"
+											 type="number"  class="form-control input-md" tabIndex="-1">
+												
+										</div>
+									</div>				
+									<!--fin resultado numerico-->
+									
+					
+
+
+									<!-- Text input-->
+									<!--
+									<div class="col-sm-2 form-group">
+										<label class=" control-label" for="textinput" id="lblVuelto">Vuelto: </label>  
+										<div class="">
+											<input id="textinput" readonly th:field="*{opD.montoRecVlt}" type="number" step="0.01" class="form-control input-md">
+
+										</div>
+									</div>
+									-->
+
+									<!--Presentacion de los errores si existen-->
+									<div class="col-sm-12 alert alert-danger" th:if="${#fields.hasErrors('*')}">
+										<p th:errors="*{all}"> </p>
+									</div>
+									<!-- Textarea -->
+									<div class="col-sm-6 form-group">
+										<label class="control-label" for="observaciones">Observaciones</label>
+										<div class="">                     
+											<textarea class="form-control" id="observaciones" th:field="*{operacion.observaciones}"  ></textarea>
+										</div>
+									</div>
+									
+									<input id="txtProcesado" type="hidden" th:value="*{procesado}">
+									<input id="txtReadOnly" type="hidden"  th:value="*{readOnly}">
+
+									<!-- Button (Double) -->
+									<div class="col-sm-6 form-group">
+										<label class="control-label" for="button1id"></label>
+										<div class="">
+											<span th:if="*{not readOnly}"> <!--Set de botones para ver si readOnly=false-->
+												<button type="submit" id="btnprocesar"  name="procesar"  th:disabled="*{procesado}"  class="btn btn-default">Procesar</button>
+												<button type="submit" id="btnguardar"   name="guardar"   th:disabled="*{not procesado}"  class="btn btn-success" onclick="enableSel()">Guardar</button>
+												<button type="submit" id="btnmodificar" name="modificar" th:disabled="*{not procesado}"  class="btn btn-default" onclick="enableSel()">Modificar</button>
+											</span>
+											<span th:if="*{readOnly}">
+												<input id="printUrl" type="hidden" th:value="@{/operaciones/pdf/{id}(id=*{operacion.id})}">
+												<button type="button" id="btnprint" onclick="" name="print"  class="btn btn-default" onclick="printPDF('')">Imprimir</button>
+											</span>
+											<a href="#" onClick="cargarContenido('/operaciones/');return false;" class="btn btn-danger">Cancelar</a>
+											
+											
+													
+										</div>
+									</div>
+
+
+								</fieldset>
+
+							</form><!--Formulario operacion-->
+
+
+							
+							
+						</div>
+					</div>
+
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila contine menuj lateral 3 col,  principal 9 col -->
+
+	</div>	<!-- fin contenedor de pagina-->
+<script>
+	window.addEventListener("onload", aplicarLabelO());
+	window.addEventListener("onload", aplicarLabelD());
+	window.addEventListener("onload", changeOnTipoOp());	
+	window.addEventListener("onload", focusConfig());	
+	
+	function mndOrigenChange(){
+		aplicarLabelO();
+		canje();
+	}
+
+	function aplicarLabelO() {
+		//var labelMonto = document.getElementById('lblMontoRec');
+		//var labelVuelto = document.getElementById('lblVuelto');
+		var labelMontoOp = document.getElementById('lblMontoOp');
+		var selectMonO = document.getElementById('slcMndO');
+		var moneda = selectMonO.options[selectMonO.selectedIndex].text;
+		//var leyenda = labelMonto.innerText;
+		//var leyendaVuelto= labelVuelto.innerText;
+		var leyendaMontoOp = labelMontoOp.innerText;
+		//leyenda = leyenda.substring(0, leyenda.indexOf(':', 0));
+		//leyendaVuelto = leyendaVuelto.substring(0, leyendaVuelto.indexOf(':', 0));
+		leyendaMontoOp = leyendaMontoOp.substring(0, leyendaMontoOp.indexOf(':', 0));
+		//labelMonto.innerText = leyenda + ':' + moneda;
+		//labelVuelto.innerText = leyendaVuelto + ':' + moneda;
+		labelMontoOp.innerText = leyendaMontoOp + ':' + moneda;
+
+	}
+
+	function aplicarLabelD() {
+		var labelMonto = document.getElementById('lblMontoE');
+		var selectMon = document.getElementById('slcMndD');
+		var moneda = selectMon.options[selectMon.selectedIndex].text;
+		var leyenda = labelMonto.innerText;
+		leyenda = leyenda.substring(0, leyenda.indexOf(':', 0));
+		labelMonto.innerText = leyenda + ':' + moneda;
+	}
+
+	function enableSel(){
+		var selects = document.getElementsByTagName('Select');
+		console.log(selects);
+		for(var k = 0; k < selects.length; k++){
+			selects[k].removeAttribute('disabled');
+			console.log(selects[k]);
+
+		}
+	}
+
+
+	function changeOnTipoOp() {
+		//recupero el select tipo op
+		var slcTipoOp = document.getElementById('slcTipoOp');
+		var tipoOp = slcTipoOp.options[slcTipoOp.selectedIndex].text;
+		var subTipo = tipoOp.substring(tipoOp.length - 3, tipoOp.length);
+		var mndBaseId = document.getElementById('mndBaseId').value;
+		//habilito todo de antemano
+		$("#slcMndO").removeAttr("tabIndex");
+		$("#slcMndD").removeAttr("tabIndex");
+		$("#slcMndO").removeClass("disabled");
+		$("#slcMndD").removeClass("disabled");
+
+		if (subTipo == 'CMP') {
+			
+			$("#slcMndD").val(mndBaseId).trigger("change");
+			$("#slcMndD").attr("tabIndex","-1");
+			$("#slcMndD").addClass("disabled");
+			$("#slcMndO").removeAttr("tabIndex");
+			$("#slcMndO").removeClass("disabled");
+
+
+		}
+
+		if(subTipo == 'VTA'){
+			
+			$("#slcMndO").val(mndBaseId).trigger("change");
+			$("#slcMndO").attr("tabIndex","-1");
+			$("#slcMndO").addClass("disabled");
+			$("#slcMndD").removeAttr("readonly");
+			$("#slcMndD").removeClass("disabled");
+			
+		}
+
+		canje();
+
+		
+	}
+
+	function canje() {
+		var slcTipoOp = document.getElementById('slcTipoOp');
+		var tipoOp = slcTipoOp.options[slcTipoOp.selectedIndex].text;
+		if(tipoOp=="CANJE"){
+			var mndOId = $("#slcMndO").val();
+			$("#slcMndD").val(mndOId).trigger("change");
+			$("#slcMndD").attr("tabIndex","-1");
+			$("#slcMndD").addClass("disabled");
+
+
+		}
+	}
+
+	function focusConfig() {
+		$('#slcTipoOp').focus();
+
+		if ($('#txtReadOnly').val()=='true') {
+			$('#btnprint').focus();
+		}
+		if ($('#txtProcesado').val()=='true') {
+			$('#btnguardar').focus();
+		}		
+		
+		
+
+	}
+
+
+function printPDF(url) {
+  
+  url = $("#printUrl").val();
+  console.log(url);
+  var iframe = this._printIframe;
+  if (!this._printIframe) {
+    iframe = this._printIframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+
+    iframe.style.display = 'none';
+    iframe.onload = function() {
+      setTimeout(function() {
+        iframe.focus();
+        iframe.contentWindow.print();
+      }, 1);
+    };
+  }
+
+  iframe.src = url;
+}  
+
+
+</script>
+</body>
+</html>

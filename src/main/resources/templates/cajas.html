@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		
+
+			<!-- Contenido principal full screen por ahora sin menu lateral -->
+			<div class="col-sm-12">				
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading row">
+								<div class="col-sm-2"><h2>Cajas</h2></div>
+								<div class="col-sm-4">
+									  <div class="input-group">
+									  <input id="txtSearch" type="search" class="form-control" onkeyup="filterTable(1,this)" placeholder="Buscar por caja..">
+									  <span class="input-group-btn">
+									    <button class="btn btn-default" type="button" tabindex="-1">
+									      <span class="glyphicon glyphicon-search"></span>
+									    </button>
+									  </span>
+									 </div>
+								</div>
+
+								<div class="col-sm-6"><a class="btn btn-sm btn-success" th:href="@{/cajas/create}" >Nuevo Movimiento</a></div>	
+							</div>
+							<div class="panel-body">
+									<table class="table table-responsive table-sm table-striped table-hover table-bordered" id="searchTable">
+										<thead class="bg-success">
+											<tr>
+												<th>Ultimo Mov</th>
+												<th>Caja</th>
+												<th>Inst</th>
+												<th>Mnd</th>
+												<th>Ing</th>
+												<th>Egr</th>
+												<th>Neto</th>												
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="acum : ${acumulados}">
+												<td th:text="${#temporals.format(acum.fechaActualizacion, 'yyyy-MM-dd HH:mm:ss')}"></td>							
+												<td th:text="${acum.caja.valor}">Caja-1</td>
+												<td th:text="${acum.instrumento.valor}">Billetes</td>
+												<td th:text="${acum.moneda.valor}">USD</td>
+												<td th:text="${acum.ingreso}">5000</td>
+												<td th:text="${acum.egreso}">-4000</td>
+												<td th:text="${acum.saldo}">1000</td>
+												<td>	
+													<div class="btn-group pull-right">
+<!--   														<a class="btn btn-sm btn-primary" th:href="@{/cajas/detalle/{id}(id=${acum.id})}" >Detalle</a>
+ -->         												<a class="btn btn-sm btn-primary" href="#" th:onClick="'cargarContenido(\'/cajas/detalle/'+${acum.id}+'\');return false;'">Detalle</a>
+													</div>
+												</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+
+							
+						</div>
+					</div>		
+			</div> <!-- Fin Contenido principal 12 columnas -->
+</div>
+</body>
+</html>

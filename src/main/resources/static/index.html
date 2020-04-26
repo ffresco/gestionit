@@ -1,0 +1,245 @@
+<!--
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <p>saludar <a href="/greeting">here</a></p>
+    <p>Ir al crud de ejemplo <a href="/listadocli">here</a></p>
+    <div class="col-xs-3 col-sm-3 col-sm-offset-1 col-md-2 col-md-offset-2 col-lg-2 col-lg-offset-3">
+				1<img th:src="@{/img/work-feature-1.png}" width="50" height="50" class="img-responsive">
+				2<img src="/img/work-feature-1.png" width="50" height="50" alt="">
+				<img th:src="@{/img/work-feature-1.png}" alt="">
+							
+	</div>
+</body>
+</html>
+-->
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<title>Title</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" http-equiv="Content-Type" >
+	<link rel="stylesheet"  href="/css/bootstrap.min.css">
+	<script  src="/js/jquery-1.11.1.min.js"></script>
+	<script  src="/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+	<!--Primer Contenerdor logo Google y botÃ³n Crear cuenta-->  
+	<div class="container-fluid well">
+		<div class="row">
+			<!--Columna logo con imÃ¡gen responsive-->
+			<div class="col-xs-3 col-sm-3 col-sm-offset-1 col-md-2 col-md-offset-2 col-lg-2 col-lg-offset-3">
+				<img src="img/logo_clg.png" width="50" height="50" class="img-responsive">
+			</div>
+			<!--columna link iniciar sesiÃ³n solo es visible en xs-->
+			<div class="col-xs-4 visible-xs">
+				<small><a href="/login"> Iniciar sesion </a></small>
+			</div>
+			<!--columna botÃ³n crear cuenta solo es visible en xs-->
+			<div class="col-xs-3 visible-xs">
+				<form >			
+					<!--<button type="submit" class="btn btn-primary">Crear una Cuenta</button>-->
+				</form>
+	
+			</div>
+			<!--columna link y boton solo son visibles en sm md lg-->
+			
+			<div class="col-sm-4 col-sm-offset-3 visible-sm visible-md	visible-lg col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-3">
+				<small><a href="/login" class="btn btn-primary">Iniciar sesion</a></small>
+				<!--<button type="submit" class="btn btn-primary">Crear una Cuenta</button>-->
+			</div>
+
+	</div>
+</div>
+<!--Fin del primer contenedor-->
+
+
+
+
+<!--Tercer contenedor carrusel imagenes--> 
+<div class="container" id="sha">
+	<div class="row">
+
+		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+			</ol>
+
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner">
+				<div class="item active">
+					<img src="img/about-carousel-1.png" alt="Gmail en todo tipo de dispositivos">
+					<div class="carousel-caption">
+						<h4>Acceda con facilidad en todo tipo de dispositivos</h4>
+						<p><button type="button" class="btn btn-primary">Crear una Cuenta</button></p>     
+					</div>
+				</div>
+				<div class="item">
+					<img src="img/about-carousel-2.png" alt="Mensajes por tipo para organizarte mejor">
+					<div class="carousel-caption">
+						<h4>Sistema para la gestion de casas de cambio</h4>
+						<p><button type="button" class="btn btn-primary">Crear una Cuenta</button></p>
+					</div>
+				</div>
+				<div class="item">
+					<img src="img/about-carousel-3.png" alt="chatea con un compaÃ±ero o llama por telÃ©fono">
+					<div class="carousel-caption">
+						<h4>Control y seguimiento</h4>
+						<p><button type="button" class="btn btn-primary">Crear una Cuenta</button></p>
+					</div>
+				</div>
+
+			</div>
+
+
+		</div>
+	</div>
+</div>    
+<!--fin del tercer contenedor-->
+
+
+<!--Cuardo contenedor contenido-->    
+<div class="container" id="sha">
+
+	<div class="row">
+
+		<div class="col-xs-12">
+			<br />
+			<h2><p class="text-center">Te damos la bienvenida a CCSys</p></h2>
+			<br />
+		</div>
+	</div>
+	<!--Primer bloque izquierda-->
+	<div class="row">
+		<!--imagen responsive-->
+		<div class="col-xs-12 col-sm-3">
+			<center><img src="img/mobile-feature-1.png" class="img-responsive"></center>
+		</div>
+		<!--Texto del contenido-->
+		<div class="col-xs-12 col-sm-3">
+			<br />
+			<strong>Disfruta de CCSys en cualquier dispositivo</strong>
+			<small><p>Tienes lo mejor de CCSys esta en cualquier dispositivo
+				<a href="#">Mas informacion sobre CCSyst para moviles </a></p>
+			</small>
+		</div>
+
+		<!--imagen responsive-->
+		<div class="col-xs-12 col-sm-3">
+			<center><img src="img/circle-storage.png" class="img-responsive"></center>
+		</div>
+		<!--Texto del contenido-->
+		<div class="col-xs-12 col-sm-3">
+			<br />
+			<strong>Operaciones</strong>
+			<small>
+				<p>Gestiona las operaciones de cambio y crea workflows de aprobacion segun normativa 
+					<a href="#">MÃ¡s informaciÃ³n sobre Aportadores</a></p>
+				</small>
+			</div>
+		</div>
+
+		<!--Segundo bloque derecha-->
+		<div class="row">
+			<!--imagen responsive-->
+			<div class="col-xs-12 col-sm-3">
+				<center><img src="img/circle-inbox-b.png" width="184" height="184" class="img-responsive"></center>
+			</div>
+			<!--Texto del contenido-->
+			<div class="col-xs-12 col-sm-3">
+				<br />
+				<strong>Clientes</strong>
+				<small>
+					<p>Modulo de clientes, facil accesos a datos, historico de movimientos, y wkf de aprobacion  
+						<a href="#">MÃ¡s informaciÃ³n sobre Clientes</a></p></small>
+					</div>
+					<!--imagen responsive-->
+					<div class="col-xs-12 col-sm-3">
+						<center><img src="img/circle-hangout-video.png" class="img-responsive"></center>
+					</div>
+					<!--Texto del contenido-->
+					<div class="col-xs-12 col-sm-3">
+						<br />
+						<strong>Contabilidad y Reporting</strong>
+						<small>
+							<p>Se acaba la contabilidad en excel, el sistema de balances y caja web, permite llevar control en un solo lugar y generar reportes de control
+								<a href="#">MÃ¡s informaciÃ³n sobre el Modulo Contable</a></p></small>
+
+							</div>
+
+						</div>
+						<!--Segundo fila nuevo bloque izquierda-->
+						<div class="row">
+							<!--imagen responsive-->
+							<div class="col-xs-12 col-sm-3">
+								<center><img src="img/work-feature-1.png" width="184" height="184" class="img-responsive"></center>
+							</div>
+							<!--Texto del contenido-->
+							<div class="col-xs-12 col-sm-3">
+								<br />
+								<strong>Auditoria</strong>
+								<small>
+									<p>Generación de archivos de audiitoria acorde a las ultimas normativas BCRA & UIF
+										<a href="#">MÃ¡s informaciÃ³n sobre Operaciones</a></p></small>
+									</div>
+									<!--imagen responsive-->
+									<div class="col-xs-12 col-sm-3">
+										<center><img src="img/circle-help.png" class="img-responsive"></center>
+									</div>
+									<!--Texto del contenido-->
+									<div class="col-xs-12 col-sm-3">
+										<br />
+										<strong>Â¿Necesitas ayuda?</strong>
+										<small>
+											<p>Â¿Tienes alguna duda sobre CCSys? En el. 
+												<a href="#">centro de ayuda</a> encontrarÃ¡s las preguntas mÃ¡s frecuentes y muchas sugerencias.</p></small>
+
+											</div>
+											<!--nueva columna auxiliar solo para dar espacio al final-->
+											<div class="col-xs-12">
+												<br /><br /><br /><br /><br />
+											</div>
+
+										</div>
+
+									</div>
+								</div>
+								<!--Fin del cuarto contenedor-->
+
+								<!--Quinto contenedor pie de pÃ¡gina-->
+								<div class="container-fluid well text-center">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<br />
+											<small >
+												Copyright ProyectoCC
+											</small>
+											<br />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--Fin del sexto contenedor-->      
+
+
+
+
+
+
+					</body>
+					</html>

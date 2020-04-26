@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result" class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			
+			<!--
+			<div th:replace="fragments ::navbarside"></div> <!-- Menu Lateral  -->  
+			
+			<!-- Contenido principal 9 columnas -->
+			<div class="col-sm-12">
+		
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading"><h4 th:text="${''}">Clinente: XXXX DOC: XXX</h4></div>
+								<form th:object="${operacionDTO}" th:action="@{/cajas/save}" method="POST" ><!--Formulario operacion-->
+									<!-- Form Name -->
+									<fieldset>
+
+										<!--datos que necesito bindear al form-->
+
+										<!--datos para funciones js-->
+										<input id="mndBaseId" type="hidden" th:value="${dataMaster.monedaBase.id}">
+										<input type="hidden" th:field="*{operacion.tipoMov}">
+											
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="txtNumComprobante">Comprobante</label>  
+											<div class="">
+												<input id="txtNumComprobante" th:field="*{operacion.id}" readonly="yes" name="txtNumComprobante" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+
+											</div>
+										</div>
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="estado">Estado</label>  
+											<div class="">									
+												<input id="estado" th:field="*{operacion.estado.valor}" readonly="yes" name="estado" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+											</div>
+										</div> 
+
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Usuario</label>  
+											<div class="">
+												<input id="cajero" readonly="yes" th:field="*{operacion.user.email}" name="cajero" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+											</div>
+										</div>
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="fechaOp">Fecha</label>  
+											<div class="">
+
+												<input id="fechaOp" th:value="${#temporals.format({operacionDTO.operacion.fechaHora}, 'dd/MMM/yyyy HH:mm')}" readonly="yes" type="text" class="form-control input-md" tabIndex="-1">
+												<input type="hidden" th:field="*{operacion.fechaHora}">
+
+
+											</div>
+										</div>
+
+									</fieldset>
+
+									<hr>
+
+									<fieldset>
+										<!-- Select Basic -->
+										<div class="col-sm-6 form-group">
+											<label class=" control-label" for="tipoOp">Origen</label>											
+											<div class="">
+												<select id="cajaO" th:field="*{opO.caja}" th:remove="all-but-first" class="form-control" th:disabled="*{not modificable}">
+													<option th:each="caja : ${dataMaster.cajas}" 
+													th:value="${caja.id}" th:text="${caja.valor}">  </option>
+													<option value="1">Caja-1</option>
+													<option value="2">Caja-2</option>
+												</select>
+											</div>
+										</div>
+
+
+										<!-- Select Basic -->
+										<div class="col-sm-6 form-group">
+											<label class="control-label" for="tipoCambio">Destino</label>
+											<div class="">
+												<select id="cajaD" th:field="*{opD.caja}" th:remove="all-but-first"
+												class="form-control" th:disabled="*{not modificable}">
+												<option  th:each="caja : ${dataMaster.cajas}" 
+												th:value="${caja.id}" th:text="${caja.valor}">  </option>
+												<option value="1">Caja-1</option>
+												<option value="2">Caja-2</option>
+											</select>
+										</div>
+									</div>
+
+									<!--Trabajamos con el ItemO guardamos info util-->
+									<input type="hidden" th:field="*{opO.fuente}">
+									<input type="hidden" th:field="*{opO.movimiento}">							
+									<input type="hidden" th:field="*{opO.orden}">
+									<input type="hidden" th:field="*{opO}">
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="ccontrol-label" for="mndOrigen">Moneda O</label>
+										<div class="">
+											<select id="slcMndO" th:field="*{opO.moneda}" th:remove="all-but-first" name="mndOrigen" class="form-control"
+											onchange="mndOrigenChange()" th:disabled="*{not modificable}">
+												<option th:each="tipoM : ${dataMaster.monedas}" 
+												th:value="${tipoM.id}" th:text="${tipoM.valor}">  </option>
+												<option value="1">USD</option>
+												<option value="2">AR$</option>
+											</select>
+										</div>
+									</div>
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="control-label" for="instrumentoO">Instrumento O</label>
+										<div class="">
+											<select id="instrumento" th:field="*{opO.instrumento}" th:remove="all-but-first" name="instrumentoO" class="form-control" th:disabled="*{not modificable}">
+												<option th:each="tipoI : ${dataMaster.instrumentos}" 
+												th:value="${tipoI.id}" th:text="${tipoI.valor}">  </option>
+												<option value="1">Billetes</option>
+												<option value="2">Cheques</option>
+											</select>
+										</div>
+									</div>
+									
+									<!-- Trabajo con el ItemD guardamos algunos utilies-->
+									<input type="hidden" th:field="*{opD.fuente}">
+									<input type="hidden" th:field="*{opD.movimiento}">
+									<input type="hidden" th:field="*{opD.orden}">
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="control-label" for="monedaDst" >Moneda D</label>
+										<div class="">
+											<select id="slcMndD" th:field="*{opD.moneda}" th:remove="all-but-first" name="monedaDst" class="form-control disabled"  th:disabled="*{not modificable}">
+												<option th:each="tipoM : ${dataMaster.monedas}" 
+												th:value="${tipoM.id}" th:text="${tipoM.valor}">  </option>
+												<option value="1">USD</option>
+												<option value="2">AR$</option>
+											</select>
+										</div>
+									</div>
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+										<label class="control-label" for="instrumentoD">Instrumento D</label>
+										<div class="">
+											<select id="instrumentoD" th:field="*{opD.instrumento}" th:remove="all-but-first" name="instrumento" class="form-control" th:disabled="*{not modificable}">
+												<option th:each="tipoI : ${dataMaster.instrumentos}" 
+												th:value="${tipoI.id}" th:text="${tipoI.valor}">  </option>
+												<option value="1">Billetes</option>
+												<option value="2">Cheques</option>
+											</select>
+										</div>
+									</div>
+
+
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="montoRec" id="lblMontoOp">Monto</label>  
+										<div class="">
+											<input id="montoRec" required th:readonly="*{not modificable}" th:field="*{opO.monto}" type="number" step="0.1" min="0"  class="form-control input-md">
+
+										</div>
+									</div>
+
+									<!--Resultado numerico de la operacion-->
+									<!-- Text input-->
+									<div class="col-sm-2 form-group" >
+										<label class="control-label" for="cotizacion">Saldo Origen Ant</label>  
+										<div class="">											
+											<input id="cotizacion" readonly   type="number" th:value="${(operacionDTO.acumCajaO.saldo)+(operacionDTO.opO.monto)}"
+											placeholder="" class="form-control input-md" tabIndex="-1">
+
+										</div>
+									</div>
+
+									<!-- Text input-->
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="montoEntregado" id="lblMontoE">Sld Origen Act</label>  
+										<div class="">
+											<input id="montoEntregado" readonly  th:value="${(operacionDTO.acumCajaO.saldo)}"
+											 type="number"  class="form-control input-md" tabIndex="-1">
+												
+										</div>
+									</div>	
+									
+									<!-- Text input-->
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="montoEntregado" id="lblMontoE">Sld Destino Ant</label>  
+										<div class="">
+											<input id="montoEntregado" readonly  th:value="${(operacionDTO.acumCajaD.saldo)-(operacionDTO.opO.monto)}"
+											 type="number"  class="form-control input-md" tabIndex="-1">
+												
+										</div>
+									</div>	
+									<!-- Text input-->
+									<div class="col-sm-2 form-group">
+										<label class="control-label" for="montoEntregado" id="lblMontoE">Sld Destino Act</label>  
+										<div class="">
+											<input id="montoEntregado" readonly  th:value="${(operacionDTO.acumCajaD.saldo)}"
+											 type="number"  class="form-control input-md" tabIndex="-1">
+												
+										</div>
+									</div>										
+
+
+									<!--fin resultado numerico-->
+									
+		
+
+									<!--Presentacion de los errores si existen-->
+									<div class="col-sm-12 alert alert-danger" th:if="${#fields.hasErrors('*')}">
+										<p th:errors="*{all}"> </p>
+									</div>
+									<!-- Textarea -->
+									<div class="col-sm-6 form-group">
+										<label class="control-label" for="observaciones">Observaciones</label>
+										<div class="">                     
+											<textarea class="form-control" id="observaciones" th:field="*{operacion.observaciones}"  ></textarea>
+										</div>
+									</div>
+									
+									<input id="txtProcesado" type="hidden" th:value="*{procesado}">
+									<input id="txtReadOnly" type="hidden"  th:value="*{readOnly}">
+
+									<!-- Button (Double) -->
+									<div class="col-sm-6 form-group">
+										<label class="control-label" for="button1id"></label>
+										<div class="">
+											<span th:if="*{not readOnly}"> <!--Set de botones para ver si readOnly=false-->
+												<button type="submit" id="btnprocesar"  name="procesar"  th:disabled="*{procesado}"  class="btn btn-default">Procesar</button>
+												<button type="submit" id="btnguardar"   name="guardar"   th:disabled="*{not procesado}"  class="btn btn-success" onclick="enableSel()">Guardar</button>
+												<button type="submit" id="btnmodificar" name="modificar" th:disabled="*{not procesado}"  class="btn btn-default" onclick="enableSel()">Modificar</button>
+											</span>
+											<span th:if="*{readOnly}">
+												<input id="printUrl" type="hidden" th:value="@{/operaciones/pdf/{id}(id=*{operacion.id})}">
+											</span>
+											<a href="#" onClick="cargarContenido('/cajas/');return false;" class="btn btn-danger">Cancelar</a>
+											
+											
+													
+										</div>
+									</div>
+
+
+								</fieldset>
+
+							</form><!--Formulario operacion-->
+
+
+							
+							
+						</div>
+					</div>
+
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila contine menuj lateral 3 col,  principal 9 col -->
+
+	</div>	<!-- fin contenedor de pagina-->
+<script>
+
+	window.addEventListener("onload", focusConfig());	
+	
+
+	function enableSel(){
+		var selects = document.getElementsByTagName('Select');
+		console.log(selects);
+		for(var k = 0; k < selects.length; k++){
+			selects[k].removeAttribute('disabled');
+			console.log(selects[k]);
+
+		}
+	}
+
+
+
+
+	function focusConfig() {
+		$('#slcTipoOp').focus();
+
+		if ($('#txtReadOnly').val()=='true') {
+			$('#btnprint').focus();
+		}
+		if ($('#txtProcesado').val()=='true') {
+			$('#btnguardar').focus();
+		}		
+		
+
+	}
+
+	function mndOrigenChange() {
+		$("#slcMndD").val($("#slcMndO").val()).trigger("change");
+	}
+
+
+
+</script>
+</body>
+</html>

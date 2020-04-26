@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+<!--
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css">
+	<link th:href="@{/css/custom.css}"  rel="stylesheet" type="text/css">
+	<script th:src="@{/js/jquery-1.11.1.min.js}" src="/js/jquery-1.11.1.min.js" ></script>
+	<script th:src="@{/js/bootstrap.min.js}" src="/js/bootstrap.min.js"></script>
+</head> 
+-->
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div class="row content"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			<div th:replace="fragments ::navbarside"></div> <!-- Menu Lateral  -->  
+
+			<!-- Contenido principal 9 columnas -->
+			<div class="col-sm-9">
+				<div class="container">
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading"><h2>Cotizaciones</h2></div>
+							
+						</div>
+					</div>
+				</div>	
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila contine menuj lateral 3 col,  principal 9 col -->
+
+			</div>	<!-- fin contenedor de pagina-->
+		</body>
+		</html>

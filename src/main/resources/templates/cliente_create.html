@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('cliente')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result" class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			
+			<!--
+			<div th:replace="fragments ::navbarside"></div> <!-- Menu Lateral  -->  
+			
+			<!-- Contenido principal 9 columnas -->
+			<div class="col-sm-12">
+		
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4>Alta de Clinente</h4>
+							</div>
+							<div class="panel-body">
+								<form th:object="${dto}" th:action="@{/clientes/save}" method="POST" ><!--Formulario operacion-->
+	
+									<!-- Form Name -->
+
+
+									<fieldset>
+
+										<!--datos que necesito bindear al form-->
+										<input type="hidden"  th:field="*{cliente.acumulado}">	
+										<input type="hidden"  th:field="*{cliente.id}">	
+
+										<!-- Select Basic -->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="instrumentoD">Tipo Documento</label>
+											<div class="">
+												<select id="tipoDocumento" th:field="*{cliente.tipoDocumento}" th:remove="all-but-first" required class="form-control">
+													<option th:each="tipoDoc : ${dataMaster.tiposDocumentos}" 
+													th:value="${tipoDoc.id}" th:text="${tipoDoc.valor}">  </option>
+													<option value="1">DNI</option>
+													<option value="2">CUIT</option>
+												</select>
+											</div>
+										</div>								
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="txtNumComprobante">N Documuento</label>  
+											<div class="">
+												<input id="txtDocumento" onkeydown="upperCaseF(this)" th:readonly="*{edit}" th:field="*{cliente.documento}"  type="text" placeholder="" required class="form-control input-md">
+
+											</div>
+										</div>
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="txtNumComprobante">F.Vencimiento</label>  
+											<div class="">
+												<input id="txtVencimiento" th:field="*{fechaVencimiento}" type="date" placeholder="" required class="form-control input-md">
+											</div>
+										</div>
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="txtNumComprobante">F.Nacimiento</label>  
+											<div class="">
+												<input id="txtNacimiento" th:field="*{fechaNacimiento}" type="date" placeholder="" required class="form-control input-md">
+											</div>
+										</div>
+
+										<!--Segunda fila---->
+										<!-- Text input-->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="estado">Nombre</label>  
+											<div class="">									
+												<input id="txtNombre" th:field="*{cliente.nombre}" type="text" placeholder="" required class="form-control input-md" onkeydown="upperCaseF(this)" >
+											</div>
+										</div> 
+
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Apellido</label>  
+											<div class="">
+												<input id="txtApellido" th:field="*{cliente.apellido}" type="text" placeholder="" required class="form-control input-md" onkeydown="upperCaseF(this)" >
+											</div>
+										</div>
+
+										<!-- Select Basic -->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="instrumentoD">Estado Civil</label>
+											<div class="">
+												<select id="txtEstCivil" th:field="*{cliente.estadoCivil}" th:remove="all-but-first" required class="form-control">
+													<option th:each="eCivil : ${dataMaster.estadosCiviles}" 
+													th:value="${eCivil.id}" th:text="${eCivil.valor}">  </option>
+													<option value="1">Soltero</option>
+													<option value="2">Casado</option>
+												</select>
+											</div>
+										</div>	
+
+										<!-- Select Basic -->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="instrumentoD">Pais Origen</label>
+											<div class="">
+												<select id="txtPaisO" th:field="*{cliente.paisOrigen}" th:remove="all-but-first" required class="form-control">
+													<option th:each="pais : ${dataMaster.paises}" 
+													th:value="${pais.id}" th:text="${pais.valor}">  </option>
+													<option value="1">DNI</option>
+													<option value="2">CUIT</option>
+												</select>
+											</div>
+										</div>
+
+										<!--Tercer fila-->
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Direccion</label>  
+											<div class="">
+												<input id="txtDireccion" th:field="*{cliente.direccion}" type="text" placeholder="" required class="form-control input-md">
+											</div>
+										</div>
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Localidad</label>  
+											<div class="">
+												<input id="txtLocalidad" th:field="*{cliente.localidad}" type="text" placeholder="" required class="form-control input-md">
+											</div>
+										</div>
+										<!-- Select Basic -->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="instrumentoD">Provincia</label>
+											<div class="">
+												<select id="txtProvincia" th:field="*{cliente.provincia}" th:remove="all-but-first" required class="form-control">
+													<option th:each="provincia : ${dataMaster.provincias}" 
+													th:value="${provincia.id}" th:text="${provincia.valor}">  </option>
+													<option value="1">DNI</option>
+													<option value="2">CUIT</option>
+												</select>
+											</div>
+										</div>
+										<!-- Select Basic -->
+										<div class="col-sm-3 form-group">
+											<label class="control-label" for="instrumentoD">Pais Residencia</label>
+											<div class="">
+												<select id="txtPaisR" th:field="*{cliente.paisResidencia}" th:remove="all-but-first" required class="form-control">
+													<option th:each="pais : ${dataMaster.paises}" 
+													th:value="${pais.id}" th:text="${pais.valor}">  </option>
+													<option value="1">DNI</option>
+													<option value="2">CUIT</option>
+												</select>
+											</div>
+										</div>
+
+										
+										<!--Cuarta fila --->
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Cod Postal</label>  
+											<div class="">
+												<input id="txtCodPostal" th:field="*{cliente.codigoPostal}" type="text" placeholder="" required class="form-control input-md">
+											</div>
+										</div>
+										
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Telefono</label>  
+											<div class="">
+												<input id="txtTelefono" th:field="*{cliente.telefono}" type="number" placeholder="00XX-XXXX-XXXX" required class="form-control input-md">
+											</div>
+										</div>
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Mail</label>  
+											<div class="">
+												<input id="txtMail" th:field="*{cliente.email}" type="email" placeholder=""  class="form-control input-md">
+											</div>
+										</div>
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Documento Scan</label>  
+											<div class="">
+												<input id="txtDocScan" type="file" placeholder="" class="form-control input-md">
+											</div>
+										</div>
+
+										<!---Quinta fila---->
+										<!-- Text input-->
+										<div class="col-sm-1 form-group ">
+											<label class="control-label" for="cajero">PEP</label>  
+											<div class="">
+												<input id="ispep" th:checked="*{cliente.pep}" th:field="*{cliente.pep}" type="checkbox" placeholder=""  onclick="disableOnPep()" class="form-control input-md">
+											</div>
+										</div>
+										<!-- Text input-->
+										<div class="col-sm-2 form-group ">
+											<div id="showPep" hidden>
+												<label class="control-label" for="cajero">Fecha Firma PEP</label>  
+												<div class="">
+													<input id="fechaPep" th:field="*{fechaFirmaPep}" type="date" placeholder=""  class="form-control input-md">
+												</div>
+											</div>
+										</div>
+
+			
+									<!-- Textarea -->
+									<div class="col-sm-6 form-group">
+										<label class="control-label" for="observaciones">Observaciones</label>
+										<div class="">                     
+											<textarea class="form-control" id="observaciones" th:field="*{cliente.observaciones}"> </textarea>
+										</div>
+									</div>
+
+									<!--Presentacion de los errores si existen-->
+									<div class="col-sm-12 alert alert-danger" th:if="${#fields.hasErrors('*')}">
+										<p th:errors="*{all}"> </p>
+									</div>
+									
+
+									<!-- Button (Double) -->
+									<div class="col-sm-12 form-group">
+										<label class="control-label" for="button1id"></label>
+										<div class="">		
+												<button type="submit" id="btnguardar"   name="guardar"  class="btn btn-success" onclick="">Guardar</button>
+												<button type="submit" id="btnmodificar" name="modificarNuevo" class="btn btn-default" onclick="">Guardar + Nuevo</button>
+												<a href="#" onClick="cargarContenido('/clientes/');return false;" class="btn btn-danger">Cancelar</a>
+										</div>
+									</div>
+								</fieldset>
+							</form><!--Formulario cliente-->
+							</div><!-- Fin del panel Body-->
+
+
+							
+							
+						</div> <!-- Fin del panel default-->
+					</div> <!-- Fin del panel group-->
+
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila contine menuj lateral 3 col,  principal 9 col -->
+
+	</div>	<!-- fin contenedor de pagina-->
+<script>
+
+window.addEventListener("onload", disableOnPep());
+function disableOnPep() {		
+	if ($("#ispep").get(0).checked) {
+
+		$("#showPep").show();
+		$("#fechaPep").attr("required",true);
+	}else{
+		$("#showPep").hide();
+		$("#fechaPep").removeAttr("required");
+	}
+}
+	
+
+
+
+function printPDF(url) {
+  
+  url = $("#printUrl").val();
+  console.log(url);
+  var iframe = this._printIframe;
+  if (!this._printIframe) {
+    iframe = this._printIframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+
+    iframe.style.display = 'none';
+    iframe.onload = function() {
+      setTimeout(function() {
+        iframe.focus();
+        iframe.contentWindow.print();
+      }, 1);
+    };
+  }
+
+  iframe.src = url;
+}  
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+
+<!-- Contenido principal 12 columnas -->
+<div class="col-sm-12">
+	<div class="panel-group">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="col-sm-6"><h2>Auditoria</h2></div>
+				<div class="col-sm-6">
+					<a class="btn btn-sm btn-success" th:href="@{/auditoria/create}">Nuevo</a>
+					<a class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#especificacion">Especificaciones</a>
+				</div>	
+				
+			</div>
+			<div class="panel-body">
+				<table class="table table-responsive table-sm table-striped table-hover table-bordered">
+					<thead class="bg-success">
+						<tr>
+							<th>Fecha Generacion</th>
+							<th>Periodo</th>
+							<th>Archivo</th>
+							<th>Estado</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="filereg : ${archivos}">
+							<td th:text="${#temporals.format(filereg.fechaCreacion, 'dd/MM/yyyy HH:mm')}">>12-01-2018</td>
+							<td th:text="${#temporals.format(filereg.semana, 'dd/MM/yyyy')}">Semana 01-09-2018</td>
+							<td th:text="${filereg.fileName}">OP_CAMB.TXT</td>
+							<td th:text="${filereg.estado}">Original</td>
+							<td>	
+								<div class="btn-group pull-right">
+									<a class="btn btn-sm btn-primary" th:href="@{/auditoria/getfile/{id}(id=${filereg.id})}">rectificar</a>
+									<a class="btn btn-sm btn-success" th:href="@{/auditoria/getfile/{id}(id=${filereg.id})}">descargar</a>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+		</div>
+	</div>	
+</div> <!-- Fin Contenido principal 9 columnas -->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="especificacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-success">
+				<h5 class="font-weight-bold" id="exampleModalLongTitle">Especificaciones del OPCAM.TXT</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">       
+
+				<p>El archivo se genera semanalmente el viernes a la noche en forma automatica o manual, para ser entregado el dia habil de la semana siguiente antes de las 15hs</p>
+				<p>El archivo contempla el apartado A de la especificacion t-RI-OC</p>
+				<p>La pantalla de generacion manual esta diseñanda para poder generar archivos con otras fechas distinta a la que se usa en forma automatica</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--Fin modal-->
+
+

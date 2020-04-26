@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+		
+
+			<!-- Contenido principal full screen por ahora sin menu lateral -->
+			<div class="col-sm-12">				
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div class="col-sm-6"><h2>Detalle Movimientos Caja</h2></div>
+								<div class="col-sm-6"><a class="btn btn-sm btn-success" href="#" onClick="cargarContenido('/cajas/');return false;">Volver</a></div>	
+							</div>
+							<div class="panel-body">
+									<table class="table table-responsive table-sm table-striped table-hover table-bordered">
+										<thead class="bg-success">
+											<tr>
+												<th>Fecha y Hora</th>
+												<th>Usuario</th>
+												<th>Caja</th>
+												<th>Tipo Movimiento</th>
+												<th>Debito</th>
+												<th>Credito</th>
+												<th></th>
+											</tr>
+										</thead>
+<!--										<tbody>
+											<tr>
+												<td>12-01-2018</td>
+												<td>User 1</td>
+												<td>Caja-1</td>
+												<td>Billetes</td>
+												<td>USD</td>
+												<td>Ingreso</td>
+												<td>4000</td>
+												<td>4000</td>
+												<td>	
+													<div class="btn-group pull-right">
+														<a class="btn btn-sm btn-primary" th:href="@{/}" >Editar</a>
+													</div>
+												</td>
+										</tr>
+									</tbody>
+  -->
+											<tr th:each="operacion : ${operaciones}">
+												<td th:text="${#temporals.format(operacion.fechaHora, 'dd/MMM/yyyy HH:mm:ss')}"></td>
+											 	<td th:text="${operacion.user.email}"></td>
+												<td th:text="${operacion.caja.valor}"></td>
+												<td th:text="${operacion.tipoOp.valor}+' '+${operacion.tipoCambio.valor}+' '+${operacion.tipoMov}"></td>
+												<td th:text="${operacion.opItemD.moneda.valor}+' '+${operacion.opItemD.monto}"></td>
+												<td th:text="${operacion.opItemO.moneda.valor}+' '+${operacion.opItemO.monto}"></td>
+												<td>	
+													<div class="btn-group pull-right">
+														<a class="btn btn-sm btn-primary" href="#" th:onclick="'cargarContenido(\'/operaciones/edit/'+${operacion.id}+'\'); return false;'" >Ver</a>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+
+								</table>
+
+							</div>
+
+							
+						</div>
+					</div>		
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila contine menuj lateral 3 col,  principal 9 col -->
+
+			</div>	<!-- fin contenedor de pagina-->
+		</body>
+		</html>
