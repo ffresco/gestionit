@@ -6,7 +6,6 @@
 package com.gestionit.base.repository;
 
 import com.gestionit.base.domain.Cotizacion;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;

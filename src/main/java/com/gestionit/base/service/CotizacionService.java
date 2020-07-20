@@ -11,7 +11,6 @@ import com.gestionit.base.domain.OperacionItem;
 import com.gestionit.base.domain.Parametro;
 import com.gestionit.base.domain.dto.CotizacionSearchDTO;
 import com.gestionit.base.repository.CotizacionRepository;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
