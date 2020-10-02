@@ -11,9 +11,13 @@ import com.gestionit.base.domain.AcumuladoCliente;
 import com.gestionit.base.domain.Cliente;
 import com.gestionit.base.domain.Cotizacion;
 import com.gestionit.base.domain.FileTextRegistry;
+import com.gestionit.base.domain.Impacto;
 import com.gestionit.base.domain.Operacion;
 import com.gestionit.base.domain.OperacionItem;
 import com.gestionit.base.domain.Parametro;
+import com.gestionit.base.domain.ProbalidadOcurrencia;
+import com.gestionit.base.domain.RiesgoInherente;
+import com.gestionit.base.domain.RiesgoResidual;
 import com.gestionit.base.domain.Role;
 import com.gestionit.base.domain.SesionCaja;
 import com.gestionit.base.domain.TopeCompra;
@@ -23,8 +27,12 @@ import com.gestionit.base.repository.AcumuladoCajaRepo;
 import com.gestionit.base.repository.ClienteRepository;
 import com.gestionit.base.repository.CotizacionRepository;
 import com.gestionit.base.repository.FileTextRegistryRepo;
+import com.gestionit.base.repository.ImpactoRepo;
 import com.gestionit.base.repository.OperacionRepo;
 import com.gestionit.base.repository.ParametroRepo;
+import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
+import com.gestionit.base.repository.RiesgoInherenteRepo;
+import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.repository.SesionCajaRepo;
 import com.gestionit.base.repository.TopesRepo;
 import com.gestionit.base.repository.UserRepo;
@@ -56,11 +64,16 @@ public class AppDemoData {
     private AcumuladoCajaRepo acr;
     private FileTextRegistryRepo ftrr;
     private OperacionRepo opRepo;
+    private ImpactoRepo itRRepo;
+    private ProbabilidadOcurrenciaRepo probOcurrRepo;
+    private RiesgoInherenteRepo riesgoinheRepo;
+    private RiesgoResidualRepo riesgoResiRepo;
 
     @Autowired
     public AppDemoData(ClienteRepository cliR, CotizacionService cotS,
             ParametroRepo pr, TopesRepo tr, DataMaster dm, UserRepo ur, SesionCajaRepo scr,
-            AcumuladoCajaRepo acr, FileTextRegistryRepo ftrr, OperacionRepo opRepo) {
+            AcumuladoCajaRepo acr, FileTextRegistryRepo ftrr, OperacionRepo opRepo,ImpactoRepo itRRepo,
+            ProbabilidadOcurrenciaRepo probOcurrRepo, RiesgoInherenteRepo riesgoinheRepo, RiesgoResidualRepo riesgoResiRepo) {
         this.cliR = cliR;
         this.cotS = cotS;
         this.pr = pr;
@@ -71,6 +84,11 @@ public class AppDemoData {
         this.acr = acr;
         this.ftrr = ftrr;
         this.opRepo = opRepo;
+        this.itRRepo = itRRepo;
+        this.probOcurrRepo = probOcurrRepo;
+        this.riesgoinheRepo = riesgoinheRepo;
+        this.riesgoResiRepo = riesgoResiRepo;
+        
                 
     }
 
@@ -194,6 +212,69 @@ public class AppDemoData {
         op.setUser(fer);
         opRepo.save(op);
         
+        //impacto
+        
+        Impacto imp = new Impacto(1, DataMaster.INSIGNIFICANTE);
+        Impacto imp1 = new Impacto(2, DataMaster.MENOR);
+        Impacto imp2 = new Impacto(3, DataMaster.MODERADO);
+        Impacto imp3 = new Impacto(4, DataMaster.MAYOR);
+        Impacto imp4 = new Impacto(5, DataMaster.SIGNIFICATIVO);
+        
+
+        itRRepo.save(imp);
+        itRRepo.save(imp1);
+        itRRepo.save(imp2);
+        itRRepo.save(imp3);
+        itRRepo.save(imp4);
+        
+        
+        //Probabilidad Ocurrencia
+        
+        ProbalidadOcurrencia prob = new ProbalidadOcurrencia(1, DataMaster.IMPROBABLE);
+        ProbalidadOcurrencia prob1 = new ProbalidadOcurrencia(2, DataMaster.BAJA);
+        ProbalidadOcurrencia prob2 = new ProbalidadOcurrencia(3, DataMaster.MEDIA);
+        ProbalidadOcurrencia prob3 = new ProbalidadOcurrencia(4, DataMaster.ALTA);
+        ProbalidadOcurrencia prob4 = new ProbalidadOcurrencia(5, DataMaster.MUY_ALTA);
+        
+
+        probOcurrRepo.save(prob);
+        probOcurrRepo.save(prob1);
+        probOcurrRepo.save(prob2);
+        probOcurrRepo.save(prob3);
+        probOcurrRepo.save(prob4);
+        
+        
+         //Riesgo Inherente
+        
+        RiesgoInherente riesgoInhe = new RiesgoInherente(1, DataMaster.BAJO);
+        RiesgoInherente riesgoInhe1 = new RiesgoInherente(2, DataMaster.MENOR);
+        RiesgoInherente riesgoInhe2 = new RiesgoInherente(3, DataMaster.MEDIO);
+        RiesgoInherente riesgoInhe3 = new RiesgoInherente(4, DataMaster.MAYOR);
+        RiesgoInherente riesgoInhe4 = new RiesgoInherente(5, DataMaster.NO_ACEPTABLE);
+        
+
+        riesgoinheRepo.save(riesgoInhe);
+        riesgoinheRepo.save(riesgoInhe1);
+        riesgoinheRepo.save(riesgoInhe2);
+        riesgoinheRepo.save(riesgoInhe3);
+        riesgoinheRepo.save(riesgoInhe4);
+        
+        
+        //Riesgo Residual
+        
+        RiesgoResidual riesgoRes = new RiesgoResidual(1, DataMaster.BAJO);
+        RiesgoResidual riesgoRes1 = new RiesgoResidual(2, DataMaster.MENOR);
+        RiesgoResidual riesgoRes2 = new RiesgoResidual(3, DataMaster.MEDIO);
+        RiesgoResidual riesgoRes3 = new RiesgoResidual(4, DataMaster.MAYOR);
+        RiesgoResidual riesgoRes4 = new RiesgoResidual(5, DataMaster.NO_ACEPTABLE);
+       
+
+        riesgoResiRepo.save(riesgoRes);
+        riesgoResiRepo.save(riesgoRes1);
+        riesgoResiRepo.save(riesgoRes2);
+        riesgoResiRepo.save(riesgoRes3);
+        riesgoResiRepo.save(riesgoRes4);
+       
         
         //***************Un par de archivos opcammentirosos
         this.ftrr.save(new FileTextRegistry(LocalDateTime.now(), LocalDate.now(),LocalDate.now(),LocalDate.now(), "opcam.txt", "ok", "Fue bien realizado"));

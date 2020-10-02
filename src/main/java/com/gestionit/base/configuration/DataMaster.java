@@ -5,9 +5,17 @@
  */
 package com.gestionit.base.configuration;
 
+import com.gestionit.base.domain.Impacto;
 import com.gestionit.base.domain.Parametro;
+import com.gestionit.base.domain.ProbalidadOcurrencia;
+import com.gestionit.base.domain.RiesgoInherente;
+import com.gestionit.base.domain.RiesgoResidual;
 import com.gestionit.base.domain.TopeCompra;
+import com.gestionit.base.repository.ImpactoRepo;
 import com.gestionit.base.repository.ParametroRepo;
+import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
+import com.gestionit.base.repository.RiesgoInherenteRepo;
+import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.repository.TopesRepo;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,8 +53,16 @@ public class DataMaster {
     private List<Parametro> actividadesLaborales;
     private List<Parametro> paises;
     private List<Parametro> tiposDocumentos;
+    
+    //para Riesgos
+    private List<Impacto> impactos;
+    private List<ProbalidadOcurrencia> probabilidadesOcurrencias;
+    private List<RiesgoInherente> riesgosInherentes;
+    private List<RiesgoResidual> riesgosResiduales;
 
-    //creado para pantalla operaciones especialmente
+  
+
+	//creado para pantalla operaciones especialmente
     private List<Parametro> tipoSubOps;
 
     public static final String MONEDAS = "MONEDAS";
@@ -67,18 +83,54 @@ public class DataMaster {
     public static final String ACTIVIDADES_LABORALES = "ACTIVIDADES_LABORALES";
     public static final String PAISES = "PAISES";
     public static final String TIPOS_DOCUMENTOS = "TIPOS_DOCUMENTOS";
+    
+    //para ABM de riesgo impacto
+    public static final String INSIGNIFICANTE = "INSIGNIFICANTE";
+    public static final String MENOR = "MENOR";
+    public static final String MODERADO = "MODERADO";
+    public static final String MAYOR = "MAYOR";
+    public static final String SIGNIFICATIVO = "SIGNIFICATIVO";
+    
+  //para ABM de riesgo Probabilidad de ocurrencia
+    public static final String IMPROBABLE = "IMPROBABLE";
+    public static final String BAJA = "BAJA";
+    public static final String MEDIA = "MEDIA";
+    public static final String ALTA = "ALTA";
+    public static final String MUY_ALTA = "MUY ALTA";
+    
+  //para ABM de riesgo Riesgo Inherente
+    public static final String BAJO = "BAJO";
+    public static final String MEDIO = "MEDIO";
+    public static final String NO_ACEPTABLE = "NO ACEPTABLE";
+    
+    
+
+    
 
     private final ParametroRepo parametroRepo;
     private final TopesRepo topesRepo;
+    
+    private final ImpactoRepo impactoRepo;
+    
+    private final ProbabilidadOcurrenciaRepo proOcuRepo;
+    
+    private final RiesgoInherenteRepo riesgoInheRepo;
+	
+    private final RiesgoResidualRepo riesgoResiRepo;
 
     @Autowired
-    public DataMaster(ParametroRepo parametroRepo, TopesRepo tr) {
+    public DataMaster(ParametroRepo parametroRepo, TopesRepo tr, ImpactoRepo impactoRepo, ProbabilidadOcurrenciaRepo proOcuRepo,
+    		RiesgoInherenteRepo riesgoInheRepo, RiesgoResidualRepo riesgoResiRepo) {
         this.parametroRepo = parametroRepo;
         this.topesRepo = tr;
-
+        this.impactoRepo = impactoRepo;
+        this.proOcuRepo = proOcuRepo;
+        this.riesgoInheRepo = riesgoInheRepo;
+        this.riesgoResiRepo = riesgoResiRepo;
     }
 
-    public void intiData() {
+
+	public void intiData() {
 
         this.monedas = parametroRepo.findByTipo(MONEDAS);
         this.entidades = parametroRepo.findByTipo(ENTIDADES);
@@ -99,11 +151,32 @@ public class DataMaster {
         this.actividadesLaborales=parametroRepo.findByTipo(ACTIVIDADES_LABORALES);
         this.paises=parametroRepo.findByTipo(PAISES);
         this.tiposDocumentos=parametroRepo.findByTipo(TIPOS_DOCUMENTOS);
+        this.impactos = (List<Impacto>) impactoRepo.findAll();
+        this.probabilidadesOcurrencias = (List<ProbalidadOcurrencia>) proOcuRepo.findAll();
+        this.riesgosInherentes = (List<RiesgoInherente>) riesgoInheRepo.findAll();
+        this.riesgosResiduales = (List<RiesgoResidual>) riesgoResiRepo.findAll();
 
     }
 
+    public List<RiesgoResidual> getRiesgosResiduales() {
+		return riesgosResiduales;
+	}
+
+    
+    public List<RiesgoInherente> getRiesgosInherentes() {
+  		return riesgosInherentes;
+  	}
+
     public List<Parametro> getMonedas() {
         return monedas;
+    }
+    
+    public List<ProbalidadOcurrencia> getProbabilidadesOcurrencias() {
+		return probabilidadesOcurrencias;
+	}
+
+	public List<Impacto> getImpactos() {
+        return impactos;
     }
 
     public List<Parametro> getEntidades() {

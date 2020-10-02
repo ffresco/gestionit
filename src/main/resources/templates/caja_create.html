@@ -25,7 +25,7 @@ and open the template in the editor.
 		
 					<div class="panel-group">
 						<div class="panel panel-default">
-							<div class="panel-heading"><h4 th:text="${''}">Clinente: XXXX DOC: XXX</h4></div>
+							<div class="panel-heading"><h4 th:text="${''}">Cliente: XXXX DOC: XXX</h4></div>
 								<form th:object="${operacionDTO}" th:action="@{/cajas/save}" method="POST" ><!--Formulario operacion-->
 									<!-- Form Name -->
 									<fieldset>
@@ -83,7 +83,7 @@ and open the template in the editor.
 										<div class="col-sm-6 form-group">
 											<label class=" control-label" for="tipoOp">Origen</label>											
 											<div class="">
-												<select id="cajaO" th:field="*{opO.caja}" th:remove="all-but-first" class="form-control" th:disabled="*{not modificable}">
+												<select id="cajaO" th:field="*{opO.caja}" th:remove="all-but-first" class="form-control" >
 													<option th:each="caja : ${dataMaster.cajas}" 
 													th:value="${caja.id}" th:text="${caja.valor}">  </option>
 													<option value="1">Caja-1</option>
