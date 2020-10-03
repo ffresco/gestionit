@@ -9,10 +9,6 @@ import org.hibernate.envers.RevisionEntity;
 @RevisionEntity(MyRevisionListener.class)
 public class MyRevision extends DefaultRevisionEntity {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private String userName;
 
 	public String getUserName() {
