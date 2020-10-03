@@ -3,6 +3,7 @@ package com.gestionit.base.domain;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="probalidad_ocurrencia")
 public class ProbalidadOcurrencia extends ItemRiesgo {

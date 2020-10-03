@@ -21,6 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.util.SerializationUtils;
 
 /**
@@ -29,6 +31,7 @@ import org.springframework.util.SerializationUtils;
  */
 @Entity
 @Table(name="riesgo")
+@Audited
 public class Riesgo implements Serializable{
 
     @Id
@@ -60,22 +63,27 @@ public class Riesgo implements Serializable{
     @Column(name="afecta_disponibilidad")
     private Boolean afectaDisponibilidad;
 
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @OneToOne
     @JoinColumn(name="fk_impacto")
     private Impacto impacto;
     
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @OneToOne
     @JoinColumn(name="fk_prob_ocur")
     private ProbalidadOcurrencia probabilidadOcurrencia;
     
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="fk_riesgo_inherente_valor")
     private RiesgoInherenteValor riesgoInherenteValor;
     
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="fk_salvaguarda")
     private Salvaguarda salvaguarda;
     
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="fk_riesgo_residual_valor")
     private RiesgoResidualValor riesgoResidualValor;

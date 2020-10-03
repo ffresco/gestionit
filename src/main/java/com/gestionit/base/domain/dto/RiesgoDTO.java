@@ -14,6 +14,7 @@ import com.gestionit.base.domain.Riesgo;
  */
 public class RiesgoDTO {
 	
+
 	private Riesgo riesgo;
 	
 	private String fechaAnalisis;
@@ -24,8 +25,31 @@ public class RiesgoDTO {
     
     private boolean readOnly;
     
+
+    private boolean edit;
+    
     
   
+	public RiesgoDTO(Riesgo riesgoAEditar) {
+		this.riesgo = riesgoAEditar;
+	}
+
+
+	public RiesgoDTO() {
+		
+	}
+
+
+	public boolean isEdit() {
+		return edit;
+	}
+
+
+	public void setEdit(boolean edit) {
+		this.edit = edit;
+	}
+
+	
     public String getFechaAnalisis() {
 		return fechaAnalisis;
 	}
@@ -82,6 +106,19 @@ public class RiesgoDTO {
         return "RiesgoDTO{ Riesgo"  + riesgo +"}";
     }
 
+
+	public void configEditScreen() {
+		 this.edit = true;
+		 this.modificable = true;
+		 this.procesado = false;
+		
+	}
+
+	 public void configAltaScreen(){
+	        this.edit=false;
+	        this.modificable = true;
+		    this.procesado = false;
+	    }
 
 	
     

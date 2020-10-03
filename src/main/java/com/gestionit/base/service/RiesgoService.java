@@ -5,26 +5,13 @@
  */
 package com.gestionit.base.service;
 
-import com.gestionit.base.configuration.DataMaster;
-import com.gestionit.base.domain.AcumuladoCaja;
-import com.gestionit.base.domain.AcumuladoCliente;
-import com.gestionit.base.domain.Cliente;
 import com.gestionit.base.domain.Riesgo;
-import com.gestionit.base.domain.dto.ClienteDTO;
-import com.gestionit.base.domain.dto.ClienteSearchDTO;
-import com.gestionit.base.repository.AcumuladoClienteRepo;
-import com.gestionit.base.repository.ClienteRepository;
-import com.gestionit.base.repository.ParametroRepo;
+
 import com.gestionit.base.repository.RiesgoRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -5,9 +5,8 @@
  */
 package com.gestionit.base.service;
 
-import com.gestionit.base.domain.Item;
+
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *

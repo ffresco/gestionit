@@ -18,15 +18,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
-
+import com.gestionit.base.domain.Cliente;
 import com.gestionit.base.domain.Riesgo;
 
 import com.gestionit.base.domain.Salvaguarda;
-
+import com.gestionit.base.domain.dto.ClienteDTO;
 import com.gestionit.base.domain.dto.RiesgoDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 
@@ -100,7 +101,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	@RequestMapping(value = "/save", params = {"guardar"})
 	public ModelAndView save(RiesgoDTO riesgoDTO, BindingResult bindingResult) {
 		LOGGER.info("-----Entre al save de Riesgos------");
-		riesgoService.saveOrUpdate(riesgoDTO.getRiesgo());
+		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
         ModelAndView mav = new ModelAndView("riesgo_create");
         mav.addObject("riesgoDTO", riesgoDTO);
         return mav;
@@ -117,6 +118,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         //recupero la operacion
         Riesgo riesgo = riesgoDTO.getRiesgo();
         
+        riesgoDTO.setProcesado(true);
+        
         riesgo = procesarRiesgo(riesgo);
 
        
@@ -125,15 +128,20 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
     }
 
 	@Override
-	public ModelAndView delete(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ModelAndView delete(@PathVariable Long id) {
+		Riesgo riesgoABorrar = riesgoService.getById(id);
+		riesgoService.delete(riesgoABorrar);
+        return getMainPage(new RiesgoSearchDTO(), null);
 	}
 
 	@Override
-	public ModelAndView edit(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ModelAndView edit(@PathVariable Long id) {
+        LOGGER.info("Estoy en edit este es el id " + id);
+        Riesgo riesgoAEditar = riesgoService.getById(id);
+        RiesgoDTO dto = new RiesgoDTO(riesgoAEditar);
+        dto.configEditScreen();
+        LOGGER.info("DTO a editar "+dto);
+        return new ModelAndView("cliente_create", "dto", dto);
 	}
   
 	   @ModelAttribute("dataMaster")
