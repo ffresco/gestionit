@@ -141,7 +141,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         RiesgoDTO dto = new RiesgoDTO(riesgoAEditar);
         dto.configEditScreen();
         LOGGER.info("DTO a editar "+dto);
-        return new ModelAndView("cliente_create", "dto", dto);
+        return new ModelAndView("riesgo_create", "riesgoDTO", dto);
 	}
   
 	   @ModelAttribute("dataMaster")
