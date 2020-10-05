@@ -42,11 +42,22 @@ and open the template in the editor.
 
 										<!-- Text input-->
 										<div class="col-sm-2 form-group">
-											<label class="control-label" for="estado">Codigo de Amenaza</label>  
+											<label class="control-label" for="estado">Tipo Amenaza</label>  
 											<div class="">									
 												<input id="estado" th:field="*{riesgo.codigoAmenaza}"  name="codigoAmenaza" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
 											</div>
 										</div> 
+
+
+																			
+									<!-- Textarea -->
+									<div class="col-sm-6 form-group">
+										<label class="control-label" for="descripcion">Descripcion Amenaza</label>
+										<div class="">                     
+											<textarea class="form-control" id="descripcion" th:field="*{riesgo.descripcion}"  ></textarea>
+										</div>
+									</div>
+										
 										
 											<!-- Text input-->
 										<div class="col-sm-2 form-group">
@@ -57,24 +68,6 @@ and open the template in the editor.
 												<input type="hidden" th:field="*{riesgo.fechaAnalisis}">
 
 
-											</div>
-										</div>
-
-
-										<!-- Text input-->
-										<div class="col-sm-3 form-group ">
-											<label class="control-label" for="cajero">Codigo de Formulario</label>  
-											<div class="">
-												<input id="codForm"  th:field="*{riesgo.codigoFormulario}" name="codForm" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
-											</div>
-										</div>
-										
-										
-										<!-- Text input-->
-										<div class="col-sm-3 form-group ">
-											<label class="control-label" for="cajero">Responsables</label>  
-											<div class="">
-												<input id="resp"  th:field="*{riesgo.responsable}" name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
 											</div>
 										</div>
 									
@@ -99,7 +92,7 @@ and open the template in the editor.
 
 										<!-- Select Basic -->
 										<div class="col-sm-6 form-group">
-											<label class="control-label" for="tipoCambio">Pobabilidad de Ocurrencia</label>
+											<label class="control-label" for="tipoCambio">Probabilidad de Ocurrencia</label>
 											<div class="">
 												<select id="probabilidad" th:field="*{riesgo.probabilidadOcurrencia}" 
 												class="form-control" >
@@ -109,7 +102,7 @@ and open the template in the editor.
 										</div>
 									</div>
 									<!-- Input -->
-									<div class="col-sm-2 form-group">
+									<div class="col-sm-3 form-group">
 											<label class="control-label" for="tipoCambio">Riesgo Inherente Valor</label>
 											<div class="">
 											<input id="inherenteValor" readonly  th:field="*{riesgo.riesgoInherenteValor.valor}" 
@@ -119,37 +112,31 @@ and open the template in the editor.
 
 
 									<!-- Select Basic -->
-									<div class="col-sm-4 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Inherente</label>
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="tipoCambio">Riesgo Inherente Descripción</label>
 											<div class="">
-												<select id="inherente" readonly th:field="*{riesgo.riesgoInherenteValor.riesgoInherente}" 
+												<select id="inherente" disabled="disabled" th:field="*{riesgo.riesgoInherenteValor.riesgoInherente}" 
 												class="form-control" >
+													<option value="0"></option>
 													<option th:each="riesgoInherente : ${dataMaster.riesgosInherentes}" 
 												th:value="${riesgoInherente.id}" th:text="${riesgoInherente.calificacion}">  </option>
 											</select>
 										</div>
 									</div>
-
-									<!-- Input -->
-									<div class="col-sm-2 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Residual Valor</label>
-											<div class="">
-											<input id="residualValor"  readonly th:field="*{riesgo.riesgoResidualValor.valor}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
-										</div>
+									
+										<!-- Text Area-->
+								<div class="col-sm-6 form-group">
+									<label class="control-label" for="descripcion">Salvaguarda
+										Descripcion</label>
+									<div class="">
+										<textarea class="form-control" id="salvaguardaDesc"
+											th:field="*{riesgo.salvaguarda.descripcion}"></textarea>
 									</div>
-
-									<!-- Select Basic -->
-									<div class="col-sm-4 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Residual Calificacion</label>
-											<div class="">
-												<select id="residual" readonly th:field="*{riesgo.riesgoResidualValor.riesgoResidual}"
-												class="form-control" >
-													<option th:each="riesgoResidual : ${dataMaster.riesgosResiduales}" 
-												th:value="${riesgoResidual.id}" th:text="${riesgoResidual.calificacion}">  </option>
-											</select>
-										</div>
-									</div>
+								</div>
+									
+                                   
+									
+								
 
 
 
@@ -184,27 +171,6 @@ and open the template in the editor.
 									</div>
 									
 									<!-- Text Area-->
-								<div class="col-sm-6 form-group">
-									<label class="control-label" for="descripcion">Salvaguarda
-										Descripcion</label>
-									<div class="">
-										<textarea class="form-control" id="salvaguardaDesc"
-											th:field="*{riesgo.salvaguarda.descripcion}"></textarea>
-									</div>
-								</div>
-									
-									<!-- Textarea -->
-									<div class="col-sm-6 form-group">
-										<label class="control-label" for="descripcion">Descripcion</label>
-										<div class="">                     
-											<textarea class="form-control" id="descripcion" th:field="*{riesgo.descripcion}"  ></textarea>
-										</div>
-									</div>
-
-								
-
-
-								<!-- Text Area-->
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="Salvaguarda Valor" id="lblMontoE">Valor Salvaguarda</label>  
 										<div class="">
@@ -217,7 +183,7 @@ and open the template in the editor.
 									</div>	
 									<!-- Text input-->
 									<div class="col-sm-2 form-group">
-										<label class="control-label" for="menorImpacto" id="lblMontoE">Salvaguarda Menor Impacto</label>  
+										<label class="control-label" for="menorImpacto" id="lblMontoE">Impacto Final</label>  
 										<div class="">
 											<input id="salvaguardaMenorImpacto"  readonly th:field="*{riesgo.salvaguarda.menorImpacto}" 
 											 type="number"  class="form-control input-md" tabIndex="-1">
@@ -226,13 +192,54 @@ and open the template in the editor.
 									</div>										
 									<!-- Text input-->
 									<div class="col-sm-2 form-group">
-										<label class="control-label" for="menorProbabilidad" id="lblMontoE">Menor Probabilidad</label>  
+										<label class="control-label" for="menorProbabilidad" id="lblMontoE">Probabilidad Final</label>  
 										<div class="">
 											<input id="menorProbabilidad" readonly  th:field="*{riesgo.salvaguarda.menorProbabilidad}" 
 											 type="number"  class="form-control input-md" tabIndex="-1">
 												
 										</div>
 									</div>	
+									
+									<!-- Input -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="tipoCambio"></label>
+											<div class="">
+											
+										</div>
+									</div>
+									
+									<!-- Input -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="tipoCambio"></label>
+											<div class="">
+											
+										</div>
+									</div>
+									
+									<!-- Input -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="tipoCambio">Riesgo Residual Valor</label>
+											<div class="">
+											<input id="residualValor"  readonly th:field="*{riesgo.riesgoResidualValor.valor}" 
+											 type="number"  class="form-control input-md" tabIndex="-1">
+										</div>
+									</div>
+
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="tipoCambio">Riesgo Residual Calificacion</label>
+											<div class="">
+												<select id="residual" disabled="disabled" th:field="*{riesgo.riesgoResidualValor.riesgoResidual}"
+												class="form-control" >
+												<option value="0"></option>
+													<option th:each="riesgoResidual : ${dataMaster.riesgosResiduales}" 
+												th:value="${riesgoResidual.id}" th:text="${riesgoResidual.calificacion}">  </option>
+											</select>
+										</div>
+									</div>
+								
+									
+
 
 								
 									
@@ -263,7 +270,24 @@ and open the template in the editor.
 													
 										</div>
 									</div>
-
+									
+									<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Codigo de Formulario Aceptación de Riesgo</label>  
+											<div class="">
+												<input id="codForm"  th:field="*{riesgo.codigoFormulario}" name="codForm" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+											</div>
+										</div>
+										
+										
+										<!-- Text input-->
+										<div class="col-sm-3 form-group ">
+											<label class="control-label" for="cajero">Responsables</label>  
+											<div class="">
+												<input id="resp"  th:field="*{riesgo.responsable}" name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+											</div>
+										</div>
+								
 
 								</fieldset>
 
