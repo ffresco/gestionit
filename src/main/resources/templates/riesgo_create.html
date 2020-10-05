@@ -26,7 +26,7 @@ and open the template in the editor.
 					<div class="panel-group">
 						<div class="panel panel-default">
 							<div class="panel-heading"><h4 th:text="${''}">Clinente: XXXX DOC: XXX</h4></div>
-								<form th:object="${riesgoDTO}" th:action="@{/riesgos/save}" method="POST" ><!--Formulario operacion-->
+								<form th:object="${riesgoDTO}" th:action="@{/riesgos/save}" method="POST" id="riesgoForm" ><!--Formulario operacion-->
 									<!-- Form Name -->
 									<fieldset>
 
@@ -35,7 +35,7 @@ and open the template in the editor.
 										<div class="col-sm-2 form-group">
 											<label class="control-label" for="txtOrigen">Origen</label>  
 											<div class="">
-												<input id="txtOrigen" th:field="*{riesgo.origen}"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+												<input id="txtOrigen" th:field="*{riesgo.origen}"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
 
 											</div>
 										</div>
@@ -44,7 +44,7 @@ and open the template in the editor.
 										<div class="col-sm-2 form-group">
 											<label class="control-label" for="estado">Tipo Amenaza</label>  
 											<div class="">									
-												<input id="estado" th:field="*{riesgo.codigoAmenaza}"  name="codigoAmenaza" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+												<input id="estado" th:field="*{riesgo.codigoAmenaza}"  name="codigoAmenaza"  type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
 											</div>
 										</div> 
 
@@ -54,7 +54,7 @@ and open the template in the editor.
 									<div class="col-sm-6 form-group">
 										<label class="control-label" for="descripcion">Descripcion Amenaza</label>
 										<div class="">                     
-											<textarea class="form-control" id="descripcion" th:field="*{riesgo.descripcion}"  ></textarea>
+											<textarea class="form-control" id="descripcion" th:field="*{riesgo.descripcion}"  onkeypress="enableSaveButton()"></textarea>
 										</div>
 									</div>
 										
@@ -81,8 +81,8 @@ and open the template in the editor.
 										<div class="col-sm-6 form-group">
 											<label class=" control-label" for="tipoOp">Impacto</label>											
 											<div class="">
-												<select id="impacto" th:field="*{riesgo.impacto}"  class="form-control" >
-										
+												<select id="impacto" th:field="*{riesgo.impacto}"  class="form-control" onchange="form_submit()" >
+													<option value="0"></option>
 													<option th:each="riesgoImpacto : ${dataMaster.impactos}" 
 												th:value="${riesgoImpacto.id}" th:text="${riesgoImpacto.calificacion}">  </option>
 												</select>
@@ -94,8 +94,9 @@ and open the template in the editor.
 										<div class="col-sm-6 form-group">
 											<label class="control-label" for="tipoCambio">Probabilidad de Ocurrencia</label>
 											<div class="">
-												<select id="probabilidad" th:field="*{riesgo.probabilidadOcurrencia}" 
+												<select id="probabilidad" th:field="*{riesgo.probabilidadOcurrencia}" onchange="form_submit()"
 												class="form-control" >
+												<option value="0"></option>
 													<option th:each="probabilidadOcurrencia : ${dataMaster.probabilidadesOcurrencias}" 
 												th:value="${probabilidadOcurrencia.id}" th:text="${probabilidadOcurrencia.calificacion}">  </option>
 											</select>
@@ -129,7 +130,7 @@ and open the template in the editor.
 									<label class="control-label" for="descripcion">Salvaguarda
 										Descripcion</label>
 									<div class="">
-										<textarea class="form-control" id="salvaguardaDesc"
+										<textarea class="form-control" id="salvaguardaDesc" onkeypress="enableSaveButton()"
 											th:field="*{riesgo.salvaguarda.descripcion}"></textarea>
 									</div>
 								</div>
@@ -144,7 +145,7 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="montoRec" id="lblAfectaConf">Afecta Confidencialidad</label>  
 										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="afconfCheck"  th:field="*{riesgo.afectaConfidencialidad}" checked >
+											<input class="form-check-input" type="checkbox" id="afconfCheck"  th:field="*{riesgo.afectaConfidencialidad}" onkeypress="enableSaveButton()" >
 
 										</div>
 									</div>
@@ -156,7 +157,7 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="montoRec" id="lblAfectaInteg">Afecta Integridad</label>  
 										<div class="">
-											<input class="form-check-input" type="checkbox" id="afinteCheck"  th:field="*{riesgo.afectaIntegridad}" checked >
+											<input class="form-check-input" type="checkbox" id="afinteCheck"  th:field="*{riesgo.afectaIntegridad}" onkeypress="enableSaveButton()" >
 
 										</div>
 									</div>
@@ -165,7 +166,7 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="montoRec" id="lblAfectaDisp">Afecta Disponibilidad</label>  
 										<div class="">
-											<input class="form-check-input" type="checkbox" id="afdisoCheck"  th:field="*{riesgo.afectaIntegridad}" checked >
+											<input class="form-check-input" type="checkbox" id="afdisoCheck"  th:field="*{riesgo.afectaIntegridad}" onkeypress="enableSaveButton()" >
 
 										</div>
 									</div>
@@ -174,7 +175,7 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="Salvaguarda Valor" id="lblMontoE">Valor Salvaguarda</label>  
 										<div class="">
-											<input id="salvaguardaVal"   th:field="*{riesgo.salvaguarda.valor}" 
+											<input id="salvaguardaVal"   th:field="*{riesgo.salvaguarda.valor}" onchange="form_submit()" 
 											 type="number"  class="form-control input-md" tabIndex="-1">
 												
 										</div>
@@ -229,7 +230,7 @@ and open the template in the editor.
 									<div class="col-sm-3 form-group">
 											<label class="control-label" for="tipoCambio">Riesgo Residual Calificacion</label>
 											<div class="">
-												<select id="residual" disabled="disabled" th:field="*{riesgo.riesgoResidualValor.riesgoResidual}"
+												<select id="residual" disabled="disabled" th:field="*{riesgo.riesgoResidualValor.riesgoResidual}" 
 												class="form-control" >
 												<option value="0"></option>
 													<option th:each="riesgoResidual : ${dataMaster.riesgosResiduales}" 
@@ -257,9 +258,9 @@ and open the template in the editor.
 										<label class="control-label" for="button1id"></label>
 										<div class="">
 											<span th:if="*{not false}"> <!--Set de botones para ver si readOnly=false-->
-												<button type="submit" id="btnprocesar"  name="procesar"  th:disabled="*{procesado}" class="btn btn-default">Procesar</button>
+												<!-- <button type="submit" id="btnprocesar"  name="procesar"  th:disabled="*{procesado}" class="btn btn-default">Procesar</button> -->
 												<button type="submit" id="btnguardar"   name="guardar"   th:disabled="*{not procesado}" class="btn btn-success" onclick="enableSel()">Guardar</button>
-												<button type="submit" id="btnmodificar" name="modificar" th:disabled="*{not procesado}"  class="btn btn-default" onclick="enableSel()">Modificar</button>
+												<!-- <button type="submit" id="btnmodificar" name="modificar" th:disabled="*{not procesado}"  class="btn btn-default" onclick="enableSel()">Modificar</button> -->
 											</span>
 											<span th:if="*{true}">
 												<input id="printUrl" type="hidden" th:value="@{/riesgos/pdf/{id}(id=*{riesgo.id})}">
@@ -275,7 +276,7 @@ and open the template in the editor.
 										<div class="col-sm-3 form-group ">
 											<label class="control-label" for="cajero">Codigo de Formulario Aceptación de Riesgo</label>  
 											<div class="">
-												<input id="codForm"  th:field="*{riesgo.codigoFormulario}" name="codForm" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+												<input id="codForm"  th:field="*{riesgo.codigoFormulario}" name="codForm" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
 											</div>
 										</div>
 										
@@ -284,7 +285,7 @@ and open the template in the editor.
 										<div class="col-sm-3 form-group ">
 											<label class="control-label" for="cajero">Responsables</label>  
 											<div class="">
-												<input id="resp"  th:field="*{riesgo.responsable}" name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1">
+												<input id="resp"  th:field="*{riesgo.responsable}" name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
 											</div>
 										</div>
 								
@@ -339,7 +340,16 @@ and open the template in the editor.
 		$("#slcMndD").val($("#slcMndO").val()).trigger("change");
 	}
 
+	function form_submit()
+	{
+		  $('#btnguardar').prop('disabled', true);
+	      $('#riesgoForm').append('<input type="hidden" name="procesar" id="procesar" value="" />');
+	      $("#riesgoForm").submit(); 
+	}
 
+	function enableSaveButton(){
+		$('#btnguardar').prop('disabled', false);
+	}
 
 </script>
 </body>

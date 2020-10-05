@@ -23,11 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
-import com.gestionit.base.domain.Cliente;
 import com.gestionit.base.domain.Riesgo;
 
 import com.gestionit.base.domain.Salvaguarda;
-import com.gestionit.base.domain.dto.ClienteDTO;
 import com.gestionit.base.domain.dto.RiesgoDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 
@@ -173,74 +171,90 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 		}
 
 		private void getMenorProbabilidadSalvaguarda(Riesgo riesgo) {
-			Integer menorProbabilidad = 0;
-			Integer probabilidadOcurrenciaValor = riesgo.getProbabilidadOcurrencia().getValor();
-			Integer salvaguardaValor = riesgo.getSalvaguarda().getValor();
-			if(salvaguardaValor==1) {
-				menorProbabilidad = probabilidadOcurrenciaValor - 2;
-			}else if(salvaguardaValor==2) {
-				menorProbabilidad = probabilidadOcurrenciaValor - 1;
-			}else if(salvaguardaValor==3 || salvaguardaValor==4 ) {
-				menorProbabilidad = probabilidadOcurrenciaValor;
+			
+			try {
+				Integer menorProbabilidad = 0;
+				Integer probabilidadOcurrenciaValor = riesgo.getProbabilidadOcurrencia().getValor();
+				Integer salvaguardaValor = riesgo.getSalvaguarda().getValor();
+				if(salvaguardaValor==1) {
+					menorProbabilidad = probabilidadOcurrenciaValor - 2;
+				}else if(salvaguardaValor==2) {
+					menorProbabilidad = probabilidadOcurrenciaValor - 1;
+				}else if(salvaguardaValor==3 || salvaguardaValor==4 ) {
+					menorProbabilidad = probabilidadOcurrenciaValor;
+				}
+
+				riesgo.getSalvaguarda().setMenorProbabilidad(menorProbabilidad);
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
 			}
 			
-			if(menorProbabilidad < 1) {
-				menorProbabilidad = 1;
-			}
-			riesgo.getSalvaguarda().setMenorProbabilidad(menorProbabilidad);
 			
 		}
 
 		private void getMenorImpactoSalvaguarda(Riesgo riesgo) {
-			Integer menorImpacto = 0;
-			Integer impactoValor = riesgo.getImpacto().getValor();
-			Integer salvaguardaValor = riesgo.getSalvaguarda().getValor();
-			if(salvaguardaValor==1) {
-				menorImpacto = impactoValor - 2;
-			}else if(salvaguardaValor==2) {
-				menorImpacto = impactoValor - 1;
-			}else if(salvaguardaValor==3 || salvaguardaValor==4 ) {
-				menorImpacto = impactoValor;
+			try {
+				Integer menorImpacto = 0;
+				Integer impactoValor = riesgo.getImpacto().getValor();
+				Integer salvaguardaValor = riesgo.getSalvaguarda().getValor();
+				if(salvaguardaValor==1) {
+					menorImpacto = impactoValor - 2;
+				}else if(salvaguardaValor==2) {
+					menorImpacto = impactoValor - 1;
+				}else if(salvaguardaValor==3 || salvaguardaValor==4 ) {
+					menorImpacto = impactoValor;
+				}
+
+				riesgo.getSalvaguarda().setMenorImpacto(menorImpacto);
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
 			}
 			
-			if(menorImpacto < 1) {
-				menorImpacto = 1;
-			}
-			riesgo.getSalvaguarda().setMenorImpacto(menorImpacto);
 			
 		}
 		
 
 		private void getRiesgoResidual(Riesgo riesgo) {
-			Integer riesgoResidual = riesgo.getSalvaguarda().getMenorImpacto() * riesgo.getSalvaguarda().getMenorProbabilidad();
-			riesgo.getRiesgoResidualValor().setValor(riesgoResidual);
-			if(riesgoResidual <= 5) {
-				riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(1l));		
-			}else if (riesgoResidual >= 6 && riesgoResidual <= 10) {
-				riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(2l));
-			}else if (riesgoResidual >= 12 && riesgoResidual <= 15) {
-				riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(3l));
-			} else if (riesgoResidual >= 12 && riesgoResidual <= 15) {
-				riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(41l));
-			}else if(riesgoResidual == 25) {
-				riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(5l));
+			
+			try {
+				Integer riesgoResidual = riesgo.getSalvaguarda().getMenorImpacto() * riesgo.getSalvaguarda().getMenorProbabilidad();
+				riesgo.getRiesgoResidualValor().setValor(riesgoResidual);
+				if(riesgoResidual <= 5) {
+					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(1l));		
+				}else if (riesgoResidual >= 6 && riesgoResidual <= 10) {
+					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(2l));
+				}else if (riesgoResidual >= 12 && riesgoResidual <= 15) {
+					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(3l));
+				} else if (riesgoResidual >= 12 && riesgoResidual <= 15) {
+					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(41l));
+				}else if(riesgoResidual == 25) {
+					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(5l));
+				}
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
 			}
+			
 		}
 
 		private void getRiesgoInherente(Riesgo riesgo) {
-			Integer riesgoInherente = riesgo.getProbabilidadOcurrencia().getValor() * riesgo.getImpacto().getValor();
-			riesgo.getRiesgoInherenteValor().setValor(riesgoInherente);
-			if(riesgoInherente <= 5) {
-				riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(1l));		
-			}else if (riesgoInherente >= 6 && riesgoInherente <= 10) {
-				riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(2l));
-			}else if (riesgoInherente >= 12 && riesgoInherente <= 15) {
-				riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(3l));
-			} else if (riesgoInherente >= 16 && riesgoInherente <= 20) {
-				riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(4l));
-			}else if(riesgoInherente == 25) {
-				riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(5l));
+			try {
+				Integer riesgoInherente = riesgo.getProbabilidadOcurrencia().getValor() * riesgo.getImpacto().getValor();
+				riesgo.getRiesgoInherenteValor().setValor(riesgoInherente);
+				if(riesgoInherente <= 5) {
+					riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(1l));		
+				}else if (riesgoInherente >= 6 && riesgoInherente <= 10) {
+					riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(2l));
+				}else if (riesgoInherente >= 12 && riesgoInherente <= 15) {
+					riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(3l));
+				} else if (riesgoInherente >= 16 && riesgoInherente <= 20) {
+					riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(4l));
+				}else if(riesgoInherente == 25) {
+					riesgo.getRiesgoInherenteValor().setRiesgoInherente(riesgoinheRepo.findOne(5l));
+				}
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
 			}
+			
 		}
 		
 }
