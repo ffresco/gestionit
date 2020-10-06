@@ -23,7 +23,7 @@ and open the template in the editor.
 			</div>
 			<!-- Contenido principal 9 columnas -->
 			<div class="col-sm-9">
-
+<div class="spinner-border"></div>
 				<div class="panel panel-default">
 					<div class= "panel-heading row">
 
@@ -37,7 +37,7 @@ and open the template in the editor.
 								<tr>
 									<th> Descripcion del Riesgo </th>
 									<th> Origen</th>
-									<th> Codigo de Amenaza</th>
+									<th> Origen Amenaza</th>
 									<th> Fecha Analizis</th>
 									<th> Codigo de Formulario</th>
 									<th> Responsable</th>
@@ -51,7 +51,7 @@ and open the template in the editor.
 								<tr th:each="riesgo : ${riesgos}">
 									<td th:text="${riesgo.descripcion}"></td>
 									<td th:text="${riesgo.origen}"></td>
-									<td th:text="${riesgo.codigoAmenaza}"></td>
+									<td th:text="${riesgo.amenaza.origen.origen}"></td>
 									<td th:text="${#temporals.format(riesgo.fechaAnalisis, 'dd/MMM/yyyy HH:mm:ss')}"></td>
 									<td th:text="${riesgo.codigoFormulario}"></td>
 									<td th:text="${riesgo.responsable}"></td>				

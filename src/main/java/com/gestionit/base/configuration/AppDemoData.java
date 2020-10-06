@@ -8,12 +8,14 @@ package com.gestionit.base.configuration;
 import com.gestionit.base.controller.CotizacionesController;
 import com.gestionit.base.domain.AcumuladoCaja;
 import com.gestionit.base.domain.AcumuladoCliente;
+import com.gestionit.base.domain.Amenaza;
 import com.gestionit.base.domain.Cliente;
 import com.gestionit.base.domain.Cotizacion;
 import com.gestionit.base.domain.FileTextRegistry;
 import com.gestionit.base.domain.Impacto;
 import com.gestionit.base.domain.Operacion;
 import com.gestionit.base.domain.OperacionItem;
+import com.gestionit.base.domain.OrigenAmenaza;
 import com.gestionit.base.domain.Parametro;
 import com.gestionit.base.domain.ProbalidadOcurrencia;
 import com.gestionit.base.domain.RiesgoInherente;
@@ -24,11 +26,13 @@ import com.gestionit.base.domain.TopeCompra;
 import com.gestionit.base.domain.User;
 import com.gestionit.base.domain.dto.builder.OpDTOBuilder;
 import com.gestionit.base.repository.AcumuladoCajaRepo;
+import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.ClienteRepository;
 import com.gestionit.base.repository.CotizacionRepository;
 import com.gestionit.base.repository.FileTextRegistryRepo;
 import com.gestionit.base.repository.ImpactoRepo;
 import com.gestionit.base.repository.OperacionRepo;
+import com.gestionit.base.repository.OrigenAmenzaRepository;
 import com.gestionit.base.repository.ParametroRepo;
 import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
@@ -68,12 +72,15 @@ public class AppDemoData {
     private ProbabilidadOcurrenciaRepo probOcurrRepo;
     private RiesgoInherenteRepo riesgoinheRepo;
     private RiesgoResidualRepo riesgoResiRepo;
+    private final AmenzaRepository amenazaRepo;
+    private final OrigenAmenzaRepository origenAmenazaRepo;
 
     @Autowired
     public AppDemoData(ClienteRepository cliR, CotizacionService cotS,
             ParametroRepo pr, TopesRepo tr, DataMaster dm, UserRepo ur, SesionCajaRepo scr,
             AcumuladoCajaRepo acr, FileTextRegistryRepo ftrr, OperacionRepo opRepo,ImpactoRepo itRRepo,
-            ProbabilidadOcurrenciaRepo probOcurrRepo, RiesgoInherenteRepo riesgoinheRepo, RiesgoResidualRepo riesgoResiRepo) {
+            ProbabilidadOcurrenciaRepo probOcurrRepo, RiesgoInherenteRepo riesgoinheRepo,
+            RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo) {
         this.cliR = cliR;
         this.cotS = cotS;
         this.pr = pr;
@@ -88,6 +95,8 @@ public class AppDemoData {
         this.probOcurrRepo = probOcurrRepo;
         this.riesgoinheRepo = riesgoinheRepo;
         this.riesgoResiRepo = riesgoResiRepo;
+        this.amenazaRepo = amenazaRepo;
+        this.origenAmenazaRepo = origenAmenazaRepo;
         
                 
     }
@@ -274,6 +283,44 @@ public class AppDemoData {
         riesgoResiRepo.save(riesgoRes2);
         riesgoResiRepo.save(riesgoRes3);
         riesgoResiRepo.save(riesgoRes4);
+        
+        //Origen Amenzas
+        
+        OrigenAmenaza origenAmenaza1 = new OrigenAmenaza( DataMaster.APLICACIONES);
+        OrigenAmenaza origenAmenaza2 = new OrigenAmenaza(DataMaster.HARDWARE);
+        OrigenAmenaza origenAmenaza3 = new OrigenAmenaza(DataMaster.INSTALACIONES);
+        OrigenAmenaza origenAmenaza4 = new OrigenAmenaza(DataMaster.PROVEEDORES);
+        OrigenAmenaza origenAmenaza5 = new OrigenAmenaza( DataMaster.SOFTWARE_DE_BASE);
+        OrigenAmenaza origenAmenaza6 = new OrigenAmenaza( DataMaster.TELECOMUNICACIONES);
+        OrigenAmenaza origenAmenaza7 = new OrigenAmenaza( DataMaster.OTROS);
+        
+        this.origenAmenazaRepo.save(origenAmenaza1);
+        this.origenAmenazaRepo.save(origenAmenaza2);
+        this.origenAmenazaRepo.save(origenAmenaza3);
+        this.origenAmenazaRepo.save(origenAmenaza4);
+        this.origenAmenazaRepo.save(origenAmenaza5);
+        this.origenAmenazaRepo.save(origenAmenaza6);
+        this.origenAmenazaRepo.save(origenAmenaza7);
+        
+        
+        //AmenazaRepo 
+        
+        Amenaza amenaza = new Amenaza("1.1", origenAmenaza1, "Errores de operación de los usuarios");
+        Amenaza amenaza1 = new Amenaza("2.1", origenAmenaza2, "Errores de Instalación/Configuración de los administradores");
+        Amenaza amenaza2 = new Amenaza("3.1", origenAmenaza3, "Accesos físicos no autorizados");
+        Amenaza amenaza3 = new Amenaza("4.1", origenAmenaza4, "Relación con el proveedor no formalizada");
+        Amenaza amenaza4 = new Amenaza("5.1", origenAmenaza5, "Errores de operación de los administradores");
+        Amenaza amenaza5 = new Amenaza("6.1", origenAmenaza6, "Ancho de banda insuficiente");
+        Amenaza amenaza6 = new Amenaza("7.1", origenAmenaza7, "Amenazas organizacionales, de gestión, estructura o limitación de recursos humanos, técnicos, económicos");
+       
+
+        this.amenazaRepo.save(amenaza);
+        this.amenazaRepo.save(amenaza1);
+        this.amenazaRepo.save(amenaza2);
+        this.amenazaRepo.save(amenaza3);
+        this.amenazaRepo.save(amenaza4);
+        this.amenazaRepo.save(amenaza5);
+        this.amenazaRepo.save(amenaza6);
        
         
         //***************Un par de archivos opcammentirosos

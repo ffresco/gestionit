@@ -7,6 +7,14 @@ and open the template in the editor.
 <html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
 
 <head><div th:replace="fragments ::app_head('titulo')"></div></head>
+<style type="text/css" media="screen">
+#spinner{
+postion:fixed;
+top:50%;
+left:50%;
+
+}
+</style>
 
 
 </head>
@@ -22,7 +30,8 @@ and open the template in the editor.
 			
 			<!-- Contenido principal 9 columnas -->
 			<div class="col-sm-12">
-		
+			
+			
 					<div class="panel-group">
 						<div class="panel panel-default">
 							<div class="panel-heading"><h4 th:text="${''}">Clinente: XXXX DOC: XXX</h4></div>
@@ -39,19 +48,35 @@ and open the template in the editor.
 
 											</div>
 										</div>
-
-										<!-- Text input-->
+										
+										<!-- Select Basic -->
 										<div class="col-sm-2 form-group">
-											<label class="control-label" for="estado">Tipo Amenaza</label>  
-											<div class="">									
-												<input id="estado" th:field="*{riesgo.codigoAmenaza}"  name="codigoAmenaza"  type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
+											<label class=" control-label" for="tipoOp">Origen Amenaza</label>											
+											<div class="">
+												<select id="origenAmenaza" th:field="*{origenAmenaza}"  class="form-control" onchange="form_submit()" >
+													<option value="0"></option>
+													<option th:each="origenAmenaza : ${dataMaster.origenAmenazas}" 
+												th:value="${origenAmenaza.id}" th:text="${origenAmenaza.origen}">  </option>
+												</select>
 											</div>
-										</div> 
+										</div>
+										
 
+										<!-- Select Basic -->
+										<div class="col-sm-2 form-group">
+											<label class=" control-label" for="tipoOp">Tipo Amenaza</label>											
+											<div class="">
+												<select id="tipoAmenaza" th:field="*{riesgo.amenaza}"  class="form-control"  >
+													<option value="0"></option>
+													<option th:each="amenaza : ${riesgoDTO.amenazas}" 
+												th:value="${amenaza.id}" th:text="${amenaza.tipo}">  </option>
+												</select>
+											</div>
+                                        </div>
 
 																			
 									<!-- Textarea -->
-									<div class="col-sm-6 form-group">
+									<div class="col-sm-4 form-group">
 										<label class="control-label" for="descripcion">Descripcion Amenaza</label>
 										<div class="">                     
 											<textarea class="form-control" id="descripcion" th:field="*{riesgo.descripcion}"  onkeypress="enableSaveButton()"></textarea>
@@ -59,7 +84,7 @@ and open the template in the editor.
 									</div>
 										
 										
-											<!-- Text input-->
+									<!-- Text input-->
 										<div class="col-sm-2 form-group">
 											<label class="control-label" for="fechaOp">Fecha Analisis</label>  
 											<div class="">
@@ -135,7 +160,9 @@ and open the template in the editor.
 									</div>
 								</div>
 									
-                                   
+                                   <div id="spinner" style="display:none">
+				<img id="img-spinner" alt="Loading" src="img/spinner.gif">
+			</div>
 									
 								
 
@@ -341,7 +368,8 @@ and open the template in the editor.
 	}
 
 	function form_submit()
-	{
+ 	{	  
+		//$('#spinner').show()
 		  $('#btnguardar').prop('disabled', true);
 	      $('#riesgoForm').append('<input type="hidden" name="procesar" id="procesar" value="" />');
 	      $("#riesgoForm").submit(); 

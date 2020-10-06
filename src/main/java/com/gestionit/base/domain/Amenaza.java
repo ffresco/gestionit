@@ -13,6 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 
 /**
@@ -24,6 +29,7 @@ import javax.persistence.Id;
 public class Amenaza implements Serializable {
 
     
+	
 	/**
 	 * 
 	 */
@@ -36,7 +42,10 @@ public class Amenaza implements Serializable {
  
     protected String codigo;
       
-    protected String origen;
+ 
+    @OneToOne
+    @JoinColumn(name="fk_origen_amenaza")
+    protected OrigenAmenaza origen;
     
     protected String tipo;
     
@@ -46,19 +55,61 @@ public class Amenaza implements Serializable {
      }
      
 
-     public Amenaza(String codigo, String origen, String tipo) {
+     public Amenaza(String codigo, OrigenAmenaza origen, String tipo) {
  		super();
  		this.codigo = codigo;
  		this.origen = origen;
  		this.tipo = tipo;
  	}
+     
+
+
+ 	public Long getId() {
+ 		return id;
+ 	}
+
+
+ 	public void setId(Long id) {
+ 		this.id = id;
+ 	}
+     
+     
+     public String getCodigo() {
+ 		return codigo;
+ 	}
+
+
+ 	public void setCodigo(String codigo) {
+ 		this.codigo = codigo;
+ 	}
+
+
+ 	public OrigenAmenaza getOrigen() {
+ 		return origen;
+ 	}
+
+
+ 	public void setOrigen(OrigenAmenaza origen) {
+ 		this.origen = origen;
+ 	}
+
+
+ 	public String getTipo() {
+ 		return tipo;
+ 	}
+
+
+ 	public void setTipo(String tipo) {
+ 		this.tipo = tipo;
+ 	}
+
 
 	@Override
     public String toString() {
         return "Amenaza{" + "id=" + id + ", Codigo=" + codigo + ", Origen=" + Optional.ofNullable(origen) + 
                 ", Tipo=" + Optional.ofNullable(tipo) +'}';
     }
-    
+
     
     
     

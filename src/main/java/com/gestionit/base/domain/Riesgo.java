@@ -34,7 +34,12 @@ import org.springframework.util.SerializationUtils;
 @Audited
 public class Riesgo implements Serializable{
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private Long id;
@@ -49,8 +54,10 @@ public class Riesgo implements Serializable{
     @Column(name="codigo_formulario")
     private String codigoFormulario;
     
-    @Column(name="codigo_amenaza")
-    private String codigoAmenaza;
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    @OneToOne
+    @JoinColumn(name="fk_amenaza")
+    private Amenaza amenaza;
     
     private String responsable;
     
@@ -105,7 +112,7 @@ public class Riesgo implements Serializable{
     
     
     public Riesgo(Long id, LocalDateTime fechaAnalisis, String origen, String descripcion, String codigoFormulario,
-    		String codigoAmenaza,String responsable, Boolean afectaConfidencialidad, Boolean afectaIntegridad, Boolean afectaDisponibilidad,
+    		Amenaza amenaza,String responsable, Boolean afectaConfidencialidad, Boolean afectaIntegridad, Boolean afectaDisponibilidad,
 			ProbalidadOcurrencia probabilidadOcurrencia, RiesgoInherenteValor riesgoInherenteValor, Salvaguarda salvaguarda,
 			RiesgoResidualValor riesgoResidualValor, Impacto impacto) {
 		super();
@@ -122,20 +129,22 @@ public class Riesgo implements Serializable{
 		this.riesgoInherenteValor = riesgoInherenteValor;
 		this.salvaguarda = salvaguarda;
 		this.riesgoResidualValor = riesgoResidualValor;
-		this.codigoAmenaza = codigoAmenaza;
+		this.amenaza = amenaza;
 		this.impacto = impacto;
 	}
 
 
 
 
-	public String getCodigoAmenaza() {
-		return codigoAmenaza;
+
+
+	public Amenaza getAmenaza() {
+		return amenaza;
 	}
 
 
-	public void setCodigoAmenaza(String codigoAmenaza) {
-		this.codigoAmenaza = codigoAmenaza;
+	public void setAmenaza(Amenaza amenaza) {
+		this.amenaza = amenaza;
 	}
 
 
@@ -317,7 +326,7 @@ public class Riesgo implements Serializable{
 
 	@Override
     public String toString() {
-        return "Riesgo{" + "id=" + id + ", descripcion=" + descripcion + ", origen=" + origen + ", codigo de Formulario=" + codigoFormulario + ", codigo Amenaza=" + codigoAmenaza + ", responsable=" + responsable +  "}";
+        return "Riesgo{" + "id=" + id + ", descripcion=" + descripcion + ", origen=" + origen + ", codigo de Formulario=" + codigoFormulario + ",  Amenaza=" + amenaza + ", responsable=" + responsable +  "}";
     }
 
     

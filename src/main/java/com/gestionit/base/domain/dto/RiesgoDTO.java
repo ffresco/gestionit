@@ -6,6 +6,10 @@
 package com.gestionit.base.domain.dto;
 
 
+import java.util.List;
+
+import com.gestionit.base.domain.Amenaza;
+import com.gestionit.base.domain.OrigenAmenaza;
 import com.gestionit.base.domain.Riesgo;
 
 /**
@@ -28,8 +32,21 @@ public class RiesgoDTO {
 
     private boolean edit;
     
+    private List<Amenaza> amenazas;
+    
+    private OrigenAmenaza origenAmenaza;
     
   
+	public List<Amenaza> getAmenazas() {
+		return amenazas;
+	}
+
+
+	public void setAmenazas(List<Amenaza> amenazas) {
+		this.amenazas = amenazas;
+	}
+
+
 	public RiesgoDTO(Riesgo riesgoAEditar) {
 		this.riesgo = riesgoAEditar;
 	}
@@ -119,6 +136,17 @@ public class RiesgoDTO {
 	        this.modificable = true;
 		    this.procesado = false;
 	    }
+
+
+	public OrigenAmenaza getOrigenAmenaza() {
+
+		return origenAmenaza;
+	}
+
+
+	public void setOrigenAmenaza(OrigenAmenaza origenAmenaza) {
+		this.origenAmenaza = origenAmenaza;
+	}
 
 	
     

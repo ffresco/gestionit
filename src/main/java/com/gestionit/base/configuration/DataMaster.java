@@ -5,13 +5,17 @@
  */
 package com.gestionit.base.configuration;
 
+import com.gestionit.base.domain.Amenaza;
 import com.gestionit.base.domain.Impacto;
+import com.gestionit.base.domain.OrigenAmenaza;
 import com.gestionit.base.domain.Parametro;
 import com.gestionit.base.domain.ProbalidadOcurrencia;
 import com.gestionit.base.domain.RiesgoInherente;
 import com.gestionit.base.domain.RiesgoResidual;
 import com.gestionit.base.domain.TopeCompra;
+import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.ImpactoRepo;
+import com.gestionit.base.repository.OrigenAmenzaRepository;
 import com.gestionit.base.repository.ParametroRepo;
 import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
@@ -59,8 +63,9 @@ public class DataMaster {
     private List<ProbalidadOcurrencia> probabilidadesOcurrencias;
     private List<RiesgoInherente> riesgosInherentes;
     private List<RiesgoResidual> riesgosResiduales;
+    private List<Amenaza> amenazas;
+    private List<OrigenAmenaza> origenAmenazas;
 
-  
 
 	//creado para pantalla operaciones especialmente
     private List<Parametro> tipoSubOps;
@@ -103,6 +108,15 @@ public class DataMaster {
     public static final String MEDIO = "MEDIO";
     public static final String NO_ACEPTABLE = "NO ACEPTABLE";
     
+  //para Abm de amenaza de riesgo
+    
+    public static final String APLICACIONES = "APLICACIONES";
+    public static final String HARDWARE = "HARDWARE";
+    public static final String INSTALACIONES = "INSTALACIONES";
+    public static final String OTROS = "OTROS";
+    public static final String PROVEEDORES = "PROVEEDORES";
+    public static final String SOFTWARE_DE_BASE = "SOFTWARE DE BASE";
+    public static final String TELECOMUNICACIONES = "TELECOMUNICACIONES";
     
 
     
@@ -117,16 +131,22 @@ public class DataMaster {
     private final RiesgoInherenteRepo riesgoInheRepo;
 	
     private final RiesgoResidualRepo riesgoResiRepo;
+    
+    private final AmenzaRepository amenazaRepo;
+    
+    private final OrigenAmenzaRepository origenAmenazaRepo;
 
     @Autowired
     public DataMaster(ParametroRepo parametroRepo, TopesRepo tr, ImpactoRepo impactoRepo, ProbabilidadOcurrenciaRepo proOcuRepo,
-    		RiesgoInherenteRepo riesgoInheRepo, RiesgoResidualRepo riesgoResiRepo) {
+    		RiesgoInherenteRepo riesgoInheRepo, RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo) {
         this.parametroRepo = parametroRepo;
         this.topesRepo = tr;
         this.impactoRepo = impactoRepo;
         this.proOcuRepo = proOcuRepo;
         this.riesgoInheRepo = riesgoInheRepo;
         this.riesgoResiRepo = riesgoResiRepo;
+        this.amenazaRepo = amenazaRepo;
+        this.origenAmenazaRepo = origenAmenazaRepo;
     }
 
 
@@ -155,8 +175,19 @@ public class DataMaster {
         this.probabilidadesOcurrencias = (List<ProbalidadOcurrencia>) proOcuRepo.findAll();
         this.riesgosInherentes = (List<RiesgoInherente>) riesgoInheRepo.findAll();
         this.riesgosResiduales = (List<RiesgoResidual>) riesgoResiRepo.findAll();
+        this.amenazas = (List<Amenaza>) amenazaRepo.findByOrigenId(1l);
+        this.origenAmenazas = (List<OrigenAmenaza>) origenAmenazaRepo.findAll();
 
     }
+	
+	public List<OrigenAmenaza> getOrigenAmenazas() {
+		return origenAmenazas;
+	}
+
+
+	public List<Amenaza> getAmenazas() {
+		return amenazas;
+	}
 
     public List<RiesgoResidual> getRiesgosResiduales() {
 		return riesgosResiduales;

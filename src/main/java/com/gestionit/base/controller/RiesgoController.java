@@ -9,8 +9,7 @@ package com.gestionit.base.controller;
 
 
 import java.time.LocalDateTime;
-
-
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
+import com.gestionit.base.domain.Amenaza;
 import com.gestionit.base.domain.Riesgo;
 
 import com.gestionit.base.domain.Salvaguarda;
 import com.gestionit.base.domain.dto.RiesgoDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
-
+import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.service.RiesgoService;
@@ -47,14 +47,16 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
     private DataMaster dataMaster;
     private RiesgoInherenteRepo riesgoinheRepo;
     private RiesgoResidualRepo riesgoResiRepo;
+    private AmenzaRepository amenazaRepo;
 
     @Autowired
     public RiesgoController(RiesgoService riesgoService, DataMaster dataMaster, RiesgoInherenteRepo riesgoinheRepo,
-    		RiesgoResidualRepo riesgoResiRepo) {
+    		RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo) {
         this.riesgoService = riesgoService;
         this.dataMaster = dataMaster;
         this.riesgoinheRepo = riesgoinheRepo;
-        this.riesgoResiRepo = riesgoResiRepo;		
+        this.riesgoResiRepo = riesgoResiRepo;
+        this.amenazaRepo = amenazaRepo;
 
     }
 
@@ -100,6 +102,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	public ModelAndView save(RiesgoDTO riesgoDTO, BindingResult bindingResult) {
 		LOGGER.info("-----Entre al save de Riesgos------");
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
+		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
         ModelAndView mav = new ModelAndView("riesgo_create");
         mav.addObject("riesgoDTO", riesgoDTO);
         return mav;
@@ -119,8 +122,9 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         riesgoDTO.setProcesado(true);
         
         riesgo = procesarRiesgo(riesgo);
-
-       
+        
+        riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
+ 
         mav.addObject("riesgoDTO", riesgoDTO);
         return mav;
     }
@@ -138,6 +142,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         Riesgo riesgoAEditar = riesgoService.getById(id);
         RiesgoDTO dto = new RiesgoDTO(riesgoAEditar);
         dto.configEditScreen();
+        dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
+        dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
         LOGGER.info("DTO a editar "+dto);
         return new ModelAndView("riesgo_create", "riesgoDTO", dto);
 	}
@@ -156,6 +162,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	    	riesgoDTO.setModificable(true);
 	    	riesgoDTO.setProcesado(false);
 	    	riesgoDTO.setReadOnly(false);
+	    	riesgoDTO.setAmenazas((List<Amenaza>) amenazaRepo.findAll());
 
 	    }
 	    
