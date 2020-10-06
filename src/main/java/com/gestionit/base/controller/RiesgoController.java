@@ -225,8 +225,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(2l));
 				}else if (riesgoResidual >= 12 && riesgoResidual <= 15) {
 					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(3l));
-				} else if (riesgoResidual >= 12 && riesgoResidual <= 15) {
-					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(41l));
+				} else if (riesgoResidual >= 16 && riesgoResidual <= 20) {
+					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(4l));
 				}else if(riesgoResidual == 25) {
 					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(5l));
 				}

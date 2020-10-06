@@ -230,11 +230,11 @@ public class AppDemoData {
         
         //Probabilidad Ocurrencia
         
-        ProbalidadOcurrencia prob = new ProbalidadOcurrencia(1, DataMaster.IMPROBABLE);
-        ProbalidadOcurrencia prob1 = new ProbalidadOcurrencia(2, DataMaster.BAJA);
-        ProbalidadOcurrencia prob2 = new ProbalidadOcurrencia(3, DataMaster.MEDIA);
-        ProbalidadOcurrencia prob3 = new ProbalidadOcurrencia(4, DataMaster.ALTA);
-        ProbalidadOcurrencia prob4 = new ProbalidadOcurrencia(5, DataMaster.MUY_ALTA);
+        ProbalidadOcurrencia prob = new ProbalidadOcurrencia(1, DataMaster.IMPROBABLE+" - Se espera que ocurran 1 vez cada 1 o 2 años.");
+        ProbalidadOcurrencia prob1 = new ProbalidadOcurrencia(2, DataMaster.BAJA+" - Se espera que ocurran 2 veces por año.");
+        ProbalidadOcurrencia prob2 = new ProbalidadOcurrencia(3, DataMaster.MEDIA+" - Se espera que ocurran 4 veces por año.");
+        ProbalidadOcurrencia prob3 = new ProbalidadOcurrencia(4, DataMaster.ALTA+" - Se espera que ocurran muchas veces por año.");
+        ProbalidadOcurrencia prob4 = new ProbalidadOcurrencia(5, DataMaster.MUY_ALTA+" -Se espera que ocurra frecuentemente.");
         
 
         probOcurrRepo.save(prob);
