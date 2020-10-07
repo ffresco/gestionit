@@ -123,8 +123,10 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         
         riesgo = procesarRiesgo(riesgo);
         
-        riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
- 
+        if(riesgoDTO.getOrigenAmenaza()!=null &&
+        		riesgoDTO.getOrigenAmenaza().getId()!=null	) {
+        	 riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
+        }
         mav.addObject("riesgoDTO", riesgoDTO);
         return mav;
     }
@@ -190,6 +192,10 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 				}else if(salvaguardaValor==3 || salvaguardaValor==4 ) {
 					menorProbabilidad = probabilidadOcurrenciaValor;
 				}
+				
+				if(menorProbabilidad<1) {
+					menorProbabilidad = 1;
+				}
 
 				riesgo.getSalvaguarda().setMenorProbabilidad(menorProbabilidad);
 			} catch (Exception e) {
@@ -210,6 +216,10 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 					menorImpacto = impactoValor - 1;
 				}else if(salvaguardaValor==3 || salvaguardaValor==4 ) {
 					menorImpacto = impactoValor;
+				}
+				
+				if(menorImpacto<1) {
+					menorImpacto = 1;
 				}
 
 				riesgo.getSalvaguarda().setMenorImpacto(menorImpacto);
