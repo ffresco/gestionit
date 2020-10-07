@@ -198,17 +198,20 @@ left:50%;
 										</div>
 									</div>
 									
-									<!-- Text Area-->
+									<!-- Select Basic-->
 									<div class="col-sm-2 form-group">
-										<label class="control-label" for="Salvaguarda Valor" id="lblMontoE">Valor Salvaguarda</label>  
-										<div class="">
-											<input id="salvaguardaVal"   th:field="*{riesgo.salvaguarda.valor}" onchange="form_submit()" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
-												
+											<label class="control-label" for="salvaguardaValor">Valor Salvaguarda</label>
+											<div class="">
+												<select id="salvaguardaVal"  th:field="*{riesgo.salvaguarda.tipo}" onchange="form_submit()"
+												class="form-control" >
+													<option value="0"></option>
+													<option th:each="tipoSalvaguarda : ${dataMaster.tiposSalvaguarda}" 
+												th:value="${tipoSalvaguarda.id}" th:text="${tipoSalvaguarda.descripcion}">  </option>
+											</select>
 										</div>
-														
+									</div>		 			
 										
-									</div>	
+	
 									<!-- Text input-->
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="menorImpacto" id="lblMontoE">Impacto Final</label>  

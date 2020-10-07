@@ -12,6 +12,7 @@ import com.gestionit.base.domain.Parametro;
 import com.gestionit.base.domain.ProbalidadOcurrencia;
 import com.gestionit.base.domain.RiesgoInherente;
 import com.gestionit.base.domain.RiesgoResidual;
+import com.gestionit.base.domain.SalvaguardaTipo;
 import com.gestionit.base.domain.TopeCompra;
 import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.ImpactoRepo;
@@ -20,6 +21,7 @@ import com.gestionit.base.repository.ParametroRepo;
 import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoResidualRepo;
+import com.gestionit.base.repository.SalvaguardaTipoRepository;
 import com.gestionit.base.repository.TopesRepo;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +67,7 @@ public class DataMaster {
     private List<RiesgoResidual> riesgosResiduales;
     private List<Amenaza> amenazas;
     private List<OrigenAmenaza> origenAmenazas;
+    private List<SalvaguardaTipo> tiposSalvaguarda;
 
 
 	//creado para pantalla operaciones especialmente
@@ -135,10 +138,13 @@ public class DataMaster {
     private final AmenzaRepository amenazaRepo;
     
     private final OrigenAmenzaRepository origenAmenazaRepo;
+    
+    private final SalvaguardaTipoRepository salvaTipoRepo;
 
     @Autowired
     public DataMaster(ParametroRepo parametroRepo, TopesRepo tr, ImpactoRepo impactoRepo, ProbabilidadOcurrenciaRepo proOcuRepo,
-    		RiesgoInherenteRepo riesgoInheRepo, RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo) {
+    		RiesgoInherenteRepo riesgoInheRepo, RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo,
+    		SalvaguardaTipoRepository salvaTipoRepo) {
         this.parametroRepo = parametroRepo;
         this.topesRepo = tr;
         this.impactoRepo = impactoRepo;
@@ -147,6 +153,7 @@ public class DataMaster {
         this.riesgoResiRepo = riesgoResiRepo;
         this.amenazaRepo = amenazaRepo;
         this.origenAmenazaRepo = origenAmenazaRepo;
+        this.salvaTipoRepo = salvaTipoRepo;
     }
 
 
@@ -177,9 +184,17 @@ public class DataMaster {
         this.riesgosResiduales = (List<RiesgoResidual>) riesgoResiRepo.findAll();
         this.amenazas = (List<Amenaza>) amenazaRepo.findByOrigenId(1l);
         this.origenAmenazas = (List<OrigenAmenaza>) origenAmenazaRepo.findAll();
+        this.tiposSalvaguarda = (List<SalvaguardaTipo>) salvaTipoRepo.findAll();
 
     }
 	
+
+
+	public List<SalvaguardaTipo> getTiposSalvaguarda() {
+		return tiposSalvaguarda;
+	}
+
+
 	public List<OrigenAmenaza> getOrigenAmenazas() {
 		return origenAmenazas;
 	}

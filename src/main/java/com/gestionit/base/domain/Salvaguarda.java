@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Salvaguarda implements Serializable {
@@ -23,7 +25,9 @@ public class Salvaguarda implements Serializable {
 	
 	private String descripcion;
 	
-	private Integer valor;
+	@OneToOne
+    @JoinColumn(name="fk_tipo_salvaguarda")
+	private SalvaguardaTipo tipo;
 	
 	@Column(name = "menor_impacto")
 	private Integer menorImpacto;
@@ -47,16 +51,18 @@ public class Salvaguarda implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public Integer getValor() {
-		return valor;
-	}
-
-	public void setValor(Integer valor) {
-		this.valor = valor;
-	}
+	
 
 	public Integer getMenorImpacto() {
 		return menorImpacto;
+	}
+
+	public SalvaguardaTipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(SalvaguardaTipo tipo) {
+		this.tipo = tipo;
 	}
 
 	public void setMenorImpacto(Integer menorImpacto) {
@@ -71,8 +77,12 @@ public class Salvaguarda implements Serializable {
 		this.menorProbabilidad = menorProbabilidad;
 	}
 	
+	public Integer getValor() {
+		return tipo==null?0:tipo.getValor();
+	}
+	
 	@Override
     public String toString() {
-        return "Salvaguarda{" + "id=" + id + ", descripcion=" + descripcion + ", valor=" + valor + ", menor Impacto=" + menorImpacto + ", menor Probabilidad=" + menorProbabilidad + '}';
+        return "Salvaguarda{" + "id=" + id + ", descripcion=" + descripcion + ", menor Impacto=" + menorImpacto + ", menor Probabilidad=" + menorProbabilidad + '}';
     }
 }

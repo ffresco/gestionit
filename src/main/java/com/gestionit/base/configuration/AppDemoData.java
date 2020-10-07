@@ -5,7 +5,7 @@
  */
 package com.gestionit.base.configuration;
 
-import com.gestionit.base.controller.CotizacionesController;
+
 import com.gestionit.base.domain.AcumuladoCaja;
 import com.gestionit.base.domain.AcumuladoCliente;
 import com.gestionit.base.domain.Amenaza;
@@ -21,6 +21,7 @@ import com.gestionit.base.domain.ProbalidadOcurrencia;
 import com.gestionit.base.domain.RiesgoInherente;
 import com.gestionit.base.domain.RiesgoResidual;
 import com.gestionit.base.domain.Role;
+import com.gestionit.base.domain.SalvaguardaTipo;
 import com.gestionit.base.domain.SesionCaja;
 import com.gestionit.base.domain.TopeCompra;
 import com.gestionit.base.domain.User;
@@ -28,7 +29,6 @@ import com.gestionit.base.domain.dto.builder.OpDTOBuilder;
 import com.gestionit.base.repository.AcumuladoCajaRepo;
 import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.ClienteRepository;
-import com.gestionit.base.repository.CotizacionRepository;
 import com.gestionit.base.repository.FileTextRegistryRepo;
 import com.gestionit.base.repository.ImpactoRepo;
 import com.gestionit.base.repository.OperacionRepo;
@@ -37,6 +37,7 @@ import com.gestionit.base.repository.ParametroRepo;
 import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoResidualRepo;
+import com.gestionit.base.repository.SalvaguardaTipoRepository;
 import com.gestionit.base.repository.SesionCajaRepo;
 import com.gestionit.base.repository.TopesRepo;
 import com.gestionit.base.repository.UserRepo;
@@ -44,10 +45,8 @@ import com.gestionit.base.service.CotizacionService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,15 +71,17 @@ public class AppDemoData {
     private ProbabilidadOcurrenciaRepo probOcurrRepo;
     private RiesgoInherenteRepo riesgoinheRepo;
     private RiesgoResidualRepo riesgoResiRepo;
-    private final AmenzaRepository amenazaRepo;
-    private final OrigenAmenzaRepository origenAmenazaRepo;
+    private AmenzaRepository amenazaRepo;
+    private OrigenAmenzaRepository origenAmenazaRepo;
+    private SalvaguardaTipoRepository salvaTipoRepo; 
 
     @Autowired
     public AppDemoData(ClienteRepository cliR, CotizacionService cotS,
             ParametroRepo pr, TopesRepo tr, DataMaster dm, UserRepo ur, SesionCajaRepo scr,
             AcumuladoCajaRepo acr, FileTextRegistryRepo ftrr, OperacionRepo opRepo,ImpactoRepo itRRepo,
             ProbabilidadOcurrenciaRepo probOcurrRepo, RiesgoInherenteRepo riesgoinheRepo,
-            RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo) {
+            RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo,
+            SalvaguardaTipoRepository salvaTipoRepo) {
         this.cliR = cliR;
         this.cotS = cotS;
         this.pr = pr;
@@ -97,6 +98,7 @@ public class AppDemoData {
         this.riesgoResiRepo = riesgoResiRepo;
         this.amenazaRepo = amenazaRepo;
         this.origenAmenazaRepo = origenAmenazaRepo;
+        this.salvaTipoRepo = salvaTipoRepo;
         
                 
     }
@@ -321,6 +323,22 @@ public class AppDemoData {
         this.amenazaRepo.save(amenaza4);
         this.amenazaRepo.save(amenaza5);
         this.amenazaRepo.save(amenaza6);
+        
+        
+       //Salvaguarda tipo
+        
+        SalvaguardaTipo salvaguardaTipo = new SalvaguardaTipo(1, "Soportada por un sistema");
+        SalvaguardaTipo salvaguardaTipo1 = new SalvaguardaTipo(2, "Soportada por factor humano");
+        SalvaguardaTipo salvaguardaTipo2 = new SalvaguardaTipo(3, "No suficientemente soportada");
+        SalvaguardaTipo salvaguardaTipo3 = new SalvaguardaTipo(4, "Sin salvaguarda");
+  
+        
+
+        salvaTipoRepo.save(salvaguardaTipo);
+        salvaTipoRepo.save(salvaguardaTipo1);
+        salvaTipoRepo.save(salvaguardaTipo2);
+        salvaTipoRepo.save(salvaguardaTipo3);
+
        
         
         //***************Un par de archivos opcammentirosos
