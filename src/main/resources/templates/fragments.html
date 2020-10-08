@@ -377,6 +377,65 @@
 </div>
 <!-- Fin menu lateral operaciones busqueda -->
 
+<!-- Menu lateral Operaciones Riesgo -->
+<div th:fragment="navbarside_riesgos">
+<form class="" th:action="@{/riesgos/search}" th:object="${searchDTO}" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Busqueda</legend>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="idOperacion">Codigo Formulario</label>
+  <div class="">
+    <input id="codigoFormulario" th:field="*{codigoFormulario}" type="search"  class="form-control input-md">    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="numDoc">Responsable</label>
+  <div class="">
+    <input id="responsable" th:field="*{responsable}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Search input
+<div class="form-group">
+  <label class=" control-label" for="fechaAnalisis">Fecha Analisis</label>
+  <div class="">
+    <input id="fechaAnalisis" th:field="*{fechaAnalisis}" type="search"  onkeydown="upperCaseF(this)" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+-->
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="origenAmenaza">Origen de Amenza</label>
+  <div class="">
+    <input id="origenAmenaza" th:field="*{origenAmenaza}" type="search"  onkeydown="upperCaseF(this)" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+
+
+<!-- Button -->
+<div class="form-group">
+
+  <div class="">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Buscar</button>
+    <button type="reset" id="singlebutton"  class="btn btn-default">Limpiar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+<!-- Fin menu lateral Riesgos busqueda -->
+
 
 <footer class="container-fluid">
   <p>Footer Text</p>

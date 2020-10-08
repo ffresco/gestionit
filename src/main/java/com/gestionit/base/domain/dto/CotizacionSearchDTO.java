@@ -5,8 +5,7 @@
  */
 package com.gestionit.base.domain.dto;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+
 
 /**
  *

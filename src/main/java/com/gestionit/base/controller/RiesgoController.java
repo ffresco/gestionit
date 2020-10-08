@@ -27,6 +27,7 @@ import com.gestionit.base.domain.Amenaza;
 import com.gestionit.base.domain.Riesgo;
 
 import com.gestionit.base.domain.Salvaguarda;
+import com.gestionit.base.domain.dto.ClienteSearchDTO;
 import com.gestionit.base.domain.dto.RiesgoDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 import com.gestionit.base.repository.AmenzaRepository;
@@ -70,11 +71,12 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         return mav;
     }
 
-	@Override
-	public ModelAndView search(RiesgoSearchDTO searchDTO, BindingResult bindingResult) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ModelAndView search(@ModelAttribute (value = "searchDTO") RiesgoSearchDTO searchDTO, 
+            BindingResult bindingResult) {
+        LOGGER.debug("---Search------- con DTO :" + searchDTO);
+        return new ModelAndView("riesgos", "riesgos", riesgoService.findAllContaining(searchDTO));
+    }
 
 	@Override
 	public ModelAndView getCreatePage(RiesgoDTO objectDTO, BindingResult bindingResult) {

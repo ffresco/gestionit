@@ -6,6 +6,11 @@
 package com.gestionit.base.repository;
 
 import com.gestionit.base.domain.Riesgo;
+
+import java.util.List;
+
+
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,5 +19,8 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface RiesgoRepository extends CrudRepository<Riesgo,Long>{
     
-
+	   @Query("select r from Riesgo r where  r.codigoFormulario like ?1% "
+	            + "and upper(r.amenaza.origen.origen) like ?2% and upper(r.responsable) like ?3% ")
+	    List<Riesgo> findByValoresLike(String codigo,
+	            String tipoAmenza,String responsable);
 }
