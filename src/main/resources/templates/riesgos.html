@@ -19,7 +19,7 @@ and open the template in the editor.
 		<!---------------A partir de aca es el codigo unico de la pagina-------------------------->			
 
 			<div class="col-sm-3 sidenav">
-				<div th:replace="fragments ::navbarside_incidentes"></div> <!-- Menu Lateral  -->  
+				<div th:replace="fragments ::navbarside_riesgos"></div> <!-- Menu Lateral  -->  
 			</div>
 			<!-- Contenido principal 9 columnas -->
 			<div class="col-sm-9">
@@ -35,10 +35,10 @@ and open the template in the editor.
 						<table class="table table-responsive table-striped table-hover table-bordered">
 							<thead class="bg-success">
 								<tr>
-									<th> Descripcion del Riesgo </th>
-									<th> Origen Amenaza</th>
-									<th> Codigo de Formulario</th>
-									<th> Responsable</th>
+									<th> Código </th>
+									<th> Responsagle</th>
+									<th> Fecha</th>
+									<th> Origen</th>
 									
 									<th> </th>										
 									<!--<th> Mnd Base</th>-->
@@ -47,10 +47,12 @@ and open the template in the editor.
 							</thead>
 							<tbody>
 								<tr th:each="riesgo : ${riesgos}">
-									<td th:text="${riesgo.descripcion}"></td>
-									<td th:text="${riesgo.amenaza.origen.origen}"></td>
 									<td th:text="${riesgo.codigoFormulario}"></td>
-									<td th:text="${riesgo.responsable}"></td>				
+									<td th:text="${riesgo.responsable}"></td>
+									<td th:text="${riesgo.fechaAnalisis}"></td>
+									<td th:text="${riesgo.amenaza.origen.origen}"></td>
+									
+													
 									<td>
 										<div class="btn-group pull-right">
 											<a class="btn btn-sm btn-primary" th:href="@{/riesgos/edit/{id}(id=${riesgo.id})}" >Editar</a>

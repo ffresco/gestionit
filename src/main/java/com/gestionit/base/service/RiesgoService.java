@@ -6,7 +6,8 @@
 package com.gestionit.base.service;
 
 import com.gestionit.base.domain.Riesgo;
-
+import com.gestionit.base.domain.dto.ClienteSearchDTO;
+import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 import com.gestionit.base.repository.RiesgoRepository;
 
 
@@ -56,6 +57,10 @@ public class RiesgoService implements BasicService<Riesgo>{
         return (List<Riesgo>) riesgoRepo.findAll();
     }   
  
+
+    public List<Riesgo> findAllContaining(RiesgoSearchDTO searchDTO) {
+        return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getCodigoFormulario(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
+    }   
     
     
     
