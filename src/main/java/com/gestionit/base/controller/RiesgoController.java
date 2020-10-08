@@ -9,6 +9,7 @@ package com.gestionit.base.controller;
 
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.service.RiesgoService;
+import com.gestionit.base.utils.FormatUtils;
 
 
 /**
@@ -84,10 +86,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	        Riesgo riesgo = new Riesgo();
 	        Salvaguarda salvaguarda = new Salvaguarda();
 	        riesgo.setSalvaguarda(salvaguarda);
-	        riesgo.setFechaAnalisis(LocalDateTime.now());
+	        riesgoDTO.setFechaAnalisis(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
 	        riesgoDTO.setRiesgo(riesgo);
-
-
 	        LOGGER.info("Cree el siguiente dto para operar : " + riesgoDTO);
 
 
@@ -101,6 +101,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	@RequestMapping(value = "/save", params = {"guardar"})
 	public ModelAndView save(RiesgoDTO riesgoDTO, BindingResult bindingResult) {
 		LOGGER.info("-----Entre al save de Riesgos------");
+		riesgoDTO.getRiesgo().setFechaAnalisis(FormatUtils.getFormatedLocalDate(riesgoDTO.getFechaAnalisis()));
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
 		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
         ModelAndView mav = new ModelAndView("riesgo_create");
@@ -144,6 +145,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         Riesgo riesgoAEditar = riesgoService.getById(id);
         RiesgoDTO dto = new RiesgoDTO(riesgoAEditar);
         dto.configEditScreen();
+        dto.setFechaAnalisis(riesgoAEditar.getFechaAnalisis().format(DateTimeFormatter.ISO_LOCAL_DATE));
         dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
         dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
         LOGGER.info("DTO a editar "+dto);

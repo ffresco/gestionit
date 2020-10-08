@@ -8,17 +8,27 @@ and open the template in the editor.
 
 <head><div th:replace="fragments ::app_head('titulo')"></div></head>
 <style type="text/css" media="screen">
-#spinner{
-postion:fixed;
-top:50%;
-left:50%;
 
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px; /* half width of the spinner gif */
+    margin-top: -50px; /* half height of the spinner gif */
+    text-align:center;
+    z-index:1234;
+    overflow: auto;
+    width: 100px; /* width of the spinner gif */
+    height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
 }
 </style>
 
 
 </head>
 <body>
+    <div id="spinner" class="spinner" style="display:none;">
+   			 <img id="img-spinner" src="/img/spinner.gif" alt="Loading"/>
+	</div>
 	<div class="container-fluid"> <!-- contenedor de pagina-->
 
 		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
@@ -89,8 +99,7 @@ left:50%;
 											<label class="control-label" for="fechaOp">Fecha Analisis</label>  
 											<div class="">
 
-												<input id="fechaAnalisis" th:value="${#temporals.format({riesgoDTO.riesgo.fechaAnalisis}, 'dd/MMM/yyyy HH:mm')}" readonly  type="text" class="form-control input-md" tabIndex="-1">
-												<input type="hidden" th:field="*{riesgo.fechaAnalisis}">
+												<input id="fechaAnalisis" th:field="*{fechaAnalisis}" type="date"  onchange="enableSaveButton()"  class="form-control input-md" tabIndex="-1">
 
 
 											</div>
@@ -159,13 +168,6 @@ left:50%;
 											th:field="*{riesgo.salvaguarda.descripcion}"></textarea>
 									</div>
 								</div>
-									
-                                   <div id="spinner" style="display:none">
-				<img id="img-spinner" alt="Loading" src="img/spinner.gif">
-			</div>
-									
-								
-
 
 
 									<!-- checkbox-->
@@ -289,7 +291,7 @@ left:50%;
 										<div class="">
 											<span th:if="*{not false}"> <!--Set de botones para ver si readOnly=false-->
 												<!-- <button type="submit" id="btnprocesar"  name="procesar"  th:disabled="*{procesado}" class="btn btn-default">Procesar</button> -->
-												<button type="submit" id="btnguardar"   name="guardar"   th:disabled="*{not procesado}" class="btn btn-success" onclick="enableSel()">Guardar</button>
+												<button type="submit" id="btnguardar"   name="guardar"   th:disabled="*{not procesado}" class="btn btn-success" onclick="load()">Guardar</button>
 												<!-- <button type="submit" id="btnmodificar" name="modificar" th:disabled="*{not procesado}"  class="btn btn-default" onclick="enableSel()">Modificar</button> -->
 											</span>
 											<span th:if="*{true}">
@@ -372,7 +374,7 @@ left:50%;
 
 	function form_submit()
  	{	  
-		//$('#spinner').show()
+		  $('#spinner').show()
 		  $('#btnguardar').prop('disabled', true);
 	      $('#riesgoForm').append('<input type="hidden" name="procesar" id="procesar" value="" />');
 	      $("#riesgoForm").submit(); 
@@ -381,6 +383,11 @@ left:50%;
 	function enableSaveButton(){
 		$('#btnguardar').prop('disabled', false);
 	}
+	
+	function load(){
+		 $('#spinner').show()
+	}
+
 
 </script>
 </body>

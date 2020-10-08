@@ -6,6 +6,7 @@
 package com.gestionit.base.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -45,7 +46,7 @@ public class Riesgo implements Serializable{
     private Long id;
     
     @Column(name="fecha_analisis")    
-    private LocalDateTime fechaAnalisis;
+    private LocalDate fechaAnalisis;
     
     private String origen;
     
@@ -111,7 +112,7 @@ public class Riesgo implements Serializable{
     }
     
     
-    public Riesgo(Long id, LocalDateTime fechaAnalisis, String origen, String descripcion, String codigoFormulario,
+    public Riesgo(Long id, LocalDate fechaAnalisis, String origen, String descripcion, String codigoFormulario,
     		Amenaza amenaza,String responsable, Boolean afectaConfidencialidad, Boolean afectaIntegridad, Boolean afectaDisponibilidad,
 			ProbalidadOcurrencia probabilidadOcurrencia, RiesgoInherenteValor riesgoInherenteValor, Salvaguarda salvaguarda,
 			RiesgoResidualValor riesgoResidualValor, Impacto impacto) {
@@ -162,14 +163,14 @@ public class Riesgo implements Serializable{
 
 
 
-	public LocalDateTime getFechaAnalisis() {
+	public LocalDate getFechaAnalisis() {
 		return fechaAnalisis;
 	}
 
 
 
 
-	public void setFechaAnalisis(LocalDateTime fechaAnalisis) {
+	public void setFechaAnalisis(LocalDate fechaAnalisis) {
 		this.fechaAnalisis = fechaAnalisis;
 	}
 

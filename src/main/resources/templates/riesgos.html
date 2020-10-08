@@ -36,9 +36,7 @@ and open the template in the editor.
 							<thead class="bg-success">
 								<tr>
 									<th> Descripcion del Riesgo </th>
-									<th> Origen</th>
 									<th> Origen Amenaza</th>
-									<th> Fecha Analizis</th>
 									<th> Codigo de Formulario</th>
 									<th> Responsable</th>
 									
@@ -50,9 +48,7 @@ and open the template in the editor.
 							<tbody>
 								<tr th:each="riesgo : ${riesgos}">
 									<td th:text="${riesgo.descripcion}"></td>
-									<td th:text="${riesgo.origen}"></td>
 									<td th:text="${riesgo.amenaza.origen.origen}"></td>
-									<td th:text="${#temporals.format(riesgo.fechaAnalisis, 'dd/MMM/yyyy HH:mm:ss')}"></td>
 									<td th:text="${riesgo.codigoFormulario}"></td>
 									<td th:text="${riesgo.responsable}"></td>				
 									<td>
