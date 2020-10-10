@@ -124,8 +124,8 @@ public class DataMaster {
 
     
 
-    private final ParametroRepo parametroRepo;
-    private final TopesRepo topesRepo;
+    //private final ParametroRepo parametroRepo;
+    //private final TopesRepo topesRepo;
     
     private final ImpactoRepo impactoRepo;
     
@@ -142,11 +142,11 @@ public class DataMaster {
     private final SalvaguardaTipoRepository salvaTipoRepo;
 
     @Autowired
-    public DataMaster(ParametroRepo parametroRepo, TopesRepo tr, ImpactoRepo impactoRepo, ProbabilidadOcurrenciaRepo proOcuRepo,
+    public DataMaster(ImpactoRepo impactoRepo, ProbabilidadOcurrenciaRepo proOcuRepo,
     		RiesgoInherenteRepo riesgoInheRepo, RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo,
     		SalvaguardaTipoRepository salvaTipoRepo) {
-        this.parametroRepo = parametroRepo;
-        this.topesRepo = tr;
+        //this.parametroRepo = parametroRepo;
+        //this.topesRepo = tr;
         this.impactoRepo = impactoRepo;
         this.proOcuRepo = proOcuRepo;
         this.riesgoInheRepo = riesgoInheRepo;
@@ -159,7 +159,7 @@ public class DataMaster {
 
 	public void intiData() {
 
-        this.monedas = parametroRepo.findByTipo(MONEDAS);
+        /*this.monedas = parametroRepo.findByTipo(MONEDAS);
         this.entidades = parametroRepo.findByTipo(ENTIDADES);
         this.tipoCambios = parametroRepo.findByTipo(TIPO_CAMBIOS);
         this.tipoOperaciones = parametroRepo.findByTipo(TIPO_OPERACIONES);
@@ -177,7 +177,9 @@ public class DataMaster {
         this.estadosCiviles=parametroRepo.findByTipo(ESTADOS_CIVILES);
         this.actividadesLaborales=parametroRepo.findByTipo(ACTIVIDADES_LABORALES);
         this.paises=parametroRepo.findByTipo(PAISES);
-        this.tiposDocumentos=parametroRepo.findByTipo(TIPOS_DOCUMENTOS);
+        this.tiposDocumentos=parametroRepo.findByTipo(TIPOS_DOCUMENTOS);*/
+        
+        //Riesgo
         this.impactos = (List<Impacto>) impactoRepo.findAll();
         this.probabilidadesOcurrencias = (List<ProbalidadOcurrencia>) proOcuRepo.findAll();
         this.riesgosInherentes = (List<RiesgoInherente>) riesgoInheRepo.findAll();
