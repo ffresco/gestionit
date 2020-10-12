@@ -95,10 +95,53 @@ public class Riesgo implements Serializable{
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="fk_riesgo_residual_valor")
     private RiesgoResidualValor riesgoResidualValor;
+    
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    @OneToOne
+    @JoinColumn(name="fk_usuario_creador")
+    private User usuarioCreador;
+    
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    @OneToOne
+    @JoinColumn(name="fk_usuario_auditor")
+    private User usuarioAuditor;
+    
+    @Column(name="fecha_aprobacion")    
+    private LocalDate fechaAprobacion;
 
  
 
-    public Impacto getImpacto() {
+    public LocalDate getFechaAprobacion() {
+		return fechaAprobacion;
+	}
+
+
+	public void setFechaAprobacion(LocalDate fechaAprobacion) {
+		this.fechaAprobacion = fechaAprobacion;
+	}
+
+
+	public User getUsuarioCreador() {
+		return usuarioCreador;
+	}
+
+
+	public void setUsuarioCreador(User usuarioCreador) {
+		this.usuarioCreador = usuarioCreador;
+	}
+
+
+	public User getUsuarioAuditor() {
+		return usuarioAuditor;
+	}
+
+
+	public void setUsuarioAuditor(User usuarioAuditor) {
+		this.usuarioAuditor = usuarioAuditor;
+	}
+
+
+	public Impacto getImpacto() {
 		return impacto;
 	}
 

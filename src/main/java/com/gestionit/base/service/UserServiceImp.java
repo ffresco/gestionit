@@ -70,4 +70,10 @@ public class UserServiceImp implements UserService {
         return userRepository.findByEmail(userName);
     }
 
+	@Override
+	public boolean isCurrentUser(User user) {
+		// TODO Auto-generated method stub
+		return getCurrentUser().getId().equals(user.getId());
+	}
+
 }

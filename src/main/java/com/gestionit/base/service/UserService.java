@@ -25,6 +25,8 @@ public interface UserService {
     User create(UserCreateFormDTO form);
     
     User getCurrentUser();
+    
+    boolean isCurrentUser(User user);
 
 
 

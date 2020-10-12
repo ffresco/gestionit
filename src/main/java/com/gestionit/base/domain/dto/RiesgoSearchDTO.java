@@ -5,6 +5,8 @@
  */
 package com.gestionit.base.domain.dto;
 
+import com.gestionit.base.domain.User;
+
 /**
  *
  * @author cbova
@@ -15,6 +17,8 @@ public class RiesgoSearchDTO {
     private String responsable;
     private String codigoFormulario;
     private String origenAmenaza;
+	private User currentUser;
+	private boolean onlyOneUser;
 
     public RiesgoSearchDTO() {
     }
@@ -79,7 +83,30 @@ public class RiesgoSearchDTO {
     public String toString() {
         return "RiesgoSearchDTO{" + "fecha=" + fechaAnalisis + ", origenAmenaza=" + origenAmenaza + ", codigo Formulario=" + codigoFormulario + '}';
     }
+
+
+
+
+
+	public void setCurrentUser(User currentUser) {
+		this.currentUser = currentUser;
+		
+	}
     
+	public User getCurrentUser() {
+		return this.currentUser;
+	}
+
+
+	public void setOnlyOneUser(boolean onlyOneUser) {
+		this.onlyOneUser = onlyOneUser;
+	}
+
+
+	public boolean isOnlyOneUser() {
+		return onlyOneUser;
+	}
+	
     
     
 }

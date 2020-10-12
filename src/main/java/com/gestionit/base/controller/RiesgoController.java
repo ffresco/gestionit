@@ -25,8 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gestionit.base.configuration.DataMaster;
 import com.gestionit.base.domain.Amenaza;
 import com.gestionit.base.domain.Riesgo;
-
+import com.gestionit.base.domain.RiesgoInherenteValor;
 import com.gestionit.base.domain.Salvaguarda;
+import com.gestionit.base.domain.User;
 import com.gestionit.base.domain.dto.ClienteSearchDTO;
 import com.gestionit.base.domain.dto.RiesgoDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
@@ -34,6 +35,7 @@ import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.service.RiesgoService;
+import com.gestionit.base.service.UserService;
 import com.gestionit.base.utils.FormatUtils;
 
 
@@ -51,15 +53,17 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
     private RiesgoInherenteRepo riesgoinheRepo;
     private RiesgoResidualRepo riesgoResiRepo;
     private AmenzaRepository amenazaRepo;
+    private UserService userService;
 
     @Autowired
     public RiesgoController(RiesgoService riesgoService, DataMaster dataMaster, RiesgoInherenteRepo riesgoinheRepo,
-    		RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo) {
+    		RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, UserService userService) {
         this.riesgoService = riesgoService;
         this.dataMaster = dataMaster;
         this.riesgoinheRepo = riesgoinheRepo;
         this.riesgoResiRepo = riesgoResiRepo;
         this.amenazaRepo = amenazaRepo;
+        this.userService = userService;
 
     }
 
@@ -67,6 +71,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
     public ModelAndView getMainPage(RiesgoSearchDTO searchDTO, BindingResult bindingResult) {
         ModelAndView mav = new ModelAndView("riesgos");
         mav.addObject("riesgos", riesgoService.findAll());
+        searchDTO.setCurrentUser(userService.getCurrentUser());
+        searchDTO.setOnlyOneUser(userService.getAllUsers().size()==1);
         mav.addObject("searchDTO", searchDTO);
         return mav;
     }
@@ -86,8 +92,6 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	        RiesgoDTO riesgoDTO = new RiesgoDTO();
 	        configAltaScreen(riesgoDTO);
 	        Riesgo riesgo = new Riesgo();
-	        Salvaguarda salvaguarda = new Salvaguarda();
-	        riesgo.setSalvaguarda(salvaguarda);
 	        riesgoDTO.setFechaAnalisis(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
 	        riesgoDTO.setRiesgo(riesgo);
 	        LOGGER.info("Cree el siguiente dto para operar : " + riesgoDTO);
@@ -104,15 +108,24 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	public ModelAndView save(RiesgoDTO riesgoDTO, BindingResult bindingResult) {
 		LOGGER.info("-----Entre al save de Riesgos------");
 		riesgoDTO.getRiesgo().setFechaAnalisis(FormatUtils.getFormatedLocalDate(riesgoDTO.getFechaAnalisis()));
+		//Solo cargo el usuario creador al momento de la creacion del riesgo.
+		if(riesgoDTO.getRiesgo().getId()==null) {
+			riesgoDTO.getRiesgo().setUsuarioCreador(userService.getCurrentUser());
+		}
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
 		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
+		//Si hay un solo usuario o el usuario es distinto del creador dejo que el mismo lo apruebe
+		riesgoDTO.setAprobacion(userService.getAllUsers().size()==1 || !isTheSameUser(riesgoDTO.getRiesgo().getUsuarioCreador()) );
         ModelAndView mav = new ModelAndView("riesgo_create");
         mav.addObject("riesgoDTO", riesgoDTO);
         return mav;
 	}
 	
+	private boolean isTheSameUser(User user) {
+		return user.getEmail().equals(userService.getCurrentUser().getEmail());
+	}
 
-    @RequestMapping(value = "/save", params = {"procesar"})
+	@RequestMapping(value = "/save", params = {"procesar"})
     public ModelAndView process(@ModelAttribute(value = "riesgoDTO") RiesgoDTO riesgoDTO,
             BindingResult result) {
         LOGGER.debug("--------------------Entre al procesar------------------");
@@ -134,6 +147,22 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         return mav;
     }
 
+    @RequestMapping(value = "/save", params = {"aprobar"})
+    public ModelAndView approve(@ModelAttribute(value = "riesgoDTO") RiesgoDTO riesgoDTO,
+            BindingResult result) {
+        LOGGER.debug("--------------------Entre al Aprobar------------------");
+        LOGGER.info("-----Entre al save de Riesgos------");
+		riesgoDTO.getRiesgo().setFechaAprobacion(FormatUtils.getFormatedLocalDate(riesgoDTO.getFechaAnalisis()));
+		riesgoDTO.getRiesgo().setUsuarioAuditor(userService.getCurrentUser());
+		riesgoDTO.getRiesgo().setFechaAnalisis(FormatUtils.getFormatedLocalDate(riesgoDTO.getFechaAnalisis()));
+		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
+		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
+		riesgoDTO.setAprobacion(false);
+        ModelAndView mav = new ModelAndView("riesgo_view");
+        mav.addObject("riesgoDTO", riesgoDTO);
+        return mav;
+    }
+
 	@Override
 	public ModelAndView delete(@PathVariable Long id) {
 		Riesgo riesgoABorrar = riesgoService.getById(id);
@@ -148,18 +177,37 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         RiesgoDTO dto = new RiesgoDTO(riesgoAEditar);
         dto.configEditScreen();
         dto.setFechaAnalisis(riesgoAEditar.getFechaAnalisis().format(DateTimeFormatter.ISO_LOCAL_DATE));
-        dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
-        dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
+        if(riesgoAEditar.getAmenaza()!=null) {
+        	dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
+        	dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
+        }
+        //habilito la aprobacion si hay un solo usuario o es distinto al que lo creo
+        dto.setAprobacion(userService.getAllUsers().size()==1 || !userService.isCurrentUser(riesgoAEditar.getUsuarioCreador()));
         LOGGER.info("DTO a editar "+dto);
         return new ModelAndView("riesgo_create", "riesgoDTO", dto);
 	}
   
-	   @ModelAttribute("dataMaster")
-	    public DataMaster getDataMaster() {
-	        System.out.println("--Me meti en el data master--");
-	        return dataMaster;
-	    }
-    
+	@RequestMapping(value = "/view/{id}")
+	public ModelAndView view(@PathVariable Long id) {
+        LOGGER.info("Estoy en view este es el id " + id);
+        Riesgo riesgoAEditar = riesgoService.getById(id);
+        RiesgoDTO dto = new RiesgoDTO(riesgoAEditar);
+        dto.configEditScreen();
+        dto.setFechaAnalisis(riesgoAEditar.getFechaAnalisis().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        if(riesgoAEditar.getAmenaza()!=null) {
+        	dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
+        	dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
+        }
+        LOGGER.info("DTO a ver "+dto);
+        return new ModelAndView("riesgo_view", "riesgoDTO", dto);
+	}
+	
+	@ModelAttribute("dataMaster")
+	public DataMaster getDataMaster() {
+		System.out.println("--Me meti en el data master--");
+		return dataMaster;
+	}
+
 	   
 	   /*
 	    * Se spuede modificar, no se puede guardar y no esta procesado
@@ -169,6 +217,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	    	riesgoDTO.setProcesado(false);
 	    	riesgoDTO.setReadOnly(false);
 	    	riesgoDTO.setAmenazas((List<Amenaza>) amenazaRepo.findAll());
+	    	riesgoDTO.setAprobacion(false);
 
 	    }
 	    
@@ -178,8 +227,6 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 			getMenorImpactoSalvaguarda(riesgo);
 			getMenorProbabilidadSalvaguarda(riesgo);
 			getRiesgoResidual(riesgo);
-			
-
 			return riesgo;
 		}
 

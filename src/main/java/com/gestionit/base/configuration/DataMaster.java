@@ -17,14 +17,11 @@ import com.gestionit.base.domain.TopeCompra;
 import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.ImpactoRepo;
 import com.gestionit.base.repository.OrigenAmenzaRepository;
-import com.gestionit.base.repository.ParametroRepo;
 import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.repository.SalvaguardaTipoRepository;
-import com.gestionit.base.repository.TopesRepo;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

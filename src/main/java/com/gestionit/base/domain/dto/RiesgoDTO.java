@@ -36,7 +36,19 @@ public class RiesgoDTO {
     
     private OrigenAmenaza origenAmenaza;
     
+    private boolean aprobacion; //indica si se habilita el boton de aprobacion.
+    
   
+	public boolean isAprobacion() {
+		return aprobacion;
+	}
+
+
+	public void setAprobacion(boolean aprobacion) {
+		this.aprobacion = aprobacion;
+	}
+
+
 	public List<Amenaza> getAmenazas() {
 		return amenazas;
 	}
