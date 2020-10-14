@@ -100,7 +100,7 @@ and open the template in the editor.
 											<label class="control-label" for="fechaOp">Fecha Analisis</label>  
 											<div class="">
 
-												<input id="fechaAnalisis" th:field="*{fechaAnalisis}" type="date"  onchange="enableSaveButton()"  class="form-control input-md" tabIndex="-1">
+												<input id="fechaAnalisis" th:field="*{fechaAnalisis}" type="date" th:max="*{today}" th:min="*{firstDay}" onchange="enableSaveButton()"  class="form-control input-md" tabIndex="-1">
 
 
 											</div>

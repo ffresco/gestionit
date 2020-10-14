@@ -130,13 +130,13 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
             BindingResult result) {
         LOGGER.debug("--------------------Entre al procesar------------------");
         ModelAndView mav = new ModelAndView("riesgo_create");
+      
         mav.addObject("riesgoDTO", riesgoDTO);
 
         //recupero la operacion
         Riesgo riesgo = riesgoDTO.getRiesgo();
         
         riesgoDTO.setProcesado(true);
-        
         riesgo = procesarRiesgo(riesgo);
         
         if(riesgoDTO.getOrigenAmenaza()!=null &&

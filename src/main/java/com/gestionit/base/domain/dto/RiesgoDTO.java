@@ -6,6 +6,8 @@
 package com.gestionit.base.domain.dto;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.gestionit.base.domain.Amenaza;
@@ -38,7 +40,33 @@ public class RiesgoDTO {
     
     private boolean aprobacion; //indica si se habilita el boton de aprobacion.
     
+    private String today;
+    
+    private String firstDay;
+    
+    
+    
   
+	public String getFirstDay() {
+		return LocalDateTime.now().minusMonths(2).format(DateTimeFormatter.ISO_LOCAL_DATE);
+	}
+
+
+	public void setFirstDay(String firstDay) {
+		this.firstDay = firstDay;
+	}
+
+
+	public String getToday() {
+		return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+	}
+
+
+	public void setToday(String today) {
+		this.today = today;
+	}
+
+
 	public boolean isAprobacion() {
 		return aprobacion;
 	}
