@@ -67,22 +67,46 @@ and open the template in the editor.
  											<span th:if="${riesgo.usuarioAuditor != null && riesgo.usuarioCreador !=null }"> 
  												<a class="btn btn-sm btn-primary" th:href="@{/riesgos/view/{id}(id=${riesgo.id})}">Ver</a> 
  											</span> 
-											<a class="delete btn btn-sm btn-danger" th:href="@{/riesgos/delete/{id}(id=${riesgo.id})}">borrar</a>
+ 											<span th:if="${riesgo.usuarioAuditor == null }">
+												<a class="delete btn btn-sm btn-danger" data-toggle="modal" data-target="#myModalRiesgo">borrar</a>
+											</span>	
 										</div>
+											 <!-- The Modal -->
+								                <div class="modal fade" id="myModalRiesgo">
+								                    <div class="modal-dialog">
+								                        <div class="modal-content">
+								
+								                            <!-- Modal Header -->
+								                            <div class="modal-header">
+								                                <h4 class="modal-title"  th:text="${'Esta seguro de eliminar el Riesgo ' + riesgo.codigoFormulario+'?'}" > </h4>
+								                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+								                            </div>
+								
+								                            <!-- Modal footer -->
+								                            <div class="modal-footer">
+								                                <button type="button" class="btn btn-danger"
+								                                    data-dismiss="modal">NO</button>
+								                                <a th:href="@{/riesgos/delete/{id}(id=${riesgo.id})}"><button
+								                                        type="button" class="btn btn-success">SI</button></a>
+								                                   
+								                            </div>
+								                        </div>
+								                    </div>
+								                </div>
+								                </form>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 
 					</div>
-
 				</div>
 
 			</div> <!-- Fin Contenido principal 9 columnas -->
            
         <!---------------Fin codigo unico de la pagina-------------------------->
 		</div>	<!-- fila ROW contine menuj lateral 3 col,  principal 9 col -->
-	</div>	<!-- fin contenedor de pagina-->
+	<!-- fin contenedor de pagina-->
 
 </body>
 </html>

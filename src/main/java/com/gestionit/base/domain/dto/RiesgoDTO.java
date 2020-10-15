@@ -40,9 +40,7 @@ public class RiesgoDTO {
     
     private boolean aprobacion; //indica si se habilita el boton de aprobacion.
     
-    private String today;
-    
-    private String firstDay;
+
     
     
     
@@ -52,19 +50,10 @@ public class RiesgoDTO {
 	}
 
 
-	public void setFirstDay(String firstDay) {
-		this.firstDay = firstDay;
-	}
-
-
 	public String getToday() {
 		return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 	}
 
-
-	public void setToday(String today) {
-		this.today = today;
-	}
 
 
 	public boolean isAprobacion() {

@@ -20,13 +20,10 @@ public class RiesgoSearchDTO {
 	private User currentUser;
 	private boolean onlyOneUser;
 
-    public RiesgoSearchDTO() {
+
+	public RiesgoSearchDTO() {
     }
-
    
-    
-
-
 	public String getFechaAnalisis() {
 		return fechaAnalisis;
 	}
