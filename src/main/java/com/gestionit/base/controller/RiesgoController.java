@@ -245,7 +245,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 					menorProbabilidad = 1;
 				}
 
-				riesgo.getSalvaguarda().setMenorProbabilidad(menorProbabilidad);
+				riesgo.getSalvaguarda().setProbabilidadFinal(dataMaster.getProbabilidadDeOcurrenciaById( menorProbabilidad.longValue()));
 			} catch (Exception e) {
 				LOGGER.error(e.getMessage());
 			}
@@ -270,7 +270,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 					menorImpacto = 1;
 				}
 
-				riesgo.getSalvaguarda().setMenorImpacto(menorImpacto);
+				riesgo.getSalvaguarda().setImpactoFinal(dataMaster.getImpactoById(menorImpacto.longValue()));
 			} catch (Exception e) {
 				LOGGER.error(e.getMessage());
 			}
@@ -282,7 +282,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 		private void getRiesgoResidual(Riesgo riesgo) {
 			
 			try {
-				Integer riesgoResidual = riesgo.getSalvaguarda().getMenorImpacto() * riesgo.getSalvaguarda().getMenorProbabilidad();
+				Integer riesgoResidual = riesgo.getSalvaguarda().getImpactoFinal().getValor() * riesgo.getSalvaguarda().getProbabilidadFinal().getValor();
 				riesgo.getRiesgoResidualValor().setValor(riesgoResidual);
 				if(riesgoResidual <= 5) {
 					riesgo.getRiesgoResidualValor().setRiesgoResidual(riesgoResiRepo.findOne(1l));		

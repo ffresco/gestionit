@@ -219,8 +219,12 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="menorImpacto" id="lblMontoE">Impacto Final</label>  
 										<div class="">
-											<input id="salvaguardaMenorImpacto"  readonly th:field="*{riesgo.salvaguarda.menorImpacto}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
+											 <select id="impactoFinal" disabled="disabled" th:field="*{riesgo.salvaguarda.impactoFinal}" 
+												class="form-control" >
+													<option value="0"></option>
+													<option th:each="impacto :  ${dataMaster.impactos}" 
+												th:value="${impacto.id}" th:text="${impacto.calificacion}">  </option>
+											</select>
 												
 										</div>
 									</div>										
@@ -228,9 +232,12 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="menorProbabilidad" id="lblMontoE">Probabilidad Final</label>  
 										<div class="">
-											<input id="menorProbabilidad" readonly  th:field="*{riesgo.salvaguarda.menorProbabilidad}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
-												
+											 <select id="probabilidadFinal" disabled="disabled" th:field="*{riesgo.salvaguarda.probabilidadFinal}" 
+												class="form-control" >
+												<option value="0"></option>
+													<option th:each="probabilidadOcurrencia : ${dataMaster.probabilidadesOcurrencias}" 
+												th:value="${probabilidadOcurrencia.id}" th:text="${probabilidadOcurrencia.calificacion}">  </option>
+											</select>		
 										</div>
 									</div>	
 									
@@ -387,6 +394,9 @@ and open the template in the editor.
 	function load(){
 		$('#residual').prop('disabled', false);
 		$('#inherente').prop('disabled', false);
+		$('#impactoFinal').prop('disabled', false);
+		$('#probabilidadFinal').prop('disabled', false);
+		
 		 $('#spinner').show()
 	}
 

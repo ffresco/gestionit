@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 @Entity
 public class Salvaguarda implements Serializable {
 
@@ -29,11 +32,29 @@ public class Salvaguarda implements Serializable {
     @JoinColumn(name="fk_tipo_salvaguarda")
 	private SalvaguardaTipo tipo;
 	
-	@Column(name = "menor_impacto")
-	private Integer menorImpacto;
-	
-	@Column(name = "menor_probabilidad")
-	private Integer menorProbabilidad;
+	@OneToOne
+	@JoinColumn(name="fk_impacto")
+	private Impacto impactoFinal;
+
+	@OneToOne
+	@JoinColumn(name="fk_prob_ocur")
+	private ProbalidadOcurrencia probabilidadFinal;
+
+	public Impacto getImpactoFinal() {
+		return impactoFinal;
+	}
+
+	public void setImpactoFinal(Impacto impactoFinal) {
+		this.impactoFinal = impactoFinal;
+	}
+
+	public ProbalidadOcurrencia getProbabilidadFinal() {
+		return probabilidadFinal;
+	}
+
+	public void setProbabilidadFinal(ProbalidadOcurrencia probabilidadFinal) {
+		this.probabilidadFinal = probabilidadFinal;
+	}
 
 	public Long getId() {
 		return id;
@@ -51,11 +72,6 @@ public class Salvaguarda implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	
-
-	public Integer getMenorImpacto() {
-		return menorImpacto;
-	}
 
 	public SalvaguardaTipo getTipo() {
 		return tipo;
@@ -65,17 +81,6 @@ public class Salvaguarda implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public void setMenorImpacto(Integer menorImpacto) {
-		this.menorImpacto = menorImpacto;
-	}
-
-	public Integer getMenorProbabilidad() {
-		return menorProbabilidad;
-	}
-
-	public void setMenorProbabilidad(Integer menorProbabilidad) {
-		this.menorProbabilidad = menorProbabilidad;
-	}
 	
 	public Integer getValor() {
 		return tipo==null?0:tipo.getValor();
@@ -83,6 +88,6 @@ public class Salvaguarda implements Serializable {
 	
 	@Override
     public String toString() {
-        return "Salvaguarda{" + "id=" + id + ", descripcion=" + descripcion + ", menor Impacto=" + menorImpacto + ", menor Probabilidad=" + menorProbabilidad + '}';
+        return "Salvaguarda{" + "id=" + id + ", descripcion=" + descripcion + ", menor Impacto=" + impactoFinal + ", menor Probabilidad=" + probabilidadFinal + '}';
     }
 }

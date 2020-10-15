@@ -336,6 +336,30 @@ public class DataMaster {
         this.tiposDocumentos = tiposDocumentos;
     }
 
+    public ProbalidadOcurrencia getProbabilidadDeOcurrenciaById(Long id) {
+    	ProbalidadOcurrencia probalidadOcurrencia_ = null;
+    	Boolean ok=false;
+    	for (Iterator<ProbalidadOcurrencia> iterator = probabilidadesOcurrencias.iterator() ; iterator.hasNext() && !ok;) {
+			ProbalidadOcurrencia probalidadOcurrencia = (ProbalidadOcurrencia) iterator.next();
+			if(probalidadOcurrencia.getId().equals(id)) {
+				probalidadOcurrencia_ = probalidadOcurrencia;
+			}	
+		}
+    	return probalidadOcurrencia_;
+    }
+    
+    public Impacto getImpactoById(Long id) {
+    	Impacto impacto_ = null;
+    	Boolean ok=false;
+    	for (Iterator<Impacto> iterator = impactos.iterator() ; iterator.hasNext() && !ok;) {
+    		Impacto impacto = (Impacto) iterator.next();
+			if(impacto.getId().equals(id)) {
+				impacto_ = impacto;
+			}	
+		}
+    	return impacto_;
+    	
+    }
     
     private void quitarDuplicados(List<Parametro> tipoOperaciones) {
         String ant = "";
