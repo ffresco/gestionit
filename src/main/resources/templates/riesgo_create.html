@@ -21,6 +21,11 @@ and open the template in the editor.
     width: 100px; /* width of the spinner gif */
     height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
 }
+
+.isa_error {
+    color: #D8000C;
+    background-color: #FFD2D2;
+}
 </style>
 
 
@@ -45,17 +50,23 @@ and open the template in the editor.
 					<div class="panel-group">
 						<div class="panel panel-default">
 							<div class="panel-heading"><h4 th:text="${''}">Clinente: XXXX DOC: XXX</h4></div>
-								<form th:object="${riesgoDTO}" th:action="@{/riesgos/save}" method="POST" id="riesgoForm" ><!--Formulario operacion-->
+								<form th:object="${riesgoDTO}" th:action="@{/riesgos/save}"  method="POST" id="riesgoForm" onsubmit="return validation()" ><!--Formulario operacion-->
 									<!-- Form Name -->
 									<input type="hidden" th:field="*{riesgo.usuarioCreador}">
 									<fieldset>
 
 										<input type="hidden"  th:field="*{riesgo.id}">	
+										
+											<!-- Input Hiden -->
+	
+											<input id="residualValor"   th:field="*{riesgo.riesgoResidualValor.valor}" 
+											 type="hidden"  class="form-control input-md" tabIndex="-1">
+											 
 										<!-- Text input-->
-										<div class="col-sm-2 form-group">
-											<label class="control-label" for="txtOrigen">Origen</label>  
+										<div class="col-sm-1 form-group">
+											<label class="control-label" for="txtOrigen">Codigo</label>  
 											<div class="">
-												<input id="txtOrigen" th:field="*{riesgo.origen}"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
+												<input id="txtOrigen" th:field="*{riesgo.codigoRiesgo}" disabled="disabled"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
 
 											</div>
 										</div>
@@ -64,8 +75,8 @@ and open the template in the editor.
 										<div class="col-sm-2 form-group">
 											<label class=" control-label" for="tipoOp">Origen Amenaza</label>											
 											<div class="">
-												<select id="origenAmenaza" th:field="*{origenAmenaza}"  class="form-control" onchange="form_submit()" >
-													<option value="0"></option>
+												<select id="origenAmenaza" th:field="*{origenAmenaza}" required class="form-control" onchange="form_submit()" >
+													<option value=""></option>
 													<option th:each="origenAmenaza : ${dataMaster.origenAmenazas}" 
 												th:value="${origenAmenaza.id}" th:text="${origenAmenaza.origen}">  </option>
 												</select>
@@ -74,11 +85,11 @@ and open the template in the editor.
 										
 
 										<!-- Select Basic -->
-										<div class="col-sm-2 form-group">
+										<div class="col-sm-3 form-group">
 											<label class=" control-label" for="tipoOp">Tipo Amenaza</label>											
 											<div class="">
-												<select id="tipoAmenaza" th:field="*{riesgo.amenaza}"  class="form-control"  >
-													<option value="0"></option>
+												<select id="tipoAmenaza" required th:field="*{riesgo.amenaza}"  class="form-control"  >
+													<option value=""></option>
 													<option th:each="amenaza : ${riesgoDTO.amenazas}" 
 												th:value="${amenaza.id}" th:text="${amenaza.tipo}">  </option>
 												</select>
@@ -90,7 +101,7 @@ and open the template in the editor.
 									<div class="col-sm-4 form-group">
 										<label class="control-label" for="descripcion">Descripcion Amenaza</label>
 										<div class="">                     
-											<textarea class="form-control" id="descripcion" th:field="*{riesgo.descripcion}"  onkeypress="enableSaveButton()"></textarea>
+											<textarea class="form-control" id="descripcion" required th:field="*{riesgo.descripcion}"  onkeypress="enableSaveButton()"></textarea>
 										</div>
 									</div>
 										
@@ -116,8 +127,8 @@ and open the template in the editor.
 										<div class="col-sm-6 form-group">
 											<label class=" control-label" for="tipoOp">Impacto</label>											
 											<div class="">
-												<select id="impacto" th:field="*{riesgo.impacto}"  class="form-control" onchange="form_submit()" >
-													<option value="0"></option>
+												<select id="impacto" th:field="*{riesgo.impacto}"  class="form-control" onchange="form_submit()" required>
+													<option value=""></option>
 													<option th:each="riesgoImpacto : ${dataMaster.impactos}" 
 												th:value="${riesgoImpacto.id}" th:text="${riesgoImpacto.calificacion}">  </option>
 												</select>
@@ -130,8 +141,8 @@ and open the template in the editor.
 											<label class="control-label" for="tipoCambio">Probabilidad de Ocurrencia</label>
 											<div class="">
 												<select id="probabilidad" th:field="*{riesgo.probabilidadOcurrencia}" onchange="form_submit()"
-												class="form-control" >
-												<option value="0"></option>
+												class="form-control" required>
+												<option value=""></option>
 													<option th:each="probabilidadOcurrencia : ${dataMaster.probabilidadesOcurrencias}" 
 												th:value="${probabilidadOcurrencia.id}" th:text="${probabilidadOcurrencia.calificacion}">  </option>
 											</select>
@@ -165,7 +176,7 @@ and open the template in the editor.
 									<label class="control-label" for="descripcion">Salvaguarda
 										Descripcion</label>
 									<div class="">
-										<textarea class="form-control" id="salvaguardaDesc" onkeypress="enableSaveButton()"
+										<textarea class="form-control" id="salvaguardaDesc" required onkeypress="enableSaveButton()"
 											th:field="*{riesgo.salvaguarda.descripcion}"></textarea>
 									</div>
 								</div>
@@ -175,7 +186,7 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="montoRec" id="lblAfectaConf">Afecta Confidencialidad</label>  
 										<div class="form-check">
-											<input class="form-check-input" type="checkbox" id="afconfCheck"  th:field="*{riesgo.afectaConfidencialidad}" onclick="enableSaveButton()" >
+											<input class="form-check-input" type="checkbox" id="afconfCheck"  th:field="*{riesgo.afectaConfidencialidad}" onclick="enableSaveButton();clickCheckBoxes()" >
 
 										</div>
 									</div>
@@ -187,7 +198,7 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="montoRec" id="lblAfectaInteg">Afecta Integridad</label>  
 										<div class="">
-											<input class="form-check-input" type="checkbox" id="afinteCheck"  th:field="*{riesgo.afectaIntegridad}" onclick="enableSaveButton()" >
+											<input class="form-check-input" type="checkbox" id="afinteCheck"  th:field="*{riesgo.afectaIntegridad}" onclick="enableSaveButton();clickCheckBoxes()" >
 
 										</div>
 									</div>
@@ -196,18 +207,18 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="montoRec" id="lblAfectaDisp">Afecta Disponibilidad</label>  
 										<div class="">
-											<input class="form-check-input" type="checkbox" id="afdisoCheck"  th:field="*{riesgo.afectaIntegridad}" onclick="enableSaveButton()" >
+											<input class="form-check-input" type="checkbox" id="afdisoCheck"  th:field="*{riesgo.afectaDisponibilidad}" onclick="enableSaveButton();clickCheckBoxes()" >
 
 										</div>
 									</div>
 									
 									<!-- Select Basic-->
-									<div class="col-sm-2 form-group">
+									<div class="col-sm-4 form-group">
 											<label class="control-label" for="salvaguardaValor">Valor Salvaguarda</label>
 											<div class="">
 												<select id="salvaguardaVal"  th:field="*{riesgo.salvaguarda.tipo}" onchange="form_submit()"
-												class="form-control" >
-													<option value="0"></option>
+												class="form-control" required>
+													<option value=""></option>
 													<option th:each="tipoSalvaguarda : ${dataMaster.tiposSalvaguarda}" 
 												th:value="${tipoSalvaguarda.id}" th:text="${tipoSalvaguarda.descripcion}">  </option>
 											</select>
@@ -228,8 +239,26 @@ and open the template in the editor.
 												
 										</div>
 									</div>										
-									<!-- Text input-->
-									<div class="col-sm-2 form-group">
+									
+									<!-- Input -->
+									<div class="col-sm-3 form-group">
+											<label class="" ></label>
+											<div id="error_div" class="isa_error" hidden="true">
+											SELECCIONE AL MENOS UNO!!!!
+										</div>
+									</div>
+									
+									<!-- Input -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" ></label>
+											<div class="">
+											
+										</div>
+									</div>
+								
+									
+									<!-- Select Basic-->
+									<div class="col-sm-4 form-group">
 										<label class="control-label" for="menorProbabilidad" id="lblMontoE">Probabilidad Final</label>  
 										<div class="">
 											 <select id="probabilidadFinal" disabled="disabled" th:field="*{riesgo.salvaguarda.probabilidadFinal}" 
@@ -241,34 +270,10 @@ and open the template in the editor.
 										</div>
 									</div>	
 									
-									<!-- Input -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio"></label>
-											<div class="">
-											
-										</div>
-									</div>
-									
-									<!-- Input -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio"></label>
-											<div class="">
-											
-										</div>
-									</div>
-									
-									<!-- Input -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Residual Valor</label>
-											<div class="">
-											<input id="residualValor"  readonly th:field="*{riesgo.riesgoResidualValor.valor}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
-										</div>
-									</div>
 
 									<!-- Select Basic -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Residual Descripción</label>
+									<div class="col-sm-2 form-group">
+											<label class="control-label" for="tipoCambio">Riesgo Residual</label>
 											<div class="">
 												<select id="residual" disabled="disabled" th:field="*{riesgo.riesgoResidualValor.riesgoResidual}" 
 												class="form-control" >
@@ -298,7 +303,7 @@ and open the template in the editor.
 										<label class="control-label" for="button1id"></label>
 										<div class="">
 											<span th:if="*{not false}"> <!--Set de botones para ver si readOnly=false-->
-											    <button type="submit" id="btnguardar"   name="guardar"   th:disabled="*{not procesado}"  class="btn btn-success" onclick="load()">Guardar</button>
+											    <button type="submit" id="btnguardar"   name="guardar"   th:disabled="*{not procesado}"  class="btn btn-success"  >Guardar</button>
 											     <button type="submit" id="btnaprobar" name="aprobar" th:disabled="*{not aprobacion}"  class="btn btn-default" onclick="enableSel()">Aprobar</button>
 											</span>
 											<span th:if="*{true}">
@@ -324,7 +329,7 @@ and open the template in the editor.
 										<div class="col-sm-3 form-group ">
 											<label class="control-label" for="cajero">Responsables</label>  
 											<div class="">
-												<input id="resp"  th:field="*{riesgo.responsable}" name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
+												<input id="resp"  th:field="*{riesgo.responsable}" required name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
 											</div>
 										</div>
 								
@@ -371,7 +376,7 @@ and open the template in the editor.
 		if ($('#txtProcesado').val()=='true') {
 			$('#btnguardar').focus();
 		}		
-		
+		$('#spinner').hide();
 
 	}
 
@@ -379,28 +384,83 @@ and open the template in the editor.
 		$("#slcMndD").val($("#slcMndO").val()).trigger("change");
 	}
 
-	function form_submit()
- 	{	  
-		  $('#spinner').show()
-		  $('#btnguardar').prop('disabled', true);
-	      $('#riesgoForm').append('<input type="hidden" name="procesar" id="procesar" value="" />');
-	      $("#riesgoForm").submit(); 
+	
+	//funcion para que se ejecute la rutina procesar en el back
+	function form_submit() {
+		$('#spinner').show();
+		$('#btnguardar').prop('disabled', true);
+		$('#riesgoForm').append('<input type="hidden" name="procesar" id="procesar" value="" />');
+		disableRequired();
+		$("#riesgoForm").submit();
 	}
 
-	function enableSaveButton(){
+	function enableSaveButton() {
 		$('#btnguardar').prop('disabled', false);
 	}
-	
-	function load(){
-		$('#residual').prop('disabled', false);
-		$('#inherente').prop('disabled', false);
-		$('#impactoFinal').prop('disabled', false);
-		$('#probabilidadFinal').prop('disabled', false);
-		
-		 $('#spinner').show()
+
+
+	//solo la ejecuto cuando el submit viene del boton guardar por eso pregunto por el parametro #procesar
+	function validation() {
+         
+		if ($('#procesar').length == 0) {
+			var ok = $('#afconfCheck').is(":checked")
+					|| $('#afinteCheck').is(":checked")
+					|| $('#afdisoCheck').is(":checked");//si alguno de los check esta seleccionado habilito el submit del formulario
+
+			if (ok) {
+				$('#spinner').show();
+				enableSel();
+				return true;
+			} else {
+				$('#error_div').show();
+				return false;
+
+			}
+		}
 	}
 
+	function clickCheckBoxes() {
 
+		var ok = $('#afconfCheck').is(":checked")
+				|| $('#afinteCheck').is(":checked")
+				|| $('#afdisoCheck').is(":checked");
+		$('#btnaprobar').prop('disabled', true);
+		if (ok) {//si alguno de los checkboxes esta tildado
+			$('#error_div').hide();
+		} else {
+			$('#error_div').show();
+			$('#btnguardar').prop('disabled', true);
+		}
+
+	}
+
+	//funcion que pone a todos los campos no requeridos
+	function disableRequired() {
+		
+		var selects = document.getElementsByTagName('Select');
+		console.log(selects);
+		for(var k = 0; k < selects.length; k++){
+			selects[k].removeAttribute('required');
+			console.log(selects[k]);
+
+		}
+		var selects = document.getElementsByTagName('TextArea');
+		console.log(selects);
+		for(var k = 0; k < selects.length; k++){
+			selects[k].removeAttribute('required');
+			console.log(selects[k]);
+
+		}
+		
+		var selects = document.getElementsByTagName('Input');
+		console.log(selects);
+		for(var k = 0; k < selects.length; k++){
+			selects[k].removeAttribute('required');
+			console.log(selects[k]);
+
+		}
+		
+	}
 </script>
 </body>
 </html>

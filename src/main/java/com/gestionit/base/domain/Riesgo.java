@@ -48,7 +48,7 @@ public class Riesgo implements Serializable{
     @Column(name="fecha_analisis")    
     private LocalDate fechaAnalisis;
     
-    private String origen;
+    private String codigoRiesgo;
     
     private String descripcion;
     
@@ -155,14 +155,14 @@ public class Riesgo implements Serializable{
     }
     
     
-    public Riesgo(Long id, LocalDate fechaAnalisis, String origen, String descripcion, String codigoFormulario,
+    public Riesgo(Long id, LocalDate fechaAnalisis, String codigoRiesgo, String descripcion, String codigoFormulario,
     		Amenaza amenaza,String responsable, Boolean afectaConfidencialidad, Boolean afectaIntegridad, Boolean afectaDisponibilidad,
 			ProbalidadOcurrencia probabilidadOcurrencia, RiesgoInherenteValor riesgoInherenteValor, Salvaguarda salvaguarda,
 			RiesgoResidualValor riesgoResidualValor, Impacto impacto) {
 		super();
 		this.id = id;
 		this.fechaAnalisis = fechaAnalisis;
-		this.origen = origen;
+		this.codigoRiesgo = codigoRiesgo;
 		this.descripcion = descripcion;
 		this.codigoFormulario = codigoFormulario;
 		this.responsable = responsable;
@@ -216,22 +216,6 @@ public class Riesgo implements Serializable{
 	public void setFechaAnalisis(LocalDate fechaAnalisis) {
 		this.fechaAnalisis = fechaAnalisis;
 	}
-
-
-
-
-	public String getOrigen() {
-		return origen;
-	}
-
-
-
-
-	public void setOrigen(String origen) {
-		this.origen = origen;
-	}
-
-
 
 
 	public String getDescripcion() {
@@ -359,23 +343,26 @@ public class Riesgo implements Serializable{
 	}
 
 
-
-
 	public void setRiesgoResidualValor(RiesgoResidualValor riesgoResidualValor) {
 		this.riesgoResidualValor = riesgoResidualValor;
 	}
 
+	public String getCodigoRiesgo() {
+		return codigoRiesgo;
+	}
 
+
+	public void setCodigoRiesgo(String codigoRiesgo) {
+		this.codigoRiesgo = codigoRiesgo;
+	}
 
 
 	@Override
     public String toString() {
-        return "Riesgo{" + "id=" + id + ", descripcion=" + descripcion + ", origen=" + origen + ", codigo de Formulario=" + codigoFormulario + ",  Amenaza=" + amenaza + ", responsable=" + responsable +  "}";
+        return "Riesgo{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigoRiesgo + ", codigo de Formulario=" + codigoFormulario + ",  Amenaza=" + amenaza + ", responsable=" + responsable +  "}";
     }
 
-    
 
-    
     
     
 

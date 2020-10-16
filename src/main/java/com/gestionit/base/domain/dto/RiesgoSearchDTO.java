@@ -18,12 +18,25 @@ public class RiesgoSearchDTO {
     private String codigoFormulario;
     private String origenAmenaza;
 	private User currentUser;
+	private String codigoRiesgo;
 	private boolean onlyOneUser;
 
 
 	public RiesgoSearchDTO() {
     }
    
+	
+	
+	public String getCodigoRiesgo() {
+		return codigoRiesgo;
+	}
+
+	public void setCodigoRiesgo(String codigoRiesgo) {
+		this.codigoRiesgo = codigoRiesgo;
+	}
+
+
+
 	public String getFechaAnalisis() {
 		return fechaAnalisis;
 	}

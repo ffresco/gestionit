@@ -110,6 +110,10 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 			riesgoDTO.getRiesgo().setUsuarioCreador(userService.getCurrentUser());
 		}
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
+		if(riesgoDTO.getRiesgo().getCodigoRiesgo()==null) {
+			riesgoDTO.getRiesgo().setCodigoRiesgo(riesgoDTO.getRiesgo().getId().toString());
+			riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
+		}
 		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
 		//Si hay un solo usuario o el usuario es distinto del creador dejo que el mismo lo apruebe
 		riesgoDTO.setAprobacion(userService.getAllUsers().size()==1 || !isTheSameUser(riesgoDTO.getRiesgo().getUsuarioCreador()) );

@@ -48,7 +48,7 @@ and open the template in the editor.
 							</thead>
 							<tbody>
 								<tr th:each="riesgo : ${riesgos}">
-									<td th:text="${riesgo.codigoFormulario}"></td>
+									<td th:text="${riesgo.codigoRiesgo}"></td>
 									<td th:text="${riesgo.responsable}"></td>
 									<td th:text="${riesgo.fechaAnalisis}"></td>
 									<td th:text="${riesgo.amenaza?.origen?.origen}"></td>

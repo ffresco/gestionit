@@ -51,11 +51,14 @@ and open the template in the editor.
 									<fieldset>
 
 										<input type="hidden"  th:field="*{riesgo.id}">	
+										<input id="residualValor"   th:field="*{riesgo.riesgoResidualValor.valor}" 
+											 type="hidden"  class="form-control input-md" tabIndex="-1">
+											 
 										<!-- Text input-->
-										<div class="col-sm-2 form-group">
-											<label class="control-label" for="txtOrigen">Origen</label>  
+										<div class="col-sm-1 form-group">
+											<label class="control-label" for="txtOrigen">Codigo</label>  
 											<div class="">
-												<input id="txtOrigen" disabled="disabled" th:field="*{riesgo.origen}"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" >
+												<input id="txtOrigen" disabled="disabled" th:field="*{riesgo.codigoRiesgo}"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" >
 
 											</div>
 										</div>
@@ -74,10 +77,10 @@ and open the template in the editor.
 										
 
 										<!-- Select Basic -->
-										<div class="col-sm-2 form-group">
+										<div class="col-sm-3 form-group">
 											<label class=" control-label" for="tipoOp">Tipo Amenaza</label>											
 											<div class="">
-												<select id="tipoAmenaza" disabled="disabled" th:field="*{riesgo.amenaza}"  class="form-control"  >
+												<select id="tipoAmenaza"  disabled="disabled" th:field="*{riesgo.amenaza}"  class="form-control"  >
 													<option value="0"></option>
 													<option th:each="amenaza : ${riesgoDTO.amenazas}" 
 												th:value="${amenaza.id}" th:text="${amenaza.tipo}">  </option>
@@ -202,7 +205,7 @@ and open the template in the editor.
 									</div>
 									
 									<!-- Select Basic-->
-									<div class="col-sm-2 form-group">
+									<div class="col-sm-4 form-group">
 											<label class="control-label" for="salvaguardaValor">Valor Salvaguarda</label>
 											<div class="">
 												<select id="salvaguardaVal" disabled="disabled" th:field="*{riesgo.salvaguarda.tipo}"  
@@ -219,49 +222,48 @@ and open the template in the editor.
 									<div class="col-sm-2 form-group">
 										<label class="control-label" for="menorImpacto" id="lblMontoE">Impacto Final</label>  
 										<div class="">
-											<input id="salvaguardaMenorImpacto"  readonly th:field="*{riesgo.salvaguarda.menorImpacto}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
+											 <select id="impactoFinal" disabled="disabled" th:field="*{riesgo.salvaguarda.impactoFinal}" 
+												class="form-control" >
+													<option value="0"></option>
+													<option th:each="impacto :  ${dataMaster.impactos}" 
+												th:value="${impacto.id}" th:text="${impacto.calificacion}">  </option>
+											</select>
 												
 										</div>
-									</div>										
-									<!-- Text input-->
-									<div class="col-sm-2 form-group">
+									</div>			
+									
+									<!-- Input -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="tipoCambio"></label>
+											<div class="">
+											
+										</div>
+									</div>
+									
+									<!-- Input -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="tipoCambio"></label>
+											<div class="">
+											
+										</div>
+									</div>
+									
+										<!-- Select Basic-->
+									<div class="col-sm-4 form-group">
 										<label class="control-label" for="menorProbabilidad" id="lblMontoE">Probabilidad Final</label>  
 										<div class="">
-											<input id="menorProbabilidad" readonly  th:field="*{riesgo.salvaguarda.menorProbabilidad}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
-												
+											 <select id="probabilidadFinal" disabled="disabled" th:field="*{riesgo.salvaguarda.probabilidadFinal}" 
+												class="form-control" >
+												<option value="0"></option>
+													<option th:each="probabilidadOcurrencia : ${dataMaster.probabilidadesOcurrencias}" 
+												th:value="${probabilidadOcurrencia.id}" th:text="${probabilidadOcurrencia.calificacion}">  </option>
+											</select>		
 										</div>
 									</div>	
-									
-									<!-- Input -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio"></label>
-											<div class="">
-											
-										</div>
-									</div>
-									
-									<!-- Input -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio"></label>
-											<div class="">
-											
-										</div>
-									</div>
-									
-									<!-- Input -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Residual Valor</label>
-											<div class="">
-											<input id="residualValor" disabled="disabled" th:field="*{riesgo.riesgoResidualValor.valor}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
-										</div>
-									</div>
 
 									<!-- Select Basic -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Residual Descripción</label>
+									<div class="col-sm-2 form-group">
+											<label class="control-label" for="tipoCambio">Riesgo Residual</label>
 											<div class="">
 												<select id="residual" disabled="disabled" th:field="*{riesgo.riesgoResidualValor.riesgoResidual}" 
 												class="form-control" >
