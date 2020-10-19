@@ -56,8 +56,10 @@
             <li><a href="#" onClick="cargarContenido('/cajas/');return false;">Cajas</a></li>
             <li><a href="#" onClick="cargarContenido('/cotizaciones/');return false;">Cotizaciones</a></li>
             <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Usuarios</a></li>
-            <li><a href="#" onClick="cargarContenido('/incidentes/');return false;">Incidentes</a></li> -->
+            <li><a href="#" onClick="cargarContenido('/incidentes/');return false;">Incidentes</a></li> 
+            <li><a href="#" onClick="cargarContenido('/riesgos/');return false;">Auditoria</a></li>-->
             <li><a href="#" onClick="cargarContenido('/riesgos/');return false;">Riesgos</a></li>
+           
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" data-toggle="popover" title="" data-content="Ninguna Notificacion" data-placement="bottom"><span class="glyphicon glyphicon glyphicon-bell"></span> Notificaciones</a></li>
@@ -434,7 +436,67 @@
 </fieldset>
 </form>
 </div>
-<!-- Fin menu lateral Riesgos busqueda -->
+<!-- Fin menu lateral Riesgos Auditoria busqueda -->
+
+
+!-- Menu lateral Operaciones Auditoria Riesgo -->
+<div th:fragment="navbarside_auditoria_riesgos">
+<form class="" th:action="@{/riesgosAuditoria/search}" th:object="${searchAuditoriaDTO}" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Busqueda</legend>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="idOperacion">Codigo Formulario</label>
+  <div class="">
+    <input id="codigoFormulario" th:field="*{codigoRiesgo}" type="search"  class="form-control input-md">    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="numDoc">Responsable</label>
+  <div class="">
+    <input id="responsable" th:field="*{responsable}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Search input
+<div class="form-group">
+  <label class=" control-label" for="fechaAnalisis">Fecha Analisis</label>
+  <div class="">
+    <input id="fechaAnalisis" th:field="*{fechaAnalisis}" type="search"  onkeydown="upperCaseF(this)" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+-->
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="origenAmenaza">Origen de Amenza</label>
+  <div class="">
+    <input id="origenAmenaza" th:field="*{origenAmenaza}" type="search"  onkeydown="upperCaseF(this)" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+
+
+<!-- Button -->
+<div class="form-group">
+
+  <div class="">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Buscar</button>
+    <button type="reset" id="singlebutton"  class="btn btn-default">Limpiar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+<!-- Fin menu lateral Riesgos Auditoria busqueda -->
 
 
 <footer class="container-fluid">

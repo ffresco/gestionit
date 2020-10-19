@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import org.hibernate.envers.Audited;
 
 @Entity
-@Audited
 public class Impacto extends ItemRiesgo {
 
 	/**

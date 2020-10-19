@@ -110,10 +110,6 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 			riesgoDTO.getRiesgo().setUsuarioCreador(userService.getCurrentUser());
 		}
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
-		if(riesgoDTO.getRiesgo().getCodigoRiesgo()==null) {
-			riesgoDTO.getRiesgo().setCodigoRiesgo(riesgoDTO.getRiesgo().getId().toString());
-			riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
-		}
 		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
 		//Si hay un solo usuario o el usuario es distinto del creador dejo que el mismo lo apruebe
 		riesgoDTO.setAprobacion(userService.getAllUsers().size()==1 || !isTheSameUser(riesgoDTO.getRiesgo().getUsuarioCreador()) );
@@ -207,6 +203,12 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	public DataMaster getDataMaster() {
 		System.out.println("--Me meti en el data master--");
 		return dataMaster;
+	}
+	
+	@RequestMapping(value = "/audit/{id}")
+    ModelAndView audit(@PathVariable Long id) {
+		LOGGER.info("Estoy en audit este es el id " + id);
+		return new ModelAndView("riesgo_audit", "auditRiesgosDTO", riesgoService.getAllAuditForId(id));
 	}
 
 	   

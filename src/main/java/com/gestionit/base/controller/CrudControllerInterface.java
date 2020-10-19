@@ -5,9 +5,7 @@
  */
 package com.gestionit.base.controller;
 
-import com.gestionit.base.domain.Cotizacion;
-import com.gestionit.base.domain.dto.CotizacionSearchDTO;
-import javax.validation.Valid;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;

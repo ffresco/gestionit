@@ -48,7 +48,7 @@ and open the template in the editor.
 							</thead>
 							<tbody>
 								<tr th:each="riesgo : ${riesgos}">
-									<td th:text="${riesgo.codigoRiesgo}"></td>
+									<td th:text="${riesgo.id}"></td>
 									<td th:text="${riesgo.responsable}"></td>
 									<td th:text="${riesgo.fechaAnalisis}"></td>
 									<td th:text="${riesgo.amenaza?.origen?.origen}"></td>
@@ -57,7 +57,7 @@ and open the template in the editor.
 		
 									<td>
 										<div class="btn-group pull-right">
-											
+											<a class="btn btn-sm btn-primary" th:href="@{/riesgos/audit/{id}(id=${riesgo.id})}" >Auditoria</a>
 											<span th:if="${riesgo.usuarioAuditor == null && searchDTO.currentUser.email == riesgo.usuarioCreador.email }">
 												<a class="btn btn-sm btn-primary" th:href="@{/riesgos/edit/{id}(id=${riesgo.id})}" >Editar</a>
 											</span>

@@ -66,7 +66,7 @@ and open the template in the editor.
 										<div class="col-sm-1 form-group">
 											<label class="control-label" for="txtOrigen">Codigo</label>  
 											<div class="">
-												<input id="txtOrigen" th:field="*{riesgo.codigoRiesgo}" disabled="disabled"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
+												<input id="txtOrigen" th:field="*{riesgo.id}" disabled="disabled"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
 
 											</div>
 										</div>
@@ -101,7 +101,7 @@ and open the template in the editor.
 									<div class="col-sm-4 form-group">
 										<label class="control-label" for="descripcion">Descripcion Amenaza</label>
 										<div class="">                     
-											<textarea class="form-control" id="descripcion" required th:field="*{riesgo.descripcion}"  onkeypress="enableSaveButton()"></textarea>
+											<textarea class="form-control" id="descripcion" required th:field="*{riesgo.descripcion}"  onchange ="enableSaveButton()"></textarea>
 										</div>
 									</div>
 										
@@ -176,7 +176,7 @@ and open the template in the editor.
 									<label class="control-label" for="descripcion">Salvaguarda
 										Descripcion</label>
 									<div class="">
-										<textarea class="form-control" id="salvaguardaDesc" required onkeypress="enableSaveButton()"
+										<textarea class="form-control" id="salvaguardaDesc" required onchange ="enableSaveButton()"
 											th:field="*{riesgo.salvaguarda.descripcion}"></textarea>
 									</div>
 								</div>
@@ -320,7 +320,7 @@ and open the template in the editor.
 										<div class="col-sm-3 form-group ">
 											<label class="control-label" for="cajero">Codigo de Formulario Aceptación de Riesgo</label>  
 											<div class="">
-												<input id="codForm"  th:field="*{riesgo.codigoFormulario}" name="codForm" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
+												<input id="codForm"  th:field="*{riesgo.codigoFormulario}" name="codForm" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onchange ="enableSaveButton()">
 											</div>
 										</div>
 										
@@ -329,7 +329,7 @@ and open the template in the editor.
 										<div class="col-sm-3 form-group ">
 											<label class="control-label" for="cajero">Responsables</label>  
 											<div class="">
-												<input id="resp"  th:field="*{riesgo.responsable}" required name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onkeypress="enableSaveButton()">
+												<input id="resp"  th:field="*{riesgo.responsable}" required name="resp" type="text" placeholder="" class="form-control input-md" tabIndex="-1" onchange ="enableSaveButton()">
 											</div>
 										</div>
 								
