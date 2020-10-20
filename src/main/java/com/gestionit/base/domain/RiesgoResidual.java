@@ -3,8 +3,11 @@ package com.gestionit.base.domain;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+
+
 @Entity
 @Table(name="riesgo_residual")
+
 public class RiesgoResidual extends ItemRiesgo {
 
 	/**

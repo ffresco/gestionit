@@ -6,6 +6,7 @@ import javax.persistence.Table;
 
 
 
+
 @Entity
 @Table(name="riesgo_inherente")
 public class RiesgoInherente extends ItemRiesgo  {

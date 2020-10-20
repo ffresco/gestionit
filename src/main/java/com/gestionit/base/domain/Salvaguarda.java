@@ -14,6 +14,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
+@Audited
 public class Salvaguarda implements Serializable {
 
 	/**
@@ -30,14 +31,17 @@ public class Salvaguarda implements Serializable {
 	
 	@OneToOne
     @JoinColumn(name="fk_tipo_salvaguarda")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private SalvaguardaTipo tipo;
 	
 	@OneToOne
 	@JoinColumn(name="fk_impacto")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private Impacto impactoFinal;
 
 	@OneToOne
 	@JoinColumn(name="fk_prob_ocur")
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 	private ProbalidadOcurrencia probabilidadFinal;
 
 	public Impacto getImpactoFinal() {
