@@ -2,7 +2,6 @@ package com.gestionit.base.domain;
 
 import javax.persistence.Entity;
 
-import org.hibernate.envers.Audited;
 
 @Entity
 public class Impacto extends ItemRiesgo {

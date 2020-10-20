@@ -7,8 +7,6 @@ package com.gestionit.base.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -80,17 +78,17 @@ public class Riesgo implements Serializable{
     @JoinColumn(name="fk_prob_ocur")
     private ProbalidadOcurrencia probabilidadOcurrencia;
     
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    @Audited
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="fk_riesgo_inherente_valor")
     private RiesgoInherenteValor riesgoInherenteValor;
     
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    @Audited
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="fk_salvaguarda")
     private Salvaguarda salvaguarda;
     
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    @Audited
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name="fk_riesgo_residual_valor")
     private RiesgoResidualValor riesgoResidualValor;
@@ -100,9 +98,10 @@ public class Riesgo implements Serializable{
     @JoinColumn(name="fk_usuario_creador")
     private User usuarioCreador;
     
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+
     @OneToOne
     @JoinColumn(name="fk_usuario_auditor")
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private User usuarioAuditor;
     
     @Column(name="fecha_aprobacion")    

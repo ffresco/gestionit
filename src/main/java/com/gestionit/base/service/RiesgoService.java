@@ -11,12 +11,13 @@ import com.gestionit.base.domain.dto.RiesgoAuditDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 import com.gestionit.base.repository.RiesgoRepository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionType;
@@ -76,7 +77,7 @@ public class RiesgoService implements BasicService<Riesgo>{
     }   
     
     
-    public List<RiesgoAuditDTO> findAllDeleted() {
+    public List<RiesgoAuditDTO> findAllDeleted() throws IllegalAccessException, InvocationTargetException {
     	List<RiesgoAuditDTO> result = new ArrayList<RiesgoAuditDTO>(); 
     	 AuditQuery query = reader.createQuery().forRevisionsOfEntity(
     	            Riesgo.class, false, true);
@@ -87,14 +88,35 @@ public class RiesgoService implements BasicService<Riesgo>{
     	        Riesgo riesgo = (Riesgo) obj[0];
     	        MyRevision dre = (MyRevision) obj[1];
     	        RevisionType revType = (RevisionType) obj[2];
-    	        RiesgoAuditDTO auditDTO = new RiesgoAuditDTO(riesgo, dre, revType);
-    	        result.add(auditDTO);
-    	        System.out.println("Riesgo borrado " + riesgo.getId() + " en fecha "
-    	                + dre.getRevisionDate());
-    	       
+    	        
+    	        
+    	        AuditQuery queryAux = reader.createQuery().forRevisionsOfEntity(
+                        Riesgo.class, false, true);
+                queryAux.add(AuditEntity.revisionType().ne(RevisionType.DEL));
+                queryAux.addProjection(AuditEntity.revisionNumber().max());
+                queryAux.add(AuditEntity.id().eq(riesgo.getId()));
+                     
+                Number idUltimaRevision = (Number) queryAux.getSingleResult();
+                
+                queryAux = reader.createQuery().forRevisionsOfEntity(
+            			Riesgo.class, false, false);
+                queryAux.add(AuditEntity.id().eq(riesgo.getId()));
+                queryAux.add(AuditEntity.revisionNumber().eq(idUltimaRevision));
+            	results = queryAux.getResultList();
+           	    Riesgo riesgo_ = (Riesgo) results.get(0)[0];
+                RiesgoAuditDTO auditDTO = new RiesgoAuditDTO(riesgo_, dre, revType);
+        	    result.add(auditDTO);
+        	   System.out.println("Riesgo borrado " + riesgo.getId() + " en fecha "
+        	                + dre.getRevisionDate());
+           	    }
+                
+       	    return result;  
+              
     	    }
-    	    return result;
-    }
+    	   
+        
+    	    
+ 
     
     public RiesgoAuditDTO getLastAuditedRecord(Long id) {
     	AuditQuery queryAux = reader.createQuery().forRevisionsOfEntity(
@@ -140,5 +162,7 @@ public class RiesgoService implements BasicService<Riesgo>{
    	    }
    	    return result;
     }
+    
+   
     
 }

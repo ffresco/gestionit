@@ -9,10 +9,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 
 
 @Entity
 @Table(name="riesgo_inherente_valor")
+@Audited
 public class RiesgoInherenteValor  {
 	
 
@@ -26,6 +30,7 @@ public class RiesgoInherenteValor  {
 		
 		@OneToOne
 	    @JoinColumn(name="fk_riesgo_inherente")
+		@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 		private RiesgoInherente riesgoInherente;
 
 	public Integer getValor() {
