@@ -1,5 +1,9 @@
 package com.gestionit.base.domain;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.TimeZone;
+
 import javax.persistence.Entity;
 
 import org.hibernate.envers.DefaultRevisionEntity;
@@ -17,5 +21,11 @@ public class MyRevision extends DefaultRevisionEntity {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public LocalDateTime getRevisionDateTime() {
+		return LocalDateTime.ofInstant(Instant.ofEpochMilli(getTimestamp()), 
+                TimeZone.getDefault().toZoneId()); 
+		
 	}
 }

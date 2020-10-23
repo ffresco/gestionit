@@ -20,7 +20,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
@@ -79,6 +78,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
     public ModelAndView search(@ModelAttribute (value = "searchDTO") RiesgoSearchDTO searchDTO, 
             BindingResult bindingResult) {
         LOGGER.debug("---Search------- con DTO :" + searchDTO);
+        searchDTO.setCurrentUser(userService.getCurrentUser());
         return new ModelAndView("riesgos", "riesgos", riesgoService.findAllContaining(searchDTO));
     }
 

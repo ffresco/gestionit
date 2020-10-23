@@ -19,8 +19,8 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface RiesgoRepository extends CrudRepository<Riesgo,Long>{
     
-	   @Query("select r from Riesgo r where  r.codigoFormulario like ?1% "
+	   @Query("select r from Riesgo r where  r.id = ?1 "
 	            + "and upper(r.amenaza.origen.origen) like ?2% and upper(r.responsable) like ?3% ")
-	    List<Riesgo> findByValoresLike(String codigo,
+	    List<Riesgo> findByValoresLike(Long codigo,
 	            String tipoAmenza,String responsable);
 }

@@ -32,7 +32,7 @@ and open the template in the editor.
 							<thead class="bg-success">
 								<tr>
 									<th> Código </th>
-									<th> Responsagle</th>
+									<th> Responsable</th>
 									<th> Fecha</th>
 									<th> Origen</th>
 									<th> Tipo</th>
@@ -51,7 +51,7 @@ and open the template in the editor.
 								<tr th:each="audit : ${auditRiesgosDTO}">
 									<td th:text="${audit.riesgo.id}"></td>
 									<td th:text="${audit.riesgo.responsable}"></td>
-									<td th:text="${audit.riesgo.fechaAnalisis}"></td>
+									<td th:text="${#temporals.format(audit.riesgo.fechaAnalisis, 'dd/MM/yyyy')}"></td>
 									<td th:text="${audit.riesgo.amenaza?.origen?.origen}"></td>
 									<td th:text="${audit.riesgo.amenaza.tipo}"></td>
 									<td th:text="${audit.riesgo.riesgoInherenteValor.riesgoInherente.calificacion}"></td>
@@ -59,7 +59,7 @@ and open the template in the editor.
 									<td th:text="${audit.riesgo.probabilidadOcurrencia.calificacion}"></td>
 									<td th:text="${audit.riesgo.usuarioCreador.email}"></td>
 									<td th:text="${audit.revision.userName}"></td>
-									<td th:text="${audit.revision.revisionDate}"></td>
+									<td th:text="${#temporals.format(audit.revision.revisionDateTime, 'dd/MM/yyyy HH:mm')}"></td>
 									<td>
 
 						         </form>

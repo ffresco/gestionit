@@ -20,12 +20,23 @@ public class RiesgoSearchDTO {
 	private User currentUser;
 	private String codigoRiesgo;
 	private boolean onlyOneUser;
+	private Long id;
+
+
+
+
 
 
 	public RiesgoSearchDTO() {
     }
    
-	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	
 	public String getCodigoRiesgo() {
 		return codigoRiesgo;

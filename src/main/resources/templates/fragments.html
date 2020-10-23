@@ -55,11 +55,11 @@
             <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
             <li><a href="#" onClick="cargarContenido('/cajas/');return false;">Cajas</a></li>
             <li><a href="#" onClick="cargarContenido('/cotizaciones/');return false;">Cotizaciones</a></li>
-            <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Usuarios</a></li>
             <li><a href="#" onClick="cargarContenido('/incidentes/');return false;">Incidentes</a></li> 
             -->
             <li><a href="#" onClick="cargarContenido('/riesgos/');return false;">Riesgos</a></li>
             <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
+            <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Usuarios</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" data-toggle="popover" title="" data-content="Ninguna Notificacion" data-placement="bottom"><span class="glyphicon glyphicon glyphicon-bell"></span> Notificaciones</a></li>
@@ -391,7 +391,7 @@
 <div class="form-group">
   <label class=" control-label" for="idOperacion">Codigo Formulario</label>
   <div class="">
-    <input id="codigoFormulario" th:field="*{codigoRiesgo}" type="search"  class="form-control input-md">    
+    <input id="codigoFormulario" th:field="*{id}" type="search"  class="form-control input-md">    
   </div>
 </div>
 
@@ -451,7 +451,7 @@
 <div class="form-group">
   <label class=" control-label" for="idOperacion">Codigo Formulario</label>
   <div class="">
-    <input id="codigoFormulario" th:field="*{codigoRiesgo}" type="search"  class="form-control input-md">    
+    <input id="codigoFormulario" th:field="*{id}" type="search"  class="form-control input-md">    
   </div>
 </div>
 

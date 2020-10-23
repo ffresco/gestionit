@@ -73,7 +73,7 @@ public class RiesgoService implements BasicService<Riesgo>{
  
 
     public List<Riesgo> findAllContaining(RiesgoSearchDTO searchDTO) {
-        return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getCodigoFormulario(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
+        return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
     }   
     
     

@@ -36,7 +36,7 @@ and open the template in the editor.
 							<thead class="bg-success">
 								<tr>
 									<th> Código </th>
-									<th> Responsagle</th>
+									<th> Responsable</th>
 									<th> Fecha</th>
 									<th> Origen</th>
 									<th> Creador</th>
@@ -50,7 +50,7 @@ and open the template in the editor.
 								<tr th:each="riesgo : ${riesgos}">
 									<td th:text="${riesgo.id}"></td>
 									<td th:text="${riesgo.responsable}"></td>
-									<td th:text="${riesgo.fechaAnalisis}"></td>
+									<td th:text="${#temporals.format(riesgo.fechaAnalisis, 'dd/MM/yyyy')}"></td>
 									<td th:text="${riesgo.amenaza?.origen?.origen}"></td>
 									<td th:text="${riesgo.usuarioCreador.email}"></td>
 									<td th:text="${riesgo.usuarioAuditor?.email}"></td>
@@ -78,7 +78,7 @@ and open the template in the editor.
 								
 								                            <!-- Modal Header -->
 								                            <div class="modal-header">
-								                                <h4 class="modal-title"  th:text="${'Esta seguro de eliminar el Riesgo ' + riesgo.codigoFormulario+'?'}" > </h4>
+								                                <h4 class="modal-title"  th:text="${'Esta seguro de eliminar el Riesgo ' + riesgo.id+'?'}" > </h4>
 								                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 								                            </div>
 								
