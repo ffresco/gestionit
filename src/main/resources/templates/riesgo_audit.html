@@ -42,9 +42,7 @@ and open the template in the editor.
 									<th> Creador</th>
 									<th> Editor</th>
 									<th> Fecha</th>
-									<th> </th>										
-									<!--<th> Mnd Base</th>-->
-									<th></th>
+
 								</tr>
 							</thead>
 							<tbody>
@@ -60,7 +58,6 @@ and open the template in the editor.
 									<td th:text="${audit.riesgo.usuarioCreador.email}"></td>
 									<td th:text="${audit.revision.userName}"></td>
 									<td th:text="${#temporals.format(audit.revision.revisionDateTime, 'dd/MM/yyyy HH:mm')}"></td>
-									<td>
 
 						         </form>
 						         
@@ -74,6 +71,8 @@ and open the template in the editor.
 					</div>
 					
 				</div>
+				
+				
 				<a href="#" onClick="cargarContenido('/riesgos/');return false;" class="btn btn-danger">Cancelar</a>
 
 			</div> <!-- Fin Contenido principal 9 columnas -->

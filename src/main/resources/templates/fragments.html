@@ -56,10 +56,11 @@
             <li><a href="#" onClick="cargarContenido('/cajas/');return false;">Cajas</a></li>
             <li><a href="#" onClick="cargarContenido('/cotizaciones/');return false;">Cotizaciones</a></li>
             <li><a href="#" onClick="cargarContenido('/incidentes/');return false;">Incidentes</a></li> 
+            <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Usuarios</a></li>
             -->
             <li><a href="#" onClick="cargarContenido('/riesgos/');return false;">Riesgos</a></li>
             <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
-            <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Usuarios</a></li>
+            
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" data-toggle="popover" title="" data-content="Ninguna Notificacion" data-placement="bottom"><span class="glyphicon glyphicon glyphicon-bell"></span> Notificaciones</a></li>
@@ -422,6 +423,19 @@
   </div>
 </div>
 
+<!-- checkbox-->
+<div class="form-group">
+	<label class="control-label" for="filtros" id="lblAFiltros"></label>  
+		<div class="form-check">
+			<input type="radio" id="todos" th:field="*{filtro}" th:value="Todos">
+  			<label for="male">Todos</label><br>
+  			<input type="radio" id="aprobados" th:field="*{filtro}" value="Aprobados">
+ 		    <label for="female">Aprobados</label><br>
+ 			<input type="radio" id="noAprobados" th:field="*{filtro}" value="No Aprobados">
+			<label for="other">No Aprobados</label>
+
+		</div>
+</div>
 
 
 <!-- Button -->
@@ -464,15 +478,6 @@
   </div>
 </div>
 
-<!-- Search input
-<div class="form-group">
-  <label class=" control-label" for="fechaAnalisis">Fecha Analisis</label>
-  <div class="">
-    <input id="fechaAnalisis" th:field="*{fechaAnalisis}" type="search"  onkeydown="upperCaseF(this)" placeholder="" class="form-control input-md">
-    
-  </div>
-</div>
--->
 <!-- Search input-->
 <div class="form-group">
   <label class=" control-label" for="origenAmenaza">Origen de Amenza</label>
@@ -482,14 +487,26 @@
   </div>
 </div>
 
+<!-- checkbox-->
+<div class="form-group">
+	<label class="control-label" for="filtros" id="lblAFiltros"></label>  
+		<div class="form-check">
+			<input type="radio" id="todos" th:field="*{filtro}" th:value="Todos">
+  			<label for="male">Todos</label><br>
+  			<input type="radio" id="aprobados" th:field="*{filtro}" value="Aprobados">
+ 		    <label for="female">Aprobados</label><br>
+ 			<input type="radio" id="noAprobados" th:field="*{filtro}" value="No Aprobados">
+			<label for="other">No Aprobados</label>
 
+		</div>
+</div>
 
 <!-- Button -->
 <div class="form-group">
 
   <div class="">
     <button id="singlebutton" name="singlebutton" class="btn btn-primary">Buscar</button>
-    <button type="reset" id="singlebutton"  class="btn btn-default">Limpiar</button>
+    <button type="reset" id="singlebutton"  class="btn btn-default" >Limpiar</button>
   </div>
 </div>
 

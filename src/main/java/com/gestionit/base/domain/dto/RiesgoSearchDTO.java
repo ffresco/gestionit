@@ -21,15 +21,25 @@ public class RiesgoSearchDTO {
 	private String codigoRiesgo;
 	private boolean onlyOneUser;
 	private Long id;
-
-
-
-
-
+	private String filtro;
 
 	public RiesgoSearchDTO() {
     }
    
+
+	
+	public String getFiltro() {
+		return filtro;
+	}
+
+
+
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
