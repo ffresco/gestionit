@@ -15,7 +15,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.envers.AuditReader;
@@ -73,7 +76,13 @@ public class RiesgoService implements BasicService<Riesgo>{
  
 
     public List<Riesgo> findAllContaining(RiesgoSearchDTO searchDTO) {
-        return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
+    	String filtro = searchDTO.getFiltro();
+    	if(filtro==null || filtro.equals("Todos")) {
+    		return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
+    	}else {
+    		return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable(),filtro.equals("Aprobados"));
+    	}
+        
     }   
     
     
@@ -163,6 +172,31 @@ public class RiesgoService implements BasicService<Riesgo>{
    	    return result;
     }
     
+   public Map<Integer, Map<Integer, Long>> getMatrizDeRiesgo() {
+	   Map<Integer, Map<Integer, Long>> result = initMap();
+	  for (Iterator<Riesgo> iterator = this.findAll().iterator(); iterator.hasNext();) {
+		Riesgo riesgo = (Riesgo) iterator.next();
+		Map<Integer, Long> probabilidades = result.get(riesgo.getImpacto().getValor());
+		Long cant = probabilidades.get(riesgo.getSalvaguarda().getProbabilidadFinal().getValor());
+		probabilidades.put(riesgo.getSalvaguarda().getProbabilidadFinal().getValor(), cant+1);
+		result.put(riesgo.getImpacto().getValor(), probabilidades);
+	}
+	   return result;
+	   
+   }
    
+   private Map<Integer, Map<Integer, Long>> initMap(){
+	   Map<Integer, Map<Integer, Long>> result = new HashMap<Integer, Map<Integer, Long>>();
+	   
+	   for (int i = 0; i < 5; i++) {
+		Map<Integer, Long> probabilidades = new HashMap<Integer, Long>();   
+		 for (int j = 0; j < 5; j++) {
+			 probabilidades.put(j+1, 0L);
+		 }
+		result.put(i+1, probabilidades);
+	}
+	   
+	   return result;
+   }
     
 }
