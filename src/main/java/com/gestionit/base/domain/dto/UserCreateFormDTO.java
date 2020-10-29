@@ -25,6 +25,7 @@ public class UserCreateFormDTO {
     
 
     private Role role = Role.USER;
+    
 
     public String getEmail() {
         return email;

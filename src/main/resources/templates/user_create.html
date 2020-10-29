@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result"  class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			 
+
+			<!-- Contenido principal full page -->
+			<div class="col-sm-12">
+				
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4>Usuarios</<h2></h2></div>
+					</div>
+					<div class="panel-body">
+							<form class="form-horizontal" method="POST" th:action="@{/user/create}" th:object="${form}" >
+							<fieldset>
+
+								<!-- Form Name -->
+								<legend>Nueva Usuario</legend>
+								
+								<!-- Text input-->
+								<div class=" form-group ">
+									<label class="col-md-4 control-label" for="cajero">Mail</label>
+									<div class="col-md-4">
+										<input id="txtMail" th:field="*{email}" placeholder="" type="email" required="required"
+											 class="form-control input-md">
+									</div>
+								</div>
+								
+								<!-- Select Basic -->
+										<div class=" form-group">
+											<label class="col-md-4 control-label" for="instrumentoD">ROL</label>
+											<div class="col-md-4">
+												<select id="roles" th:field="*{role}"  required="required" class="form-control">
+													<option value="USER">USER</option>
+													<option value="ADMIN">ADMIN</option>
+												</select>
+											</div>
+										</div>
+							<!-- Text input-->
+								<div class=" form-group ">
+									<label class="col-md-4 control-label" for="cajero">Password</label>
+									<div class="col-md-4">
+										<input id="txtPassword" th:field="*{password}" placeholder="" type="password" required="required" autocomplete="new-password"
+											 class="form-control input-md">
+									</div>
+								</div>	
+								
+								<!-- Text input-->
+								<div class=" form-group ">
+									<label class="col-md-4 control-label" for="cajero">Repetir Password</label>
+									<div class="col-md-4">
+										<input id="txtPassword" th:field="*{passwordRepeated}" placeholder="" type="password" required="required" 
+											 class="form-control input-md">
+									</div>
+								</div>	
+								
+								 <!--Presentacion de los errores si existen-->
+							     <div id="errores">
+							     <div  class="col-sm-12 alert alert-danger" th:if="${#fields.hasErrors('*')}">
+							     	<p th:errors="*{all}"> </p>
+							     </div>
+							     </div>
+								
+						<!-- Button (Double) -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="btnGuardar"></label>
+									<div class="col-md-4">
+										<button id="btnGuardar" name="btnGuardar" class="btn btn-success" type="submit">Guardar</button>
+										<a href="#" onClick="cargarContenido('/usuarios/');return false;" class="btn btn-danger">Cancelar</a>
+										
+									</div>
+								</div>
+
+							</fieldset>		
+							
+						</form>			
+						
+							
+								
+	</div>
+</body>
+
+</html>
+

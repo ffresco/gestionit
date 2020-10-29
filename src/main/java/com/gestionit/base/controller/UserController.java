@@ -5,12 +5,20 @@
  */
 package com.gestionit.base.controller;
 
+
+import com.gestionit.base.domain.Parametro;
+import com.gestionit.base.domain.SesionCaja;
+import com.gestionit.base.domain.User;
 import com.gestionit.base.domain.dto.UserCreateFormDTO;
 import com.gestionit.base.service.UserService;
 import com.gestionit.base.domain.validator.UserCreateFormValidator;
+import com.gestionit.base.repository.SesionCajaRepo;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +43,47 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
+    private final SesionCajaRepo sesionCajaRepo;
 
     @Autowired
-    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator) {
+    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator, SesionCajaRepo sesionCajaRepo ) {
         this.userService = userService;
         this.userCreateFormValidator = userCreateFormValidator;
+        this.sesionCajaRepo = sesionCajaRepo;
     }
 
     @InitBinder("form") //restringe la aplicacion del init binder solo al atributo form 
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);
+    }
+    
+    @RequestMapping("/usuarios")
+    public ModelAndView getUsersPage() {
+        LOGGER.debug("Getting users page");
+        List<SesionCaja> cajas = (List<SesionCaja>) sesionCajaRepo.findAll();
+        List<User> users = (List<User>) userService.getAllUsers();
+        List<SesionCaja> resultante = new ArrayList<>();
+        boolean exist;
+        for (User user : users) {
+            exist = existUser(cajas, user);
+            if (!exist) {
+                SesionCaja nuevaSC = new SesionCaja(user, new Parametro("-SIN CAJA-", ""), LocalDateTime.now(), LocalDateTime.now());
+                resultante.add(nuevaSC);
+            }
+
+        }
+        resultante.addAll(cajas);
+        return new ModelAndView("users", "users", resultante);
+    }
+
+    private boolean existUser(List<SesionCaja> cajas, User user) {
+        boolean exist = false;
+        for (SesionCaja sc : cajas) {
+            if (sc.getUser().getId().equals(user.getId())) {
+                exist = true;
+            }
+        }
+        return exist;
     }
 
  
@@ -68,6 +107,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "user_create";
         }
+        
         try {
             userService.create(form);
         } catch (Exception e) {
