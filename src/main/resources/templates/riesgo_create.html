@@ -310,13 +310,13 @@ and open the template in the editor.
 												<input id="printUrl" type="hidden" th:value="@{/riesgos/pdf/{id}(id=*{riesgo.id})}">
 											</span>
 											<a href="#" onClick="cargarContenido('/riesgos/');return false;" class="btn btn-danger">Cancelar</a>
-											
-											
+											<span th:if="*{riesgo.id!=null}">
+								               <a class="btn btn-success" th:href="@{/riesgos/create}"  id="nuevo" >Nuevo</a>
+											</span>
 													
 										</div>
 									</div>
-									
-									<!-- Text input-->
+									 
 										<div class="col-sm-3 form-group ">
 											<label class="control-label" for="cajero">Codigo de Formulario Aceptación de Riesgo</label>  
 											<div class="">
