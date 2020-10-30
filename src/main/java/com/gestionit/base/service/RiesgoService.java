@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -176,24 +177,24 @@ public class RiesgoService implements BasicService<Riesgo>{
 	   Map<Integer, Map<Integer, Long>> result = initMap();
 	  for (Iterator<Riesgo> iterator = this.findAll().iterator(); iterator.hasNext();) {
 		Riesgo riesgo = (Riesgo) iterator.next();
-		Map<Integer, Long> probabilidades = result.get(riesgo.getImpacto().getValor());
-		Long cant = probabilidades.get(riesgo.getSalvaguarda().getProbabilidadFinal().getValor());
-		probabilidades.put(riesgo.getSalvaguarda().getProbabilidadFinal().getValor(), cant+1);
-		result.put(riesgo.getImpacto().getValor(), probabilidades);
+		Map<Integer, Long> probabilidades = result.get(riesgo.getSalvaguarda().getProbabilidadFinal().getValor());
+		Long cant = probabilidades.get(riesgo.getImpacto().getValor());
+		probabilidades.put(riesgo.getImpacto().getValor(), cant+1);
+		result.put(riesgo.getSalvaguarda().getProbabilidadFinal().getValor(), probabilidades);
 	}
 	   return result;
 	   
    }
    
    private Map<Integer, Map<Integer, Long>> initMap(){
-	   Map<Integer, Map<Integer, Long>> result = new HashMap<Integer, Map<Integer, Long>>();
+	   Map<Integer, Map<Integer, Long>> result = new LinkedHashMap<Integer, Map<Integer, Long>>();
 	   
-	   for (int i = 0; i < 5; i++) {
+	   for (int i = 5; i > 0; i--) {
 		Map<Integer, Long> probabilidades = new HashMap<Integer, Long>();   
 		 for (int j = 0; j < 5; j++) {
 			 probabilidades.put(j+1, 0L);
 		 }
-		result.put(i+1, probabilidades);
+		result.put(i, probabilidades);
 	}
 	   
 	   return result;

@@ -5,6 +5,8 @@
  */
 package com.gestionit.base.domain.dto;
 
+import java.util.Map;
+
 import com.gestionit.base.domain.User;
 
 /**
@@ -22,10 +24,22 @@ public class RiesgoSearchDTO {
 	private boolean onlyOneUser;
 	private Long id;
 	private String filtro;
+	private Map<Integer, Map<Integer, Long>> matrizDeRiesgo;
+
+
 
 	public RiesgoSearchDTO() {
     }
    
+	public Map<Integer, Map<Integer, Long>> getMatrizDeRiesgo() {
+		return matrizDeRiesgo;
+	}
+
+
+
+	public void setMatrizDeRiesgo(Map<Integer, Map<Integer, Long>> matrizDeRiesgo) {
+		this.matrizDeRiesgo = matrizDeRiesgo;
+	}
 
 	
 	public String getFiltro() {

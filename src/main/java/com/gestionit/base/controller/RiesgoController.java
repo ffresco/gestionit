@@ -70,6 +70,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         mav.addObject("riesgos", riesgoService.findAll());
         searchDTO.setCurrentUser(userService.getCurrentUser());
         searchDTO.setOnlyOneUser(userService.getAllUsers().size()==1);
+        searchDTO.setMatrizDeRiesgo(riesgoService.getMatrizDeRiesgo());
         mav.addObject("searchDTO", searchDTO);
         return mav;
     }

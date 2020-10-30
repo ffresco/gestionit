@@ -1,0 +1,46 @@
+		<div class="col-sm-3 sidenav">
+			<div th:replace="fragments ::navbarside_report"></div> <!-- Menu Lateral  -->  
+		</div>
+			<!-- Contenido principal 9 columnas -->
+			<div class="col-sm-9">
+
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading"><h2>Mapa de Riesgo</h2></div>
+							<div class="panel-body">
+							
+							<table style="width:100%" border="1">
+							<tr >
+								<th class="text-center" colspan="1">Probabilidad</th>
+								<th class="text-center" colspan="5" align="center"> Impacto</th>
+							</tr>
+							<tr>
+							    <td align="right"></td>
+								<td align="center">Insignificante </td>
+								<td align="center">Menor </td>
+								<td align="center">Moderado </td>
+								<td align="center">Mayor </td>
+								<td align="center">Significativo </td>
+							</tr>
+							<tr th:each="probabilidades : ${dto.mapaDeRiesgo}">
+								<td th:text="${dto.getProbabilidad(probabilidades.key)}" ></td>
+			   					<td th:bgcolor="${dto.getColor(probabilidades.key,1)}" align="center" th:text="${probabilidades.value.get(1)==0?'':probabilidades.value.get(1)}"></td>
+			   					<td th:bgcolor="${dto.getColor(probabilidades.key,2)}" align="center" th:text="${probabilidades.value.get(2)==0?'':probabilidades.value.get(2)}"></td>
+			   					<td th:bgcolor="${dto.getColor(probabilidades.key,3)}" align="center" th:text="${probabilidades.value.get(3)==0?'':probabilidades.value.get(3)}"></td>
+			   					<td th:bgcolor="${dto.getColor(probabilidades.key,4)}" align="center" th:text="${probabilidades.value.get(4)==0?'':probabilidades.value.get(4)}"></td>
+			   					<td th:bgcolor="${dto.getColor(probabilidades.key,5)}" align="center" th:text="${probabilidades.value.get(5)==0?'':probabilidades.value.get(5)}"></td>
+			   					
+							</tr>
+							</table>
+									
+							
+							
+							
+								
+							</div>
+						</div>
+					</div>
+		
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+	

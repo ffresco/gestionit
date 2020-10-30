@@ -60,6 +60,7 @@
             -->
             <li><a href="#" onClick="cargarContenido('/riesgos/');return false;">Riesgos</a></li>
             <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
+            <li><a href="#" onClick="cargarContenido('/reportes/');return false;">Reportes</a></li>
             
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -140,8 +141,7 @@
   <div th:fragment="navbarside_report">
       <legend>Busqueda  </legend>
       <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#1">Reporte 1</a></li>
-        <li><a href="#2">Reporte 2</a></li>
+        <li class="active"><a href="" onClick="cargarContenido('/reportes/mapaDeRiesgo');return false;">Mapa de Riesgo</a></li>
       </ul>
       <br>
    </div>   
