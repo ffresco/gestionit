@@ -8,15 +8,29 @@ package com.gestionit.base.controller;
 
 
 
+import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +48,8 @@ import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.service.RiesgoService;
 import com.gestionit.base.service.UserService;
 import com.gestionit.base.utils.FormatUtils;
+import com.gestionit.base.utils.RiesgoExcelExporter;
+import com.ibm.icu.util.GregorianCalendar;
 
 
 /**
@@ -200,6 +216,27 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         LOGGER.info("DTO a ver "+dto);
         return new ModelAndView("riesgo_view", "riesgoDTO", dto);
 	}
+	
+	@GetMapping("/export/excel")
+	public void exportToExcel(HttpServletResponse response) throws IOException {
+
+		response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(GregorianCalendar.getInstance().getTime());
+         
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+         
+        List<Riesgo> riesgos = riesgoService.findAll();
+         
+        RiesgoExcelExporter excelExporter = new RiesgoExcelExporter(riesgos);
+         
+        excelExporter.export(response);    
+
+	}  
+	
+	 
 	
 	@ModelAttribute("dataMaster")
 	public DataMaster getDataMaster() {
