@@ -60,6 +60,7 @@
             -->
             <li><a href="#" onClick="cargarContenido('/riesgos/');return false;">Riesgos</a></li>
             <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
+            <li><a href="#" onClick="cargarContenido('/proyectos/');return false;">Proyectos</a></li>
             <li><a href="#" onClick="cargarContenido('/reportes/');return false;">Reportes</a></li>
             
           </ul>
@@ -516,6 +517,63 @@
 </form>
 </div>
 <!-- Fin menu lateral Riesgos Auditoria busqueda -->
+
+<!-- Menu lateral Proyectos -->
+<div th:fragment="navbarside_proyectos">
+<form class="" th:action="@{/proyectos/search}" th:object="${searchDTO}" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Busqueda</legend>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="idOperacion">Numero</label>
+  <div class="">
+    <input id="codigoFormulario" th:field="*{id}" type="search"  class="form-control input-md">    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="numDoc">Objetivo</label>
+  <div class="">
+    <input id="responsable" th:field="*{objetivo}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="numDoc">Alcance</label>
+  <div class="">
+    <input id="responsable" th:field="*{objetivo}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="origenAmenaza">Costo Total Aproximado</label>
+  <div class="">
+    <input id="origenAmenaza" th:field="*{costoTotal}" type="search"  onkeydown="upperCaseF(this)" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+
+<!-- Button -->
+<div class="form-group">
+
+  <div class="">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Buscar</button>
+    <button type="reset" id="singlebutton"  class="btn btn-default" >Limpiar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+<!-- Fin Menu lateral Proyectos -->
 
 
 <footer class="container-fluid">

@@ -1,5 +1,7 @@
 package com.gestionit.base.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,11 +19,16 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @Entity
 @Table(name="riesgo_inherente_valor")
 @Audited
-public class RiesgoInherenteValor  {
+public class RiesgoInherenteValor  implements Serializable{
 	
 
 	
-	   @Id
+	   /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5359936869051717478L;
+
+	@Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    @Column(name="id")
 	    private Long id;
