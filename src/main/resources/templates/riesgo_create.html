@@ -55,12 +55,13 @@ and open the template in the editor.
 									<input type="hidden" th:field="*{riesgo.usuarioCreador}">
 									<fieldset>
 
-										<input type="hidden"  th:field="*{riesgo.id}">	
+										
 										
 											<!-- Input Hiden -->
-	
-											<input id="residualValor"   th:field="*{riesgo.riesgoResidualValor.valor}" 
-											 type="hidden"  class="form-control input-md" tabIndex="-1">
+											<input type="hidden"  th:field="*{riesgo.id}">	
+											<input type="hidden"  th:field="*{riesgo.riesgoInherenteValor.valor}"  >
+											<input type="hidden" th:field="*{riesgo.riesgoResidualValor.valor}"   >
+											<input type="hidden"  th:field="*{proyectoCopy}" >
 											 
 										<!-- Text input-->
 										<div class="col-sm-1 form-group">
@@ -75,7 +76,7 @@ and open the template in the editor.
 										<div class="col-sm-2 form-group">
 											<label class=" control-label" for="tipoOp">Origen Amenaza</label>											
 											<div class="">
-												<select id="origenAmenaza" th:field="*{origenAmenaza}" required class="form-control" onchange="form_submit()" >
+												<select id="origenAmenaza" th:field="*{origenAmenaza}" required class="form-control" onkeydown="form_submit()" onchange="form_submit()" >
 													<option value=""></option>
 													<option th:each="origenAmenaza : ${dataMaster.origenAmenazas}" 
 												th:value="${origenAmenaza.id}" th:text="${origenAmenaza.origen}">  </option>
@@ -101,7 +102,7 @@ and open the template in the editor.
 									<div class="col-sm-4 form-group">
 										<label class="control-label" for="descripcion">Descripcion Amenaza</label>
 										<div class="">                     
-											<textarea class="form-control" id="descripcion" required th:field="*{riesgo.descripcion}"  onchange ="enableSaveButton()"></textarea>
+											<textarea class="form-control" id="descripcion" required th:field="*{riesgo.descripcion}"  onkeypress ="enableSaveButton()"></textarea>
 										</div>
 									</div>
 										
@@ -148,15 +149,6 @@ and open the template in the editor.
 											</select>
 										</div>
 									</div>
-									<!-- Input -->
-									<div class="col-sm-3 form-group">
-											<label class="control-label" for="tipoCambio">Riesgo Inherente Valor</label>
-											<div class="">
-											<input id="inherenteValor" readonly  th:field="*{riesgo.riesgoInherenteValor.valor}" 
-											 type="number"  class="form-control input-md" tabIndex="-1">
-										</div>
-									</div>
-
 
 									<!-- Select Basic -->
 									<div class="col-sm-3 form-group">
@@ -171,12 +163,25 @@ and open the template in the editor.
 										</div>
 									</div>
 									
+									<!-- Select Basic -->
+									<div class="col-sm-3 form-group">
+											<label class="control-label" for="proyectoLabel">Proyecto Asociado</label>
+											<div class="">
+												<select id="proyecto"  th:field="*{proyecto}" onchange ="enableSaveButton()"
+												class="form-control" >
+													<option value="0"></option>
+													<option th:each="proyecto : ${dataMaster.proyectos}" 
+												th:value="${proyecto.id}" th:text="${proyecto.id}">  </option>
+											</select>
+										</div>
+									</div>
+									
 										<!-- Text Area-->
 								<div class="col-sm-6 form-group">
 									<label class="control-label" for="descripcion">Salvaguarda
 										Descripcion</label>
 									<div class="">
-										<textarea class="form-control" id="salvaguardaDesc" required onchange ="enableSaveButton()"
+										<textarea class="form-control" id="salvaguardaDesc" required onkeypress ="enableSaveButton()"
 											th:field="*{riesgo.salvaguarda.descripcion}"></textarea>
 									</div>
 								</div>

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.gestionit.base.domain.Proyecto;
+import com.gestionit.base.domain.Riesgo;
 
 public class ProyectoDTO {
 	
@@ -13,11 +14,24 @@ public class ProyectoDTO {
 	
 	private String fechaFin;
 	
+	private Riesgo riesgo;
+	
+	
 	
 	public ProyectoDTO() {
 		super();
 	}
 
+	
+	public Riesgo getRiesgo() {
+		return riesgo;
+	}
+
+	public void setRiesgo(Riesgo riesgo) {
+		this.riesgo = riesgo;
+	}
+
+	
 	public String getFechaInicio() {
 		return fechaInicio;
 	}

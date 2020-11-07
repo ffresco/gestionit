@@ -2,6 +2,7 @@ package com.gestionit.base.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -48,7 +52,7 @@ public class Proyecto implements Serializable {
 	private LocalDate fechaFin;
 	
 	@Column(name="costo_estimado")
-	private Float costoEstimado;
+	private Double costoEstimado;
 	
 	@Column(name="recursos_tecnicos")
 	private String recursosTecnicos;
@@ -58,17 +62,29 @@ public class Proyecto implements Serializable {
 	
 	@Column(name="alcance")
 	private String alcance;
+
 	
-	@OneToOne
-	@JoinColumn(name="fk_riesgo_asociado")
-	private Riesgo riesgo;
+	@ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(
+            name = "proyecto_riesgo",
+            joinColumns = {@JoinColumn(name = "proyecto_id")},
+            inverseJoinColumns = {@JoinColumn(name = "riesog_id")}
+    )
+	private List<Riesgo> riesgos;
 	
-    public Riesgo getRiesgo() {
-		return riesgo;
+    
+	
+	
+	
+	public List<Riesgo> getRiesgos() {
+		return riesgos;
 	}
 
-	public void setRiesgo(Riesgo riesgo) {
-		this.riesgo = riesgo;
+	public void setRiesgo(List<Riesgo> riesgos) {
+		this.riesgos = riesgos;
 	}
 
 
@@ -108,11 +124,11 @@ public class Proyecto implements Serializable {
 	}
 
 
-	public Float getCostoEstimado() {
+	public Double getCostoEstimado() {
 		return costoEstimado;
 	}
 
-	public void setCostoEstimado(Float costoEstimado) {
+	public void setCostoEstimado(Double costoEstimado) {
 		this.costoEstimado = costoEstimado;
 	}
 

@@ -83,7 +83,7 @@ and open the template in the editor.
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="txtCotizacionCmp">Costo Estimado</label>  
 									<div class="col-md-4">
-										<input id="costoEstimado" th:field="*{proyecto.costoEstimado}" required name="txtCcostoTotal" type="number"  placeholder="costo total" class="form-control input-md" required="">
+										<input  th:field="*{proyecto.costoEstimado}" required name="txtCcostoTotal" step=".01" type="number"  placeholder="costo total" class="form-control input-md" required>
 
 									</div>
 								</div>
@@ -110,7 +110,7 @@ and open the template in the editor.
 									<div class="form-group">
 											<label class="col-md-4  control-label" for="salvaguardaValor">Riesgo Asociado</label>
 											<div class="col-md-4">
-												<select id="riesgoAsociado"  th:field="*{proyecto.riesgo}" 
+												<select id="riesgoAsociado"  th:field="*{riesgo}" 
 												class="form-control" >
 													<option value=""></option>
 													<option th:each="riesgo : ${dataMaster.riesgos}" 

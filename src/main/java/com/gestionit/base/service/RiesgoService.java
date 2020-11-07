@@ -6,13 +6,14 @@
 package com.gestionit.base.service;
 
 import com.gestionit.base.domain.MyRevision;
+import com.gestionit.base.domain.Proyecto;
 import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.RiesgoAuditDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
+import com.gestionit.base.repository.ProyectoRepository;
 import com.gestionit.base.repository.RiesgoRepository;
 
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,9 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
@@ -39,20 +38,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class RiesgoService implements BasicService<Riesgo>{
     
     private RiesgoRepository riesgoRepo;
+    private ProyectoRepository proyectoRepo;
+
     
     private AuditReader reader;
 
 
     @Autowired
-    public RiesgoService(RiesgoRepository riesgoRepo, AuditReader reader) {
+    public RiesgoService(RiesgoRepository riesgoRepo, AuditReader reader, ProyectoRepository proyectoRepo) {
         this.riesgoRepo = riesgoRepo;
         this.reader = reader;
-
+        this.proyectoRepo = proyectoRepo;
         
     }
 
     @Override
+    @Transactional
     public void delete(Riesgo entity) {
+    	for (Iterator<Proyecto> iterator = entity.getProyectos().iterator(); iterator.hasNext();) {
+			Proyecto proyecto = (Proyecto) iterator.next();
+			proyecto.getRiesgos().remove(entity);
+			proyectoRepo.save(proyecto);
+		}
     	riesgoRepo.delete(entity);
     }
 
@@ -64,7 +71,7 @@ public class RiesgoService implements BasicService<Riesgo>{
     @Transactional
     @Override
     public Riesgo saveOrUpdate(Riesgo entity) {
-
+    	
         Riesgo riesgo = riesgoRepo.save(entity);
         System.out.println("Riesgo Gravado" + riesgo);
         return riesgo;
@@ -80,8 +87,11 @@ public class RiesgoService implements BasicService<Riesgo>{
     	String filtro = searchDTO.getFiltro();
     	if(filtro==null || filtro.equals("Todos")) {
     		return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
-    	}else {
-    		return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable(),filtro.equals("Aprobados"));
+    	}else if (filtro.equals("FaltaProyecto")) {
+    		return (List<Riesgo>) riesgoRepo.findByValoresLikeSinProyecto(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
+		} else {
+			return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable(),filtro.equals("Aprobados"));
+    		
     	}
         
     }   

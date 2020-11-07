@@ -35,4 +35,11 @@ public interface RiesgoRepository extends CrudRepository<Riesgo,Long>{
 	            + "and upper(r.amenaza.origen.origen) like ?2% and upper(r.responsable) like ?3% and ((r.fechaAprobacion is null and ?4=false ) or (r.fechaAprobacion is not null and ?4=true  )) ")
 	    List<Riesgo> findByValoresLike(Long codigo,
 	            String tipoAmenza,String responsable, Boolean aprobado);
+	   
+	   
+
+	   @Query("select r from Riesgo r where ( r.id = ?1 or ?1 is null) "
+	            + "and upper(r.amenaza.origen.origen) like ?2% and upper(r.responsable) like ?3% and r.riesgoResidualValor.riesgoResidual.valor > 3 and r.proyectos is empty")
+	    List<Riesgo> findByValoresLikeSinProyecto(Long codigo,
+	            String tipoAmenza,String responsable);
 }

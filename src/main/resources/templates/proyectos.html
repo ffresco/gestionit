@@ -55,8 +55,7 @@ and open the template in the editor.
 									<td th:text="${#temporals.format(proyecto.fechaInicio, 'dd/MM/yyyy')}"></td>
 									<td th:text="${#temporals.format(proyecto.fechaFin, 'dd/MM/yyyy')}"></td>
 									<td th:text="${proyecto.costoEstimado}"></td>
-									<td th:text="${proyecto.riesgo.id}"></td>
-		
+									<td th:text="${not #lists.isEmpty(proyecto.riesgos) ? proyecto.riesgos[0]?.id : ''}"></td> <!-- Asumo que solo tiene un proyecto asociado -->
 									<td>
 										<div class="btn-group pull-right">
 											

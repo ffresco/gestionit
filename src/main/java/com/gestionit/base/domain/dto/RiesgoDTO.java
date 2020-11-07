@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.gestionit.base.domain.Amenaza;
 import com.gestionit.base.domain.OrigenAmenaza;
+import com.gestionit.base.domain.Proyecto;
 import com.gestionit.base.domain.Riesgo;
 
 /**
@@ -40,11 +41,43 @@ public class RiesgoDTO {
     
     private boolean aprobacion; //indica si se habilita el boton de aprobacion.
     
+    private Proyecto proyecto;
+    
+    private Proyecto proyectoCopy; //guardo una copia del proyecto original
+    
 
+
+
+
+	public RiesgoDTO() {
+		
+	}
     
-    
-    
+
+
+	public Proyecto getProyectoCopy() {
+		return proyectoCopy;
+	}
+
+
+
+	public void setProyectoCopy(Proyecto proyectoCopy) {
+		this.proyectoCopy = proyectoCopy;
+	}
+
+
   
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+
+
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
+		this.proyectoCopy = proyecto;
+	}
+
+
 	public String getFirstDay() {
 		return LocalDateTime.now().minusMonths(2).format(DateTimeFormatter.ISO_LOCAL_DATE);
 	}
@@ -78,11 +111,6 @@ public class RiesgoDTO {
 
 	public RiesgoDTO(Riesgo riesgoAEditar) {
 		this.riesgo = riesgoAEditar;
-	}
-
-
-	public RiesgoDTO() {
-		
 	}
 
 

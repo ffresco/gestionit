@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,13 +39,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
 import com.gestionit.base.domain.Amenaza;
+import com.gestionit.base.domain.Proyecto;
 import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.User;
+import com.gestionit.base.domain.dto.ProyectoDTO;
 import com.gestionit.base.domain.dto.RiesgoDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoResidualRepo;
+import com.gestionit.base.service.ProyectoService;
 import com.gestionit.base.service.RiesgoService;
 import com.gestionit.base.service.UserService;
 import com.gestionit.base.utils.FormatUtils;
@@ -67,16 +71,19 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
     private RiesgoResidualRepo riesgoResiRepo;
     private AmenzaRepository amenazaRepo;
     private UserService userService;
+    private ProyectoService proyectoService;
 
     @Autowired
     public RiesgoController(RiesgoService riesgoService, DataMaster dataMaster, RiesgoInherenteRepo riesgoinheRepo,
-    		RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, UserService userService) {
+    		RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, UserService userService,
+    		ProyectoService proyectoService) {
         this.riesgoService = riesgoService;
         this.dataMaster = dataMaster;
         this.riesgoinheRepo = riesgoinheRepo;
         this.riesgoResiRepo = riesgoResiRepo;
         this.amenazaRepo = amenazaRepo;
         this.userService = userService;
+        this.proyectoService = proyectoService;
 
     }
 
@@ -109,6 +116,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	        Riesgo riesgo = new Riesgo();
 	        riesgoDTO.setFechaAnalisis(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
 	        riesgoDTO.setRiesgo(riesgo);
+	        List<Proyecto> proyectos = new ArrayList<Proyecto>();
+	        riesgoDTO.getRiesgo().setProyectos(proyectos);
 	        LOGGER.info("Cree el siguiente dto para operar : " + riesgoDTO);
 
 
@@ -127,6 +136,26 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 		if(riesgoDTO.getRiesgo().getId()==null) {
 			riesgoDTO.getRiesgo().setUsuarioCreador(userService.getCurrentUser());
 		}
+		List<Proyecto> proyectos = new ArrayList<Proyecto>();
+		riesgoDTO.getRiesgo().setProyectos(proyectos);
+		if(riesgoDTO.getProyecto()!=null) {
+			//Asumo que solo puede tener asignado un solo proyecto
+			if(riesgoDTO.getProyecto().getRiesgos().isEmpty()) {
+				riesgoDTO.getProyecto().getRiesgos().add(riesgoDTO.getRiesgo());
+			}
+			else {
+				riesgoDTO.getProyecto().getRiesgos().set(0,riesgoDTO.getRiesgo());
+			}
+			proyectoService.saveOrUpdate(riesgoDTO.getProyecto());
+		}else {
+			if(riesgoDTO.getProyectoCopy()!=null) {//si tiene proyecto asociado lo elimino, asumo que solo tiene uno
+				riesgoDTO.getProyectoCopy().getRiesgos().clear();
+				proyectoService.saveOrUpdate(riesgoDTO.getProyectoCopy());
+				riesgoDTO.setProyectoCopy(null);;
+			}
+		}
+		
+		
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
 		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
 		//Si hay un solo usuario o el usuario es distinto del creador dejo que el mismo lo apruebe
@@ -195,6 +224,10 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         if(riesgoAEditar.getAmenaza()!=null) {
         	dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
         	dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
+        }
+        //asumo que tiene asignado un solo proyecto
+        if(!riesgoAEditar.getProyectos().isEmpty()) {
+        	dto.setProyecto(riesgoAEditar.getProyectos().get(0));
         }
         //habilito la aprobacion si hay un solo usuario o es distinto al que lo creo
         dto.setAprobacion(userService.getAllUsers().size()==1 || !userService.isCurrentUser(riesgoAEditar.getUsuarioCreador()));

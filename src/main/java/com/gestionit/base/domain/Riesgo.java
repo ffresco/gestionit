@@ -7,6 +7,7 @@ package com.gestionit.base.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -106,10 +108,24 @@ public class Riesgo implements Serializable{
     
     @Column(name="fecha_aprobacion")    
     private LocalDate fechaAprobacion;
+    
+
+    @ManyToMany(mappedBy = "riesgos")
+    private List<Proyecto> proyectos;
 
  
 
-    public LocalDate getFechaAprobacion() {
+    public List<Proyecto> getProyectos() {
+		return proyectos;
+	}
+
+
+	public void setProyectos(List<Proyecto> proyectos) {
+		this.proyectos = proyectos;
+	}
+
+
+	public LocalDate getFechaAprobacion() {
 		return fechaAprobacion;
 	}
 

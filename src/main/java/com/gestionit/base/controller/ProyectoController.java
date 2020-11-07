@@ -14,6 +14,8 @@ package com.gestionit.base.controller;
 
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +29,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
 import com.gestionit.base.domain.Proyecto;
-
+import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.ProyectoDTO;
 import com.gestionit.base.domain.dto.ProyectoSearchDTO;
+import com.gestionit.base.domain.dto.RiesgoAuditDTO;
 import com.gestionit.base.service.ProyectoService;
 import com.gestionit.base.utils.FormatUtils;
 
@@ -76,7 +79,6 @@ public class ProyectoController implements CrudControllerInterface<ProyectoSearc
 
 	        //Genero el DTO
 	        ProyectoDTO proyectoDTO = new ProyectoDTO(new Proyecto());
-
 	        LOGGER.info("Cree el siguiente dto para operar : " + proyectoDTO);
 
 	        //Preparo el moddel and view
@@ -92,6 +94,13 @@ public class ProyectoController implements CrudControllerInterface<ProyectoSearc
 	   ModelAndView mav = new ModelAndView("proyecto_create");
 	   proyectoDTO.getProyecto().setFechaFin(FormatUtils.getFormatedLocalDate(proyectoDTO.getFechaFin()));
 	   proyectoDTO.getProyecto().setFechaInicio(FormatUtils.getFormatedLocalDate(proyectoDTO.getFechaInicio()));
+	   List<Riesgo> riesgos = new ArrayList<Riesgo>();
+	   proyectoDTO.getProyecto().setRiesgo(riesgos);
+	   if(proyectoDTO.getRiesgo()!=null) {
+		   //Asumo que el proyecto tiene asociado solo un riesgo
+		   proyectoDTO.getProyecto().getRiesgos().add(proyectoDTO.getRiesgo());
+	   }
+
 	   proyectoDTO.setProyecto(proyectoService.saveOrUpdate(proyectoDTO.getProyecto()));
         mav.addObject("proyectoDTO", proyectoDTO);
         return mav;
@@ -119,6 +128,11 @@ public class ProyectoController implements CrudControllerInterface<ProyectoSearc
         ProyectoDTO dto = new ProyectoDTO(proyectoAEditar);
         dto.setFechaFin(proyectoAEditar.getFechaFin().format(DateTimeFormatter.ISO_LOCAL_DATE));
         dto.setFechaInicio(proyectoAEditar.getFechaInicio().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        //Asumo que los proyectos tienen asociado solo un riesgo
+        if(!proyectoAEditar.getRiesgos().isEmpty()) {
+        	dto.setRiesgo(proyectoAEditar.getRiesgos().get(0));
+        }
+        
         //habilito la aprobacion si hay un solo usuario o es distinto al que lo creo
 
         LOGGER.info("DTO a editar "+dto);
