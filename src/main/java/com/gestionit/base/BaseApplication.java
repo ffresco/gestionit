@@ -5,10 +5,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 
 @SpringBootApplication
+//@ImportResource(value="classpath:/hsql_cfg.xml")
 public class BaseApplication implements CommandLineRunner {
 
     @Bean
