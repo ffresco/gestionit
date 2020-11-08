@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -112,8 +113,12 @@ public class AppDemoData {
     	if(createUpdateDatabase.equals("create-drop")) {
 
     		//usuarios
-    		User fer =ur.save(new User("ffresco@gd","1",Role.ADMIN));
-    		User rodri =ur.save(new User("mulo@mulo.com", "1", Role.USER));
+                BCryptPasswordEncoder encriptador = new BCryptPasswordEncoder();
+    		String passwordEncode = encriptador.encode("1");
+                System.out.println("password encriptada " + passwordEncode);
+                
+                User fer =ur.save(new User("ffresco@gd",passwordEncode,Role.ADMIN));
+    		User rodri =ur.save(new User("mulo@mulo.com", passwordEncode, Role.USER));
     		ur.save(new User("ffresco@gmail.com", "1", Role.ADMIN));
     		User cin= ur.save(new User("czinna@clg.com.ar","1",Role.ADMIN));        
 
