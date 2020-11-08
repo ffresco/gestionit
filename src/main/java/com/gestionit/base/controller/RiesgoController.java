@@ -157,7 +157,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 		
 		
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
-		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
+		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenIdOrderByTipoAsc(riesgoDTO.getOrigenAmenaza().getId()));
 		//Si hay un solo usuario o el usuario es distinto del creador dejo que el mismo lo apruebe
 		riesgoDTO.setAprobacion(userService.getAllUsers().size()==1 || !isTheSameUser(riesgoDTO.getRiesgo().getUsuarioCreador()) );
         ModelAndView mav = new ModelAndView("riesgo_create");
@@ -185,7 +185,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         
         if(riesgoDTO.getOrigenAmenaza()!=null &&
         		riesgoDTO.getOrigenAmenaza().getId()!=null	) {
-        	 riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
+        	 riesgoDTO.setAmenazas(amenazaRepo.findByOrigenIdOrderByTipoAsc(riesgoDTO.getOrigenAmenaza().getId()));
         }
         mav.addObject("riesgoDTO", riesgoDTO);
         return mav;
@@ -200,7 +200,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 		riesgoDTO.getRiesgo().setUsuarioAuditor(userService.getCurrentUser());
 		riesgoDTO.getRiesgo().setFechaAnalisis(FormatUtils.getFormatedLocalDate(riesgoDTO.getFechaAnalisis()));
 		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
-		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenId(riesgoDTO.getOrigenAmenaza().getId()));
+		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenIdOrderByTipoAsc(riesgoDTO.getOrigenAmenaza().getId()));
 		riesgoDTO.setAprobacion(false);
         ModelAndView mav = new ModelAndView("riesgo_view");
         mav.addObject("riesgoDTO", riesgoDTO);
@@ -223,7 +223,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         dto.setFechaAnalisis(riesgoAEditar.getFechaAnalisis().format(DateTimeFormatter.ISO_LOCAL_DATE));
         if(riesgoAEditar.getAmenaza()!=null) {
         	dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
-        	dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
+        	dto.setAmenazas(amenazaRepo.findByOrigenIdOrderByTipoAsc(dto.getRiesgo().getAmenaza().getOrigen().getId()));
         }
         //asumo que tiene asignado un solo proyecto
         if(!riesgoAEditar.getProyectos().isEmpty()) {
@@ -244,7 +244,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         dto.setFechaAnalisis(riesgoAEditar.getFechaAnalisis().format(DateTimeFormatter.ISO_LOCAL_DATE));
         if(riesgoAEditar.getAmenaza()!=null) {
         	dto.setOrigenAmenaza(riesgoAEditar.getAmenaza().getOrigen());
-        	dto.setAmenazas(amenazaRepo.findByOrigenId(dto.getRiesgo().getAmenaza().getOrigen().getId()));
+        	dto.setAmenazas(amenazaRepo.findByOrigenIdOrderByTipoAsc(dto.getRiesgo().getAmenaza().getOrigen().getId()));
         }
         LOGGER.info("DTO a ver "+dto);
         return new ModelAndView("riesgo_view", "riesgoDTO", dto);

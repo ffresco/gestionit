@@ -192,7 +192,7 @@ public class DataMaster {
         this.probabilidadesOcurrencias = (List<ProbalidadOcurrencia>) proOcuRepo.findAll();
         this.riesgosInherentes = (List<RiesgoInherente>) riesgoInheRepo.findAll();
         this.riesgosResiduales = (List<RiesgoResidual>) riesgoResiRepo.findAll();
-        this.amenazas = (List<Amenaza>) amenazaRepo.findByOrigenId(1l);
+        this.amenazas = (List<Amenaza>) amenazaRepo.findByOrigenIdOrderByTipoAsc(1l);
         this.origenAmenazas = (List<OrigenAmenaza>) origenAmenazaRepo.findAll();
         this.tiposSalvaguarda = (List<SalvaguardaTipo>) salvaTipoRepo.findAll();
         

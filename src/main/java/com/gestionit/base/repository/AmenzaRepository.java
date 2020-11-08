@@ -13,6 +13,6 @@ import com.gestionit.base.domain.Amenaza;
 public interface AmenzaRepository extends CrudRepository<Amenaza, Long> {
 
      
-    List<Amenaza> findByOrigenId(Long id);
+    List<Amenaza> findByOrigenIdOrderByTipoAsc(Long id);
 
 }
