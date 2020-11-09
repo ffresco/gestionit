@@ -131,7 +131,7 @@ and open the template in the editor.
 												<select id="impacto" th:field="*{riesgo.impacto}"  class="form-control" onchange="form_submit()" required>
 													<option value=""></option>
 													<option th:each="riesgoImpacto : ${dataMaster.impactos}" 
-												th:value="${riesgoImpacto.id}" th:text="${riesgoImpacto.calificacion}">  </option>
+												th:value="${riesgoImpacto.id}" th:text="${riesgoImpacto.impactoMonetario}">  </option>
 												</select>
 											</div>
 										</div>
