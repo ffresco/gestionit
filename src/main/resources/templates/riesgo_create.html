@@ -49,7 +49,7 @@ and open the template in the editor.
 			
 					<div class="panel-group">
 						<div class="panel panel-default">
-							<div class="panel-heading"><h4 th:text="${''}">Clinente: XXXX DOC: XXX</h4></div>
+							<div class="panel-heading"><h4 th:text="${''}">Cliente: XXXX DOC: XXX</h4></div>
 								<form th:object="${riesgoDTO}" th:action="@{/riesgos/save}"  method="POST" id="riesgoForm" onsubmit="return validation()" ><!--Formulario operacion-->
 									<!-- Form Name -->
 									<input type="hidden" th:field="*{riesgo.usuarioCreador}">

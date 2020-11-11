@@ -32,7 +32,6 @@ import com.gestionit.base.domain.Proyecto;
 import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.ProyectoDTO;
 import com.gestionit.base.domain.dto.ProyectoSearchDTO;
-import com.gestionit.base.domain.dto.RiesgoAuditDTO;
 import com.gestionit.base.service.ProyectoService;
 import com.gestionit.base.utils.FormatUtils;
 

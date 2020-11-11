@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		
+
+			<!-- Contenido principal full screen por ahora sin menu lateral -->
+			<div class="col-sm-12">				
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading row">
+								<div class="col-sm-2"><h2>Eventos</h2></div>
+								<div class="col-sm-4">
+									  <div class="input-group">
+									  <input id="txtSearch" type="search" class="form-control" onkeyup="filterTable(0,this)" placeholder="Buscar por riesgo">
+									  <span class="input-group-btn">
+									    <button class="btn btn-default" type="button" tabindex="-1">
+									      <span class="glyphicon glyphicon-search"></span>
+									    </button>
+									  </span>
+									 </div>
+								</div>
+
+								<div class="col-sm-6"><a class="btn btn-sm btn-success" th:href="@{/eventos/create}" >Nuevo Evento</a></div>	
+							</div>
+							<div class="panel-body">
+									<table class="table table-responsive table-sm table-striped table-hover table-bordered" id="searchTable">
+										<thead class="bg-success">
+											<tr>
+												<th>Nro de Riesgo</th>
+												<th>Fecha</th>
+												<th>Descripcion</th>
+												
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="evento : ${eventos}">
+												<td th:text="${evento.riesgo.id}"></td>
+												<td th:text="${#temporals.format(evento.fecha, 'dd-MM-yyyy')}"></td>							
+												<td th:text="${evento.descripcion}"></td>
+												<td>	
+													<div class="btn-group pull-right">
+														<a class="btn btn-sm btn-primary" th:href="@{/eventos/edit/{id}(id=${evento.id})}" >Editar</a>	
+													</div>
+												</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+
+							
+						</div>
+					</div>		
+			</div> <!-- Fin Contenido principal 12 columnas -->
+</div>
+</body>
+</html>

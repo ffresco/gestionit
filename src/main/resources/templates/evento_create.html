@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result"  class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			 
+
+			<!-- Contenido principal full page -->
+			<div class="col-sm-12">
+				
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4>Evento</h4>
+					</div>
+					<div class="panel-body">
+				
+
+	    <!--<iframe name="formFrame" th:src="@{/cotizaciones/save}" frameborder="0" style="display:none"></iframe>--> 
+							<form class="form-horizontal" method="POST" th:action="@{/eventos/save}" th:object="${eventoDTO}" >
+							<fieldset>
+
+								<!-- Form Name -->
+								<legend>Nuevo Evento</legend>
+
+								<input id="id" th:field="*{evento.id}" type="hidden"/>
+										<!-- Select Basic -->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="numeroDeRiesgo">Numero de Riesgo</label>											
+											<div class="col-md-4">
+												<select id="riesgo" required th:field="*{evento.riesgo}"  class="form-control"  >
+													<option value=""></option>
+													<option  th:each="riesgo : ${dataMaster.riesgos}" 
+												th:value="${riesgo.id}" th:text="${riesgo.id}">  </option>
+												</select>
+											</div>
+                                        </div>
+										
+									<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtFecha">Fecha</label>  
+									<div class="col-md-4">
+										<input id="fechaI" name="fechaI" th:field="*{fecha}" th:min="*{today}"  required="required" type="date" placeholder="fecha Inicio" class="form-control input-md">
+
+									</div>
+								</div>		
+								
+								<!-- Textarea -->
+									<div class="form-group">
+										<label class="col-md-4  control-label" for="descripcion">Descripcion</label>
+										<div class="col-md-4">                     
+											<textarea class="form-control" id="descripcion" required="required" th:field="*{evento.descripcion}"  ></textarea>
+										</div>
+									</div>
+
+										
+								<!-- Button (Double) -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="btnGuardar"></label>
+									<div class="col-md-4">
+										<button id="btnGuardar" name="guardar" class="btn btn-success" type="submit">Guardar</button>
+										<a href="#" onClick="cargarContenido('/eventos/');return false;" class="btn btn-danger">Cancelar</a>
+										
+									</div>
+								</div>
+
+							</fieldset>
+						</form>
+	
+		
+						 </div>
+						</div>
+					</div>
+
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila contine menuj lateral 3 col,  principal 9 col -->
+		
+
+	</div>	<!-- fin contenedor de pagina-->
+
+</body>
+</html>
