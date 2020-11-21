@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -35,11 +36,13 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator) {
+    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.userCreateFormValidator = userCreateFormValidator;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @InitBinder("form") //restringe la aplicacion del init binder solo al atributo form 
@@ -69,6 +72,7 @@ public class UserController {
             return "user_create";
         }
         try {
+        	form.setPassword(bCryptPasswordEncoder.encode(form.getPassword()));
             userService.create(form);
         } catch (Exception e) {
             bindingResult.reject("email.exists", "Email already exists");

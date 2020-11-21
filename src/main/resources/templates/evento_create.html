@@ -93,7 +93,9 @@ and open the template in the editor.
 									<div class="col-md-4">
 										<button id="btnGuardar" name="guardar" class="btn btn-success" disabled type="submit">Guardar</button>
 										<a href="#" onClick="cargarContenido('/eventos/');return false;" class="btn btn-danger">Cancelar</a>
-										
+										<span th:if="*{evento.id!=null}">
+								               <a class="btn btn-success" th:href="@{/proyectos/create}"  id="nuevo" >Nuevo</a>
+										</span>
 									</div>
 								</div>
 
