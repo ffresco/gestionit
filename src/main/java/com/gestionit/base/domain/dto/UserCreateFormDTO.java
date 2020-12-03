@@ -6,6 +6,8 @@
 package com.gestionit.base.domain.dto;
 
 import com.gestionit.base.domain.Role;
+import com.gestionit.base.domain.User;
+
 import javax.validation.constraints.NotNull;
 
 
@@ -14,7 +16,9 @@ import javax.validation.constraints.NotNull;
  * @author fafre
  */
 public class UserCreateFormDTO {
-    @NotNull
+    
+
+	@NotNull
     private String email="";
     
     @NotNull
@@ -25,8 +29,22 @@ public class UserCreateFormDTO {
     
 
     private Role role = Role.USER;
+    
+    public UserCreateFormDTO() {
+		super();
+	
+	}
+    
 
-    public String getEmail() {
+    public UserCreateFormDTO(User user) {
+		super();
+		this.email = user.getEmail();
+		this.password = user.getPasswordHash();
+		this.passwordRepeated = user.getPasswordHash();
+		this.role = user.getRole();
+	}
+
+	public String getEmail() {
         return email;
     }
 

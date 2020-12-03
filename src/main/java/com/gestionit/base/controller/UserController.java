@@ -5,12 +5,22 @@
  */
 package com.gestionit.base.controller;
 
+
+import com.gestionit.base.domain.Parametro;
+import com.gestionit.base.domain.SesionCaja;
+import com.gestionit.base.domain.User;
+import com.gestionit.base.domain.dto.EventoDTO;
 import com.gestionit.base.domain.dto.UserCreateFormDTO;
 import com.gestionit.base.service.UserService;
 import com.gestionit.base.domain.validator.UserCreateFormValidator;
+import com.gestionit.base.repository.SesionCajaRepo;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +47,53 @@ public class UserController {
     private final UserService userService;
     private final UserCreateFormValidator userCreateFormValidator;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final SesionCajaRepo sesionCajaRepo;
+ 
 
     @Autowired
-    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserController(UserService userService, UserCreateFormValidator userCreateFormValidator, BCryptPasswordEncoder bCryptPasswordEncoder, 
+    		SesionCajaRepo sesionCajaRepo) {
         this.userService = userService;
         this.userCreateFormValidator = userCreateFormValidator;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.sesionCajaRepo = sesionCajaRepo;
+    
+
+
     }
 
     @InitBinder("form") //restringe la aplicacion del init binder solo al atributo form 
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCreateFormValidator);
+    }
+    
+    @RequestMapping("/usuarios")
+    public ModelAndView getUsersPage() {
+        LOGGER.debug("Getting users page");
+        List<SesionCaja> cajas = (List<SesionCaja>) sesionCajaRepo.findAll();
+        List<User> users = (List<User>) userService.getAllUsers();
+        List<SesionCaja> resultante = new ArrayList<>();
+        boolean exist;
+        for (User user : users) {
+            exist = existUser(cajas, user);
+            if (!exist) {
+                SesionCaja nuevaSC = new SesionCaja(user, new Parametro("-SIN CAJA-", ""), LocalDateTime.now(), LocalDateTime.now());
+                resultante.add(nuevaSC);
+            }
+
+        }
+        resultante.addAll(cajas);
+        return new ModelAndView("users", "users", resultante);
+    }
+
+    private boolean existUser(List<SesionCaja> cajas, User user) {
+        boolean exist = false;
+        for (SesionCaja sc : cajas) {
+            if (sc.getUser().getId().equals(user.getId())) {
+                exist = true;
+            }
+        }
+        return exist;
     }
 
  
@@ -71,14 +117,22 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "user_create";
         }
+        User user;
         try {
         	form.setPassword(bCryptPasswordEncoder.encode(form.getPassword()));
-            userService.create(form);
+            user = userService.create(form);
         } catch (Exception e) {
             bindingResult.reject("email.exists", "Email already exists");
             return "user_create";
         }
-        return "redirect:/users";
+        return "redirect:/users/edit/"+user.getId();
+    }
+    
+    @RequestMapping(value = "/users/edit/{id}")
+    public ModelAndView edit(@PathVariable Long id) {
+        LOGGER.debug("--Entre a edit User Controller--");
+        UserCreateFormDTO userDTO = new UserCreateFormDTO(userService.getUserById(id).get());
+        return new ModelAndView("user_create", "form", userDTO);
     }
 
 }

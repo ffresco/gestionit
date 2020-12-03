@@ -8,7 +8,7 @@
 					<div class= "panel-heading row">
 
 						<div class="col-sm-6"><h2>Usuarios</h2></div>
-						<div class="col-sm-3"><a class="btn btn-sm btn-success" th:href="@{/users/create}" >Nuevo</a></div>					
+						<div class="col-sm-3"><a class="btn btn-sm btn-success" th:href="@{/user/create}" >Nuevo</a></div>					
 					</div>	
 					<div class="panel-body"><!--dentro del panel body va mi contenido-->
 
@@ -26,18 +26,17 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="sc : ${users}">
-										<td th:text="${sc.user.email}"></td>
-										<td th:text="${sc.user.role}"></td>
-										<td th:text="${sc.caja.valor}"></td>
-										<td th:text="${#temporals.format(sc.inicioSesion, 'dd/MMM/yyyy HH:mm:ss')}"> </td>
+									<tr th:each="user : ${users}">
+										<td th:text="${user.user.email}"></td>
+										<td th:text="${user.user.role}"></td>
+										<td th:text="${user.caja.valor}"></td>
+										<td th:text="${#temporals.format(user.inicioSesion, 'dd/MMM/yyyy HH:mm:ss')}"> </td>
 										<!--<td th:text="${cotizacion.monedaBase}"></td>-->									
 										<td>
-										<!--
 										<div class="btn-group pull-right">
-											<a class="btn btn-sm btn-primary" th:href="@{/users/edit/{id}(id=${user.id})}" >Editar</a>
+											<a class="btn btn-sm btn-primary" th:href="@{/users/edit/{id}(id=${user.user.id})}" >Editar</a>
 										</div>
-										-->
+									
 									</td>
 								</tr>
 							</tbody>
