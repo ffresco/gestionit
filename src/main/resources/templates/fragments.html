@@ -62,6 +62,7 @@
             <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
             <li><a href="#" onClick="cargarContenido('/proyectos/');return false;">Proyectos</a></li>
             <li><a href="#" onClick="cargarContenido('/eventos/');return false;">Eventos</a></li>
+            <li><a href="#" onClick="cargarContenido('/activos_fisicos/');return false;">Activos</a></li> 
             <li><a href="#" onClick="cargarContenido('/reportes/');return false;">Reportes</a></li>
             
           </ul>
@@ -549,7 +550,7 @@
 <div class="form-group">
   <label class=" control-label" for="numDoc">Alcance</label>
   <div class="">
-    <input id="responsable" th:field="*{objetivo}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    <input id="responsable" th:field="*{alcance}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
     
   </div>
 </div>
@@ -576,6 +577,57 @@
 </form>
 </div>
 <!-- Fin Menu lateral Proyectos -->
+
+
+<!-- Menu lateral Activos -->
+<div th:fragment="navbarside_activos_fisicos">
+<form class="" th:action="@{/activos_fisicos/search}" th:object="${searchDTO}" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Busqueda</legend>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="codigo">Codigo</label>
+  <div class="">
+    <input id="codigoActivos" th:field="*{codigo}" type="search"  class="form-control input-md">    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="numDoc">Nombre</label>
+  <div class="">
+    <input id="nombre" th:field="*{nombre}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="propietrio">Propietario</label>
+  <div class="">
+    <input id="propietario" th:field="*{propietario}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+
+<!-- Button -->
+<div class="form-group">
+
+  <div class="">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Buscar</button>
+    <button type="reset" id="singlebutton"  class="btn btn-default" >Limpiar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+<!-- Fin Menu lateral Activos -->
+
 
 
 <footer class="container-fluid">

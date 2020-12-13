@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+<style type="text/css" media="screen">
+
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px; /* half width of the spinner gif */
+    margin-top: -50px; /* half height of the spinner gif */
+    text-align:center;
+    z-index:1234;
+    overflow: auto;
+    width: 100px; /* width of the spinner gif */
+    height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+}
+
+
+</style>
+
+
+</head>
+<body>
+  <div id="spinner" class="spinner" style="display:none;">
+   			 <img id="img-spinner" src="/img/spinner.gif" alt="Loading"/>
+	</div>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result"  class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			 
+
+			<!-- Contenido principal full page -->
+			<div class="col-sm-12">
+				
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4>Activos Fisicos</<h2></h2></div>
+					</div>
+					<div class="panel-body">
+					   
+							<form class="form-horizontal" method="POST" th:action="@{/activos_fisicos/save}" th:object="${activoFisicoDTO}" onsubmit="return validation()">
+							<fieldset>
+
+								<!-- Form Name -->
+								<legend>Nuevo Activo</legend>
+
+								<input id="id" th:field="*{activoFisico.id}" type="hidden">
+
+								
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtCotizacionVta">Nombre del Activo</label>  
+									<div class="col-md-4">
+										<input id="nombreActivo" th:field="*{activoFisico.nombre}" name="nombreActivo" type="text" required="required" class="form-control input-md" >
+
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtFecha">Fecha de Clasificacion</label>  
+									<div class="col-md-4">
+										<input id="fecha" name="fecha" th:field="*{fechaClasificacion}" type="date" placeholder="fecha clasificacion" class="form-control input-md">
+
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slcTipo">Tipo</label>
+									<div class="col-md-4">
+										<select id="tipo" th:field="*{activoFisico.tipo}"   class="form-control" required="required">
+											<option value=""></option>
+											<option th:each="tipoOption : ${dataMaster.tipoDeActivos}" 
+											th:value="${tipoOption.id}" th:text="${tipoOption.valor}">  </option>
+										</select>
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slctClasificacion">Clasificacion Informacion</label>
+									<div class="col-md-4">
+										<select id="clasificacion" th:field="*{activoFisico.clasificacionInformacion}"   class="form-control" required="required">
+											<option value=""></option>
+											<option th:each="clasificacionOption : ${dataMaster.clasificacionesInformacion}" 
+											th:value="${clasificacionOption.id}" th:text="${clasificacionOption.valor}">  </option>							
+										</select>
+									</div>
+								</div>
+
+								<!-- Select Basic -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slctUbicacion">Ubicacion</label>
+									<div class="col-md-4">
+										<select id="ubicacion" th:field="*{activoFisico.ubicacion}"  class="form-control" required="required" onchange="completarCodigo()">
+											<option value=""></option>
+											<option th:each="ubicacionOption : ${dataMaster.ubicaciones}" 
+											th:value="${ubicacionOption.id}" th:text="${ubicacionOption.valor}">  </option>
+
+										</select>
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtCodigo">Codigo</label>  
+									<div class="col-md-4">
+										<input id="codigo" th:field="*{activoFisico.codigo}" name="txtCodigo" type="text" disabled="disabled" class="form-control input-md" >
+
+									</div>
+								</div>
+
+
+								<!-- Text Area-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="textDescripcion">Descripcion</label>  
+									<div class="col-md-4">
+										<textarea class="form-control" id="descripcion" required 
+											th:field="*{activoFisico.descripcion}"></textarea>
+
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtComisionVta">Propietario</label>  
+									<div class="col-md-4">
+										<input id="propietario" th:field="*{activoFisico.propietario}" name="propietario" type="text" class="form-control input-md" required="required">
+
+									</div>
+								</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtCargo">Cargo del Propietario</label>  
+									<div class="col-md-4">
+										<input id="cargo" th:field="*{activoFisico.cargo}" name="cargo" type="text" class="form-control input-md" required="required">
+
+									</div>
+								</div>
+		
+							<!-- Button (Double) -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="btnGuardar"></label>
+									<div class="col-md-4">
+										<button id="btnGuardar" name="guardar" class="btn btn-success" type="submit">Guardar</button>
+										<a href="#" onClick="cargarContenido('/activos_fisicos/');return false;" class="btn btn-danger">Cancelar</a>
+										
+									</div>
+								</div>
+
+							</fieldset>
+						</form>
+
+					</div>
+				</div>
+				
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila ROW contine menuj lateral 3 col,  principal 9 col -->
+
+	</div>	<!-- fin contenedor de pagina-->
+	
+	<script>
+	
+	//solo la ejecuto cuando el submit viene del boton guardar por eso pregunto por el parametro #procesar
+	function validation() {
+	$('#spinner').show();
+	return true;
+	}
+	
+	function completarCodigo() {
+
+		
+			$('#codigo').val('d'+$('#ubicacion').val());
+		
+	}
+	</script>
+
+</body>
+</html>

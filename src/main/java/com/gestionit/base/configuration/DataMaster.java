@@ -19,6 +19,7 @@ import com.gestionit.base.domain.TopeCompra;
 import com.gestionit.base.repository.AmenzaRepository;
 import com.gestionit.base.repository.ImpactoRepo;
 import com.gestionit.base.repository.OrigenAmenzaRepository;
+import com.gestionit.base.repository.ParametroRepo;
 import com.gestionit.base.repository.ProbabilidadOcurrenciaRepo;
 import com.gestionit.base.repository.ProyectoRepository;
 import com.gestionit.base.repository.RiesgoInherenteRepo;
@@ -70,6 +71,12 @@ public class DataMaster {
     private List<OrigenAmenaza> origenAmenazas;
     private List<SalvaguardaTipo> tiposSalvaguarda;
     private List<Riesgo> riesgos;
+    
+    //para activos fisicos
+    private List<Parametro> tipoDeActivos;
+    private List<Parametro> sectores;
+    private List<Parametro> ubicaciones;
+    private List<Parametro> clasificacionesInformacion;
 
 
 	//creado para pantalla operaciones especialmente
@@ -113,7 +120,15 @@ public class DataMaster {
     public static final String MEDIO = "MEDIO";
     public static final String NO_ACEPTABLE = "NO ACEPTABLE";
     
-  //para Abm de amenaza de riesgo
+  //para Abm de activos
+    
+    public static final String TIPO_ACTIVOS = "TIPO_ACTIVOS";
+    public static final String SECTORES = "SECTORES";
+    public static final String UBICACIONES = "UBICACIONES";
+    public static final String CLASIFICACION_INFORMACION = "CLASIFICACION_INFORMACION";
+    
+    
+    //para Abm de amenaza de riesgo
     
     public static final String APLICACIONES = "APLICACIONES";
     public static final String HARDWARE = "HARDWARE";
@@ -126,7 +141,7 @@ public class DataMaster {
 
     
 
-    //private final ParametroRepo parametroRepo;
+    private final ParametroRepo parametroRepo;
     //private final TopesRepo topesRepo;
     
     private final ImpactoRepo impactoRepo;
@@ -150,7 +165,8 @@ public class DataMaster {
     @Autowired
     public DataMaster(ImpactoRepo impactoRepo, ProbabilidadOcurrenciaRepo proOcuRepo,
     		RiesgoInherenteRepo riesgoInheRepo, RiesgoResidualRepo riesgoResiRepo, AmenzaRepository amenazaRepo, OrigenAmenzaRepository origenAmenazaRepo,
-    		SalvaguardaTipoRepository salvaTipoRepo, RiesgoRepository riesgoRepo, ProyectoRepository proyectoRepo) {
+    		SalvaguardaTipoRepository salvaTipoRepo, RiesgoRepository riesgoRepo, ProyectoRepository proyectoRepo,
+    		ParametroRepo parametroRepo) {
         //this.parametroRepo = parametroRepo;
         //this.topesRepo = tr;
         this.impactoRepo = impactoRepo;
@@ -162,6 +178,7 @@ public class DataMaster {
         this.salvaTipoRepo = salvaTipoRepo;
         this.riesgoRepo = riesgoRepo;
         this.proyectoRepo = proyectoRepo;
+        this.parametroRepo = parametroRepo;
     }
 
 
@@ -186,6 +203,13 @@ public class DataMaster {
         this.actividadesLaborales=parametroRepo.findByTipo(ACTIVIDADES_LABORALES);
         this.paises=parametroRepo.findByTipo(PAISES);
         this.tiposDocumentos=parametroRepo.findByTipo(TIPOS_DOCUMENTOS);*/
+		
+		this.ubicaciones = parametroRepo.findByTipo(UBICACIONES);
+		this.sectores =    parametroRepo.findByTipo(SECTORES);
+		this.tipoDeActivos = parametroRepo.findByTipo(TIPO_ACTIVOS);
+		this.clasificacionesInformacion =    parametroRepo.findByTipo(CLASIFICACION_INFORMACION);
+		
+
         
         //Riesgo
         this.impactos = (List<Impacto>) impactoRepo.findAll();
@@ -396,5 +420,25 @@ public class DataMaster {
         }
 
     }
+
+
+	public List<Parametro> getClasificacionesInformacion() {
+		return clasificacionesInformacion;
+	}
+
+
+	public List<Parametro> getSectores() {
+		return sectores;
+	}
+
+
+	public List<Parametro> getUbicaciones() {
+		return ubicaciones;
+	}
+
+
+	public List<Parametro> getTipoDeActivos() {
+		return tipoDeActivos;
+	}
 
 }
