@@ -46,6 +46,8 @@ and open the template in the editor.
 									<th> Afecta Disponibilidad</th>
 									<th> Afecta Donfiabilidad</th>
 									<th> Afecta Integridad</th>
+									<th> Creador</th>
+									<th> Editor</th>
 									<th> Fecha</th>
 
 								</tr>
@@ -67,6 +69,8 @@ and open the template in the editor.
 									<td th:class="${audit.diffAfectaDisponibilidad}" th:text="${audit.riesgo.afectaDisponibilidadAsString}"></td>
 									<td th:class="${audit.diffAfectaConfidencialidad}" th:text="${audit.riesgo.afectaConfidencialidadAsString}"></td>
 									<td th:class="${audit.diffAfectaIntegridad}" th:text="${audit.riesgo.afectaIntegridadAsString}"></td>
+									<td th:text="${audit.riesgo.usuarioCreador.email}"></td>
+									<td th:text="${audit.revision.userName}"></td>
 									<td th:text="${#temporals.format(audit.revision.revisionDateTime, 'dd/MM/yyyy HH:mm')}"></td>
 								</tr>
 								
