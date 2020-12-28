@@ -5,11 +5,15 @@
  */
 package com.gestionit.base.service;
 
+import com.gestionit.base.domain.Activo;
+import com.gestionit.base.domain.ActivoFisico;
 import com.gestionit.base.domain.MyRevision;
 import com.gestionit.base.domain.Proyecto;
 import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.RiesgoAuditDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
+import com.gestionit.base.repository.ActivoFisicoRepository;
+import com.gestionit.base.repository.EventoRepository;
 import com.gestionit.base.repository.ProyectoRepository;
 import com.gestionit.base.repository.RiesgoRepository;
 
@@ -39,28 +43,40 @@ public class RiesgoService implements BasicService<Riesgo>{
     
     private RiesgoRepository riesgoRepo;
     private ProyectoRepository proyectoRepo;
+    private EventoService eventoService;
+    private ActivoFisicoRepository activoFisicoRepo;
 
     
     private AuditReader reader;
 
 
     @Autowired
-    public RiesgoService(RiesgoRepository riesgoRepo, AuditReader reader, ProyectoRepository proyectoRepo) {
+    public RiesgoService(RiesgoRepository riesgoRepo, AuditReader reader, ProyectoRepository proyectoRepo, EventoService eventoService, ActivoFisicoRepository activoFisicoRepo) {
         this.riesgoRepo = riesgoRepo;
         this.reader = reader;
         this.proyectoRepo = proyectoRepo;
+        this.eventoService = eventoService;
+        this.activoFisicoRepo = activoFisicoRepo;
         
     }
 
     @Override
     @Transactional
-    public void delete(Riesgo entity) {
-    	for (Iterator<Proyecto> iterator = entity.getProyectos().iterator(); iterator.hasNext();) {
+    public void delete(Riesgo riesgo) {
+    	for (Iterator<Proyecto> iterator = riesgo.getProyectos().iterator(); iterator.hasNext();) {
 			Proyecto proyecto = (Proyecto) iterator.next();
-			proyecto.getRiesgos().remove(entity);
+			proyecto.getRiesgos().remove(riesgo);
 			proyectoRepo.save(proyecto);
 		}
-    	riesgoRepo.delete(entity);
+    	
+    	for (Iterator<ActivoFisico> iterator = riesgo.getActivosFisicos().iterator(); iterator.hasNext();) {
+    		ActivoFisico activoFisico = (ActivoFisico) iterator.next();
+    		activoFisico.getRiesgos().remove(riesgo);
+    		activoFisicoRepo.save(activoFisico);
+		}
+    	//elimino los eventos asociados al riesgo
+    	eventoService.delete(riesgo);
+    	riesgoRepo.delete(riesgo);
     }
 
     @Override
@@ -166,21 +182,27 @@ public class RiesgoService implements BasicService<Riesgo>{
     }
     
     public List<RiesgoAuditDTO> getAllAuditForId(Long id) {
-    	List<RiesgoAuditDTO> result = new ArrayList<RiesgoAuditDTO>(); 
+    	List<RiesgoAuditDTO> audits = new ArrayList<RiesgoAuditDTO>(); 
     	AuditQuery query = reader.createQuery().forRevisionsOfEntity(
     			Riesgo.class, false, false);
     	query.add(AuditEntity.id().eq(id));
     	
     	   List<Object[]> results = query.getResultList();
+    	   Riesgo previousVersion = null;
    	    for (Object[] obj : results) {
    	        Riesgo riesgo = (Riesgo) obj[0];
    	        MyRevision dre = (MyRevision) obj[1];
    	        RevisionType revType = (RevisionType) obj[2];
    	        RiesgoAuditDTO auditDTO = new RiesgoAuditDTO(riesgo, dre, revType);
-   	        result.add(auditDTO);
-   	       
+   	       	auditDTO.setPreviousVersion(previousVersion);
+   	        audits.add(auditDTO);
+   	        previousVersion = riesgo;
    	    }
-   	    return result;
+   	    //Recorro nuevamente la lista de auditoria para poder agregarle al resultado la auditoria siguiente
+   	  for (int i = 1; i < results.size(); i++) {
+		audits.get(i-1).setNextVersion((Riesgo)results.get(i)[0]);
+    	}
+   	    return audits;
     }
     
    public Map<Integer, Map<Integer, Long>> getMatrizDeRiesgo() {

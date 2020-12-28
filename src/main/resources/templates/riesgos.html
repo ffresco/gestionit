@@ -77,11 +77,11 @@ and open the template in the editor.
  												<a class="btn btn-sm btn-primary" th:href="@{/riesgos/view/{id}(id=${riesgo.id})}">Ver</a> 
  											</span> 
  											<span th:if="${riesgo.usuarioAuditor == null }">
-												<a class="delete btn btn-sm btn-danger" data-toggle="modal" data-target="#myModalRiesgo">borrar</a>
+												<a class="delete btn btn-sm btn-danger" data-toggle="modal" th:attr="data-target='#myModalRiesgo'+${riesgo.id }">borrar</a>
 											</span>	
 										</div>
 											 <!-- The Modal -->
-								                <div class="modal fade" id="myModalRiesgo">
+								                <div class="modal fade" th:id="${'myModalRiesgo'+riesgo.id}">
 								                    <div class="modal-dialog">
 								                        <div class="modal-content">
 								

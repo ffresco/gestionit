@@ -14,8 +14,9 @@ package com.gestionit.base.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
 import com.gestionit.base.domain.ActivoFisico;
-
+import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.ActivoFisicoDTO;
 import com.gestionit.base.domain.dto.ActivoFisicoSearchDTO;
 
 import com.gestionit.base.service.ActivoFisicoService;
 import com.gestionit.base.utils.FormatUtils;
 
-import antlr.StringUtils;
 
 
 
@@ -83,10 +83,13 @@ public class ActivoFisicoController implements CrudControllerInterface<ActivoFis
 	        ActivoFisico activoFisico = new ActivoFisico();
 	        activoFisico.setFechaClasificacion(LocalDate.now());
 	        activoFisicoDTO.setFechaClasificacion(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
+	        List<Riesgo> riesgos = new ArrayList<Riesgo>();
+	        activoFisico.setRiesgos(riesgos);
 	        activoFisicoDTO.setActivoFisico(activoFisico);
 	        LOGGER.info("Cree el siguiente dto para operar : " + activoFisicoDTO);
 	        //Preparo el moddel and view
 	        ModelAndView mav = new ModelAndView("activo_fisico_create");
+	        mav.addObject("riesgos", riesgos);
 	        mav.addObject("activoFisicoDTO", activoFisicoDTO);
 	        return mav;
 	}
@@ -102,6 +105,7 @@ public class ActivoFisicoController implements CrudControllerInterface<ActivoFis
 	    activoFisicoDTO.getActivoFisico().setCodigo(codigo);
 	    activoFisicoService.saveOrUpdate(activoFisicoDTO.getActivoFisico());
 	    ModelAndView mav = new ModelAndView("activo_fisico_create");
+	    mav.addObject("riesgos", activoFisicoDTO.getActivoFisico().getRiesgos());
         mav.addObject("activoDTO", activoFisicoDTO);
         return mav;
 	}
@@ -127,8 +131,10 @@ public class ActivoFisicoController implements CrudControllerInterface<ActivoFis
         ActivoFisicoDTO activoFisicoDTO = new ActivoFisicoDTO();
         activoFisicoDTO.setActivoFisico(activoFisicoAEditar);
         activoFisicoDTO.setFechaClasificacion(activoFisicoAEditar.getFechaClasificacion().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        ModelAndView mav = new ModelAndView("activo_fisico_create", "activoFisicoDTO", activoFisicoDTO);
+        mav.addObject("riesgos", activoFisicoAEditar.getRiesgos());
         LOGGER.info("DTO a editar "+activoFisicoDTO);
-        return new ModelAndView("activo_fisico_create", "activoFisicoDTO", activoFisicoDTO);
+        return mav;
 	}
   
 

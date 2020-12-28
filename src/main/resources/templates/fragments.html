@@ -21,11 +21,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" href="/css/jquery-ui.min.css">
+    <link th:rel="stylesheet" th:href="@{css/bootstrap-select.css}" href="/css/bootstrap-select.css">
     <link th:href="@{/css/custom.css}"  rel="stylesheet" type="text/css">
     <script th:src="@{/js/jquery-1.11.1.min.js}" src="/js/jquery-1.11.1.min.js" ></script>
     <script th:src="@{/js/bootstrap.min.js}" src="/js/bootstrap.min.js"></script>
     <script th:src="@{/js/jquery-ui.min.js}" src="/js/jquery-ui.min.js"></script>
     <script th:src="@{/js/custom.js}" src="/js/custom.js"></script>
+     <script th:src="@{/js/bootstrap-select-min.js}" src="/js/bootstrap-select-min.js"></script>
+
 
 
   </div>
@@ -52,18 +55,19 @@
             <li><a href="#" onClick="cargarContenido('/juridicos/');return false;" data-toggle="tooltip" title="Clientes Juridicos">Clientes J</a></li>
             <li><a href="#" onClick="cargarContenido('/operaciones/');return false;">Operaciones</a></li> 
             <li><a href="#" onClick="cargarContenido('/reportes/');return false;">Reportes</a></li>
-            <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
+            <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria Riesgos</a></li>
             <li><a href="#" onClick="cargarContenido('/cajas/');return false;">Cajas</a></li>
             <li><a href="#" onClick="cargarContenido('/cotizaciones/');return false;">Cotizaciones</a></li>
             <li><a href="#" onClick="cargarContenido('/incidentes/');return false;">Incidentes</a></li> 
              -->
-             <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Usuarios</a></li>
+      
             <li><a href="#" onClick="cargarContenido('/riesgos/');return false;">Riesgos</a></li>
             <li><a href="#" onClick="cargarContenido('/auditoria/');return false;">Auditoria</a></li>
             <li><a href="#" onClick="cargarContenido('/proyectos/');return false;">Proyectos</a></li>
             <li><a href="#" onClick="cargarContenido('/eventos/');return false;">Eventos</a></li>
             <li><a href="#" onClick="cargarContenido('/activos_fisicos/');return false;">Activos</a></li> 
             <li><a href="#" onClick="cargarContenido('/reportes/');return false;">Reportes</a></li>
+            <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Seguridad</a></li>
             
           </ul>
           <ul class="nav navbar-nav navbar-right">

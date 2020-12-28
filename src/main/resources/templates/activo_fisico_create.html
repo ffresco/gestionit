@@ -148,6 +148,19 @@ and open the template in the editor.
 
 									</div>
 								</div>
+								
+								<!-- Select Multiple -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="slctUbicacion">Riesgos</label>
+									<div class="col-md-4">
+										<select id="riesgos" th:field="*{activoFisico.riesgos}" multiple="multiple" class="form-control"  >
+											<option th:each="riesgo : ${dataMaster.riesgos}" 
+											th:selected="${riesgos.contains(riesgo)}"
+											th:value="${riesgo.id}" th:text="${riesgo.id}">  </option>
+
+										</select>
+									</div>
+								</div>
 		
 							<!-- Button (Double) -->
 								<div class="form-group">
@@ -184,6 +197,21 @@ and open the template in the editor.
 		
 			$('#codigo').val('d'+$('#ubicacion').val());
 		
+	}
+	
+	window.onmousedown = function (e) {
+	    var el = e.target;
+	    if (el.tagName.toLowerCase() == 'option' && el.parentNode.hasAttribute('multiple')) {
+	        e.preventDefault();
+
+	        // toggle selection
+	        if (el.hasAttribute('selected')) el.removeAttribute('selected');
+	        else el.setAttribute('selected', '');
+
+	        // hack to correct buggy behavior
+	        var select = el.parentNode.cloneNode(true);
+	        el.parentNode.parentNode.replaceChild(select, el.parentNode);
+	    }
 	}
 	</script>
 

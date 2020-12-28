@@ -89,7 +89,7 @@ and open the template in the editor.
 										<div class="col-sm-3 form-group">
 											<label class=" control-label" for="tipoOp">Tipo Amenaza</label>											
 											<div class="">
-												<select id="tipoAmenaza" required th:field="*{riesgo.amenaza}"  class="form-control"  >
+												<select id="tipoAmenaza" required th:field="*{riesgo.amenaza}"  class="form-control"  onchange="enableSaveButton()">
 													<option value=""></option>
 													<option  th:each="amenaza : ${riesgoDTO.amenazas}" 
 												th:value="${amenaza.id}" th:text="${amenaza.tipo}">  </option>

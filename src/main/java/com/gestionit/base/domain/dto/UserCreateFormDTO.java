@@ -8,6 +8,7 @@ package com.gestionit.base.domain.dto;
 import com.gestionit.base.domain.Role;
 import com.gestionit.base.domain.User;
 
+
 import javax.validation.constraints.NotNull;
 
 
@@ -29,6 +30,8 @@ public class UserCreateFormDTO {
     
 
     private Role role = Role.USER;
+    
+    private String originalEmail;
     
     public UserCreateFormDTO() {
 		super();
@@ -75,8 +78,17 @@ public class UserCreateFormDTO {
     public void setRole(Role role) {
         this.role = role;
     }
+
+
+	public void setOriginalEmail(String originalEmail) {
+		this.originalEmail = originalEmail;
+		
+	}
     
-    
+	public String getOriginalEmail() {
+		return originalEmail;
+		
+	}
     
     
     

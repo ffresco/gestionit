@@ -9,14 +9,12 @@ package com.gestionit.base.controller;
 import com.gestionit.base.domain.Parametro;
 import com.gestionit.base.domain.SesionCaja;
 import com.gestionit.base.domain.User;
-import com.gestionit.base.domain.dto.EventoDTO;
 import com.gestionit.base.domain.dto.UserCreateFormDTO;
 import com.gestionit.base.service.UserService;
 import com.gestionit.base.domain.validator.UserCreateFormValidator;
 import com.gestionit.base.repository.SesionCajaRepo;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -132,6 +130,7 @@ public class UserController {
     public ModelAndView edit(@PathVariable Long id) {
         LOGGER.debug("--Entre a edit User Controller--");
         UserCreateFormDTO userDTO = new UserCreateFormDTO(userService.getUserById(id).get());
+        userDTO.setOriginalEmail(userDTO.getEmail());
         return new ModelAndView("user_create", "form", userDTO);
     }
 

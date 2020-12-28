@@ -25,4 +25,5 @@ public class RiesgoInherente extends ItemRiesgo  {
 	 */
 	private static final long serialVersionUID = -8818902459869876223L;
 
+
 }

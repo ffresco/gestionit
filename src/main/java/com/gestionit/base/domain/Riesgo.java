@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -112,11 +113,17 @@ public class Riesgo implements Serializable{
 
     @ManyToMany(mappedBy = "riesgos")
     private List<Proyecto> proyectos;
-
+    
+    @ManyToMany(mappedBy = "riesgos")
+	private List<ActivoFisico> activosFisicos;
  
 
     public List<Proyecto> getProyectos() {
 		return proyectos;
+	}
+    
+    public Proyecto getProyecto(){
+		return proyectos.get(0);
 	}
 
 
@@ -277,33 +284,35 @@ public class Riesgo implements Serializable{
 	public Boolean getAfectaConfidencialidad() {
 		return afectaConfidencialidad;
 	}
-
-
-
+	
+	public String getAfectaConfidencialidadAsString() {
+		return afectaConfidencialidad?"SI":"NO";
+	}
 
 	public void setAfectaConfidencialidad(Boolean afectaConfidencialidad) {
 		this.afectaConfidencialidad = afectaConfidencialidad;
 	}
 
 
-
-
 	public Boolean getAfectaIntegridad() {
 		return afectaIntegridad;
 	}
-
-
+	
+	public String getAfectaIntegridadAsString() {
+		return afectaIntegridad?"SI":"NO";
+	}
 
 
 	public void setAfectaIntegridad(Boolean afectaIntegridad) {
 		this.afectaIntegridad = afectaIntegridad;
 	}
 
-
-
-
 	public Boolean getAfectaDisponibilidad() {
 		return afectaDisponibilidad;
+	}
+
+	public String getAfectaDisponibilidadAsString() {
+		return afectaDisponibilidad?"SI":"NO";
 	}
 
 
@@ -375,6 +384,14 @@ public class Riesgo implements Serializable{
     public String toString() {
         return "Riesgo{" + "id=" + id + ", descripcion=" + descripcion + ", codigo=" + codigoRiesgo + ", codigo de Formulario=" + codigoFormulario + ",  Amenaza=" + amenaza + ", responsable=" + responsable +  "}";
     }
+
+	public List<ActivoFisico> getActivosFisicos() {
+		return activosFisicos;
+	}
+
+	public void setActivosFisicos(List<ActivoFisico> activosFisicos) {
+		this.activosFisicos = activosFisicos;
+	}
 
 
     

@@ -146,17 +146,20 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 			else {
 				riesgoDTO.getProyecto().getRiesgos().set(0,riesgoDTO.getRiesgo());
 			}
-			proyectoService.saveOrUpdate(riesgoDTO.getProyecto());
-		}else {
-			if(riesgoDTO.getProyectoCopy()!=null) {//si tiene proyecto asociado lo elimino, asumo que solo tiene uno
+			proyectoService.saveOrUpdate(riesgoDTO.getProyecto());//por cascada tambien se salva el Riesgo
+		}else {//Viene sin proyecto asociado
+			if(riesgoDTO.getProyectoCopy()!=null) {//si ya tenia proyecto asociado lo elimino, asumo que solo tiene uno
 				riesgoDTO.getProyectoCopy().getRiesgos().clear();
-				proyectoService.saveOrUpdate(riesgoDTO.getProyectoCopy());
-				riesgoDTO.setProyectoCopy(null);;
+				proyectoService.saveOrUpdate(riesgoDTO.getProyectoCopy()); //por cascade tambien se actualiza el riesgo
+				riesgoDTO.setProyectoCopy(null);
+				
+			}else {
+				riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo())); 
 			}
 		}
 		
 		
-		riesgoDTO.setRiesgo(riesgoService.saveOrUpdate(riesgoDTO.getRiesgo()));
+		
 		riesgoDTO.setAmenazas(amenazaRepo.findByOrigenIdOrderByTipoAsc(riesgoDTO.getOrigenAmenaza().getId()));
 		//Si hay un solo usuario o el usuario es distinto del creador dejo que el mismo lo apruebe
 		riesgoDTO.setAprobacion(userService.getAllUsers().size()==1 || !isTheSameUser(riesgoDTO.getRiesgo().getUsuarioCreador()) );

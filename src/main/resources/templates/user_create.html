@@ -28,7 +28,7 @@ and open the template in the editor.
 					<div class="panel-body">
 							<form class="form-horizontal" method="POST" th:action="@{/user/create}" th:object="${form}" >
 							<fieldset>
-
+							<input id="txtOriginalMail"  th:field="*{originalEmail}"  type="hidden" >
 								<!-- Form Name -->
 								<legend>Nueva Usuario</legend>
 								
@@ -56,20 +56,20 @@ and open the template in the editor.
 									<div class=" form-group ">
 										<label class="col-md-4 control-label" for="cajero">Password</label>
 										<div class="col-md-4">
-											<input id="txtPassword" th:field="*{password}" placeholder="" type="password" required="required" autocomplete="new-password" th:readOnly="${form.password != null and !#strings.isEmpty(form.password)}" 
+											<input id="password" th:field="*{password}" placeholder="" type="password" required="required" autocomplete="new-password" th:readOnly="${form.originalEmail != null and !#strings.isEmpty(form.originalEmail)}" 
 												 class="form-control input-md">
 										</div>
 									</div>	
-							
 								
 								<!-- Text input-->
 							
 									<div class=" form-group ">
 										<label class="col-md-4 control-label" for="cajero">Repetir Password</label>
 										<div class="col-md-4">
-											<input id="txtPassword" th:field="*{passwordRepeated}" placeholder="" type="password" required="required" th:readOnly="${form.passwordRepeated != null and !#strings.isEmpty(form.passwordRepeated)}"
+											<input id="PasswordRepeated" th:field="*{passwordRepeated}" placeholder="" type="password" required="required" th:readOnly="${form.originalEmail!= null and !#strings.isEmpty(form.originalEmail)}"
 												 class="form-control input-md">
 										</div>
+										
 									</div>	
 								
 								
@@ -79,7 +79,7 @@ and open the template in the editor.
 							     	<p th:errors="*{all}"> </p>
 							     </div>
 							     </div>
-								
+							     
 						<!-- Button (Double) -->
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="btnGuardar"></label>

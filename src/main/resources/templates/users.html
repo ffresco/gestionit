@@ -19,7 +19,6 @@
 									<tr>
 										<th> Usuario </th>
 										<th> Rol</th>
-										<th> Caja</th>
 										<th> Inicio Session</th>
 										<!--<th> Mnd Base</th>-->
 										<th></th>
@@ -29,7 +28,6 @@
 									<tr th:each="user : ${users}">
 										<td th:text="${user.user.email}"></td>
 										<td th:text="${user.user.role}"></td>
-										<td th:text="${user.caja.valor}"></td>
 										<td th:text="${#temporals.format(user.inicioSesion, 'dd/MMM/yyyy HH:mm:ss')}"> </td>
 										<!--<td th:text="${cotizacion.monedaBase}"></td>-->									
 										<td>
