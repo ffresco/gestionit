@@ -4,6 +4,9 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gestionit.base.domain.ActivoFisico;
@@ -57,6 +60,19 @@ public List<ActivoFisico> findAll() {
 public List<ActivoFisico> findAllContaining(ActivoFisicoSearchDTO searchDTO) {
 
 	return activoFisicoRepo.findAllContaining(searchDTO.getCodigo().toUpperCase(), searchDTO.getNombre().toUpperCase(), searchDTO.getPropietario().toUpperCase());
+}
+
+
+public Page<ActivoFisico> getPaginatedActivos(int pageNumber, int pageSize) {
+	final Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
+    return activoFisicoRepo.findAll(pageable);
+	
+}
+
+
+public Page<ActivoFisico> getPaginatedActivos(int pageNumber, int pageSize, ActivoFisicoSearchDTO searchDTO) {
+	final Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
+    return activoFisicoRepo.findAllContaining(searchDTO.getCodigo().toUpperCase(), searchDTO.getNombre().toUpperCase(), searchDTO.getPropietario().toUpperCase(), pageable);
 }
 
 }

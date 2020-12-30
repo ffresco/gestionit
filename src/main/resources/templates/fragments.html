@@ -391,7 +391,7 @@
 
 <!-- Menu lateral Operaciones Riesgo -->
 <div th:fragment="navbarside_riesgos">
-<form class="" th:action="@{/riesgos/search}" th:object="${searchDTO}" method="POST">
+<form class="" th:action="@{'/riesgos/search/'+${pageNumber}+'/'+${pageSize}}" th:object="${searchDTO}" method="POST">
 <fieldset>
 
 <!-- Form Name -->
@@ -585,7 +585,7 @@
 
 <!-- Menu lateral Activos -->
 <div th:fragment="navbarside_activos_fisicos">
-<form class="" th:action="@{/activos_fisicos/search}" th:object="${searchDTO}" method="POST">
+<form class="" th:action="@{'/activos_fisicos/search/'+${pageNumber}+'/'+${pageSize}}" th:object="${searchDTO}" method="POST">
 <fieldset>
 
 <!-- Form Name -->

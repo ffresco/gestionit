@@ -9,32 +9,28 @@ package com.gestionit.base.controller;
 
 
 import java.io.IOException;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.DateUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
@@ -42,7 +38,6 @@ import com.gestionit.base.domain.Amenaza;
 import com.gestionit.base.domain.Proyecto;
 import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.User;
-import com.gestionit.base.domain.dto.ProyectoDTO;
 import com.gestionit.base.domain.dto.RiesgoDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 import com.gestionit.base.repository.AmenzaRepository;
@@ -62,7 +57,7 @@ import com.ibm.icu.util.GregorianCalendar;
  */
 @Controller
 @RequestMapping(value="/riesgos")
-public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO,RiesgoDTO>{
+public class RiesgoController extends CrudControllerPaginationInterface<RiesgoSearchDTO,RiesgoDTO, Riesgo>{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RiesgoController.class);
     private RiesgoService riesgoService;
@@ -72,6 +67,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
     private AmenzaRepository amenazaRepo;
     private UserService userService;
     private ProyectoService proyectoService;
+    
+    
 
     @Autowired
     public RiesgoController(RiesgoService riesgoService, DataMaster dataMaster, RiesgoInherenteRepo riesgoinheRepo,
@@ -86,27 +83,38 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         this.proyectoService = proyectoService;
 
     }
-
+    
+    @RequestMapping(value = "/")
+    public String getMainPage(RiesgoSearchDTO searchDTO, BindingResult bindingResult) {
+    	return "redirect:/riesgos/paginated/" + getPageNumber() + "/" + getPageSize();
+    }
+    
     @Override
-    public ModelAndView getMainPage(RiesgoSearchDTO searchDTO, BindingResult bindingResult) {
+    @GetMapping(value = "/paginated/{page}/{page-size}")
+    public ModelAndView getMainPagePaginated(@PathVariable(name = "page") final int pageNumber,
+            @PathVariable(name = "page-size") final int pageSize,RiesgoSearchDTO searchDTO, BindingResult bindingResult) {
         ModelAndView mav = new ModelAndView("riesgos");
-        mav.addObject("riesgos", riesgoService.findAll());
+        final Page<Riesgo> paginatedRiesgos = riesgoService.getPaginatedRiesgos(pageNumber, pageSize);
         searchDTO.setCurrentUser(userService.getCurrentUser());
         searchDTO.setOnlyOneUser(userService.getAllUsers().size()==1);
         searchDTO.setMatrizDeRiesgo(riesgoService.getMatrizDeRiesgo());
-        mav.addObject("searchDTO", searchDTO);
+        mav.addObject("searchDTO", getResponseDto(paginatedRiesgos, pageNumber, searchDTO));
         return mav;
     }
 
-    @Override
-    public ModelAndView search(@ModelAttribute (value = "searchDTO") RiesgoSearchDTO searchDTO, 
+
+
+	@RequestMapping(value = "/search/{page}/{page-size}", method = RequestMethod.POST)
+    public ModelAndView search(@PathVariable(name = "page") final int pageNumber,
+            @PathVariable(name = "page-size") final int pageSize,@ModelAttribute (value = "searchDTO") RiesgoSearchDTO searchDTO, 
             BindingResult bindingResult) {
         LOGGER.debug("---Search------- con DTO :" + searchDTO);
         searchDTO.setCurrentUser(userService.getCurrentUser());
-        return new ModelAndView("riesgos", "riesgos", riesgoService.findAllContaining(searchDTO));
+        final Page<Riesgo> paginatedRiesgos = riesgoService.getPaginatedRiesgos(pageNumber, pageSize, searchDTO);
+        return new ModelAndView("riesgos", "searchDTO", getResponseDto(paginatedRiesgos, pageNumber, searchDTO));
     }
 
-	@Override
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView getCreatePage(RiesgoDTO objectDTO, BindingResult bindingResult) {
 		 LOGGER.debug("-------Le peuge a main page------------");
 
@@ -127,7 +135,7 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 	        return mav;
 	}
 
-	@Override
+
 	@RequestMapping(value = "/save", params = {"guardar"})
 	public ModelAndView save(RiesgoDTO riesgoDTO, BindingResult bindingResult) {
 		LOGGER.info("-----Entre al save de Riesgos------");
@@ -210,14 +218,17 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
         return mav;
     }
 
-	@Override
-	public ModelAndView delete(@PathVariable Long id) {
+
+   
+    @RequestMapping(value = "/delete/{id}")
+	public String delete(@PathVariable Long id) {
 		Riesgo riesgoABorrar = riesgoService.getById(id);
 		riesgoService.delete(riesgoABorrar);
-        return getMainPage(new RiesgoSearchDTO(), null);
+        return "redirect:/riesgos/paginated/" + DEFAULT_PAGE_NUMBER + "/" + DEFAULT_PAGE_SIZE;
 	}
 
-	@Override
+
+    @RequestMapping(value = "/edit/{id}")
 	public ModelAndView edit(@PathVariable Long id) {
         LOGGER.info("Estoy en edit este es el id " + id);
         Riesgo riesgoAEditar = riesgoService.getById(id);
@@ -279,6 +290,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 		System.out.println("--Me meti en el data master--");
 		return dataMaster;
 	}
+	
+
 	
 	@RequestMapping(value = "/audit/{id}")
     ModelAndView audit(@PathVariable Long id) {
@@ -403,5 +416,8 @@ public class RiesgoController implements CrudControllerInterface<RiesgoSearchDTO
 			}
 			
 		}
+
+
+	
 		
 }

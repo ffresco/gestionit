@@ -5,12 +5,13 @@
  */
 package com.gestionit.base.domain.dto;
 
+import com.gestionit.base.domain.ActivoFisico;
 
 /**
  *
  * @author cbova
  */
-public class ActivoFisicoSearchDTO {
+public class ActivoFisicoSearchDTO extends SearchDTO<ActivoFisico> {
     
     private String nombre;
     private String tipo;

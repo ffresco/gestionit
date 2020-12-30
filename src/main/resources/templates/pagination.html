@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <!-- Pagination control -->
+    <!-- Hardcoding the default page-size as 10. User can create a dropdown to select the different page-sizes. -->
+    
+
+    <div class="row" align="center">
+        <div th:if="${searchDTO.page['totalPages'] > 1}">
+        <!-- https://examples.javacodegeeks.com/spring-boot-pagination-with-thymeleaf-tutorial/
+			<div class="col-sm-3 form-group">
+                Elementos Totales: <h4 class="modal-title"  th:text="${searchDTO.page['totalPages']}" > </h4> 
+            </div>  -->
+            <div class="col-sm-3 form-group">
+            	<table>
+            	<tr>
+                <span th:each="i: ${#numbers.sequence(1, searchDTO.page['totalPages'])}">
+                
+                  <td>  
+                	  <a class="form-group" th:href="@{${contextPath}+'/paginated/' + ${i} + '/' + ${pageSize}}"
+                       th:if="${searchDTO.page['currentPage'] != i}"><h4 class="modal-title"  th:text="'&nbsp;'+${i}+'&nbsp;' " > </h4></a>
+               	     <span class="form-group" th:unless="${searchDTO.page['currentPage'] != i}"><h4 class="modal-title"  th:text="${i}" > </h4></span>
+               		 </span>
+                	<td>
+                </tr>	
+                </table>
+            </div>
+            
+            <div class="col-sm-3 form-group">
+                <a th:href="@{${contextPath}+'/paginated/' + ${searchDTO.page['currentPage'] + 1} +'/' + ${pageSize}}"
+                   th:if="${searchDTO.page['currentPage'] < searchDTO.page['totalPages']}">
+                    Siguiente
+                </a>
+                <span th:unless="${searchDTO.page['currentPage'] < searchDTO.page['totalPages']}">Siguiente</span>
+            </div>
+            <div class="col-sm-3 form-group">
+                <a th:href="@{${contextPath}+'/paginated/' + ${searchDTO.page['totalPages']} +'/' + ${pageSize}}"
+                   th:if="${searchDTO.page['currentPage'] < searchDTO.page['totalPages']}">
+                    Ultima
+                </a>
+                <span th:unless="${searchDTO.page['currentPage'] < searchDTO.page['totalPages']}">Ultima</span>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

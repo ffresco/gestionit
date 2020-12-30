@@ -5,15 +5,18 @@
  */
 package com.gestionit.base.domain.dto;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.User;
 
 /**
  *
  * @author cbova
  */
-public class RiesgoSearchDTO {
+public class RiesgoSearchDTO extends SearchDTO<Riesgo>{
     
     private String fechaAnalisis;
     private String responsable;
@@ -25,10 +28,11 @@ public class RiesgoSearchDTO {
 	private Long id;
 	private String filtro;
 	private Map<Integer, Map<Integer, Long>> matrizDeRiesgo;
+	private Map<String, Integer> page = new HashMap<>();
+	private List<Riesgo> riesgos;
 
 
-
-	public RiesgoSearchDTO() {
+	public RiesgoSearchDTO(){
     }
    
 	public Map<Integer, Map<Integer, Long>> getMatrizDeRiesgo() {
@@ -150,6 +154,22 @@ public class RiesgoSearchDTO {
 
 	public boolean isOnlyOneUser() {
 		return onlyOneUser;
+	}
+
+	public Map<String, Integer> getPage() {
+		return page;
+	}
+
+	public void setPage(Map<String, Integer> page) {
+		this.page = page;
+	}
+
+	public List<Riesgo> getRiesgos() {
+		return riesgos;
+	}
+
+	public void setRiesgos(List<Riesgo> riesgos) {
+		this.riesgos = riesgos;
 	}
 	
     

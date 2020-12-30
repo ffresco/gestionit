@@ -20,11 +20,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gestionit.base.configuration.DataMaster;
@@ -32,7 +35,6 @@ import com.gestionit.base.domain.ActivoFisico;
 import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.ActivoFisicoDTO;
 import com.gestionit.base.domain.dto.ActivoFisicoSearchDTO;
-
 import com.gestionit.base.service.ActivoFisicoService;
 import com.gestionit.base.utils.FormatUtils;
 
@@ -45,7 +47,7 @@ import com.gestionit.base.utils.FormatUtils;
  */
 @Controller
 @RequestMapping(value="/activos_fisicos")
-public class ActivoFisicoController implements CrudControllerInterface<ActivoFisicoSearchDTO,ActivoFisicoDTO>{
+public class ActivoFisicoController extends CrudControllerPaginationInterface<ActivoFisicoSearchDTO,ActivoFisicoDTO,ActivoFisico>{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ActivoFisicoController.class);
     private ActivoFisicoService activoFisicoService;
@@ -59,20 +61,33 @@ public class ActivoFisicoController implements CrudControllerInterface<ActivoFis
 
 
     }
-
+    
     @Override
-    public ModelAndView getMainPage(ActivoFisicoSearchDTO searchDTO, BindingResult bindingResult) {
-        ModelAndView mav = new ModelAndView("activos_fisicos");
-        mav.addObject("activosFisicos", activoFisicoService.findAll());
-        mav.addObject("searchDTO", searchDTO);
-        return mav;
+    public String getMainPage(ActivoFisicoSearchDTO searchDTO, BindingResult bindingResult) {
+        return "redirect:/activos_fisicos/paginated/" + getPageNumber() + "/" + getPageSize();
     }
+    
+    @Override
+    @GetMapping(value = "/paginated/{page}/{page-size}")
+	ModelAndView getMainPagePaginated( @PathVariable(name = "page") final int pageNumber,
+		    @PathVariable(name = "page-size") final int pageSize,@ModelAttribute ActivoFisicoSearchDTO searchDTO, BindingResult bindingResult) {
+    	ModelAndView mav = new ModelAndView("activos_fisicos");
+        mav.addObject("activosFisicos", activoFisicoService.findAll());
+        final Page<ActivoFisico> paginatedActivos = activoFisicoService.getPaginatedActivos(pageNumber, pageSize);
+        mav.addObject("searchDTO", getResponseDto(paginatedActivos, pageNumber, searchDTO));
+        
+        mav.addObject("searchDTO", searchDTO);
+		return mav;
+	}
 
     @Override
-    public ModelAndView search(@ModelAttribute (value = "searchDTO") ActivoFisicoSearchDTO searchDTO, 
+    @RequestMapping(value = "/search/{page}/{page-size}", method = RequestMethod.POST)
+    public  ModelAndView search(@PathVariable(name = "page") final int pageNumber,
+            @PathVariable(name = "page-size") final int pageSize,@ModelAttribute (value = "searchDTO") ActivoFisicoSearchDTO searchDTO, 
             BindingResult bindingResult) {
         LOGGER.debug("---Search------- con DTO :" + searchDTO);
-        return new ModelAndView("activos_fisicos", "activosFisicos", activoFisicoService.findAllContaining(searchDTO));
+        final Page<ActivoFisico> paginatedActivos = activoFisicoService.getPaginatedActivos(pageNumber, pageSize, searchDTO);
+        return new ModelAndView("activos_fisicos", "searchDTO", getResponseDto(paginatedActivos, pageNumber, searchDTO));
     }
 
 
@@ -118,10 +133,10 @@ public class ActivoFisicoController implements CrudControllerInterface<ActivoFis
 	}
 
 	@Override
-	public ModelAndView delete(@PathVariable Long id) {
+	public String delete(@PathVariable Long id) {
 		ActivoFisico activoFisicoABorrar = activoFisicoService.getById(id);
 		activoFisicoService.delete(activoFisicoABorrar);
-        return getMainPage(new ActivoFisicoSearchDTO(), null);
+		return "redirect:/activos_fisicos/paginated/" + DEFAULT_PAGE_NUMBER + "/" + DEFAULT_PAGE_SIZE;
 	}
 
 	@Override
@@ -143,6 +158,7 @@ public class ActivoFisicoController implements CrudControllerInterface<ActivoFis
 		System.out.println("--Me meti en el data master--");
 		return dataMaster;
 	}
+
 	
 
 	

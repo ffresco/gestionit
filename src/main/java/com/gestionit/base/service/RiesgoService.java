@@ -5,7 +5,6 @@
  */
 package com.gestionit.base.service;
 
-import com.gestionit.base.domain.Activo;
 import com.gestionit.base.domain.ActivoFisico;
 import com.gestionit.base.domain.MyRevision;
 import com.gestionit.base.domain.Proyecto;
@@ -13,7 +12,6 @@ import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.RiesgoAuditDTO;
 import com.gestionit.base.domain.dto.RiesgoSearchDTO;
 import com.gestionit.base.repository.ActivoFisicoRepository;
-import com.gestionit.base.repository.EventoRepository;
 import com.gestionit.base.repository.ProyectoRepository;
 import com.gestionit.base.repository.RiesgoRepository;
 
@@ -31,6 +29,9 @@ import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,6 +99,21 @@ public class RiesgoService implements BasicService<Riesgo>{
         return (List<Riesgo>) riesgoRepo.findAll();
     }   
  
+    
+    public long getRiesgosCount() {
+
+        return riesgoRepo.count();
+    }
+ 
+    public Page<Riesgo> getPaginatedRiesgos(final int pageNumber, final int pageSize) {
+        final Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
+        return riesgoRepo.findAll(pageable);
+    }
+    
+    public Page<Riesgo> getPaginatedRiesgos(final int pageNumber, final int pageSize, RiesgoSearchDTO searchDTO ) {
+        final Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
+        return this.findAllContaining(searchDTO, pageable);
+    }
 
     public List<Riesgo> findAllContaining(RiesgoSearchDTO searchDTO) {
     	String filtro = searchDTO.getFiltro();
@@ -107,6 +123,19 @@ public class RiesgoService implements BasicService<Riesgo>{
     		return (List<Riesgo>) riesgoRepo.findByValoresLikeSinProyecto(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable());
 		} else {
 			return (List<Riesgo>) riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable(),filtro.equals("Aprobados"));
+    		
+    	}
+        
+    }   
+    
+    public Page<Riesgo> findAllContaining(RiesgoSearchDTO searchDTO, Pageable pageable) {
+    	String filtro = searchDTO.getFiltro();
+    	if(filtro==null || filtro.equals("Todos")) {
+    		return  riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable(), pageable);
+    	}else if (filtro.equals("FaltaProyecto")) {
+    		return riesgoRepo.findByValoresLikeSinProyecto(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable(), pageable);
+		} else {
+			return riesgoRepo.findByValoresLike(searchDTO.getId(), searchDTO.getOrigenAmenaza(), searchDTO.getResponsable(),filtro.equals("Aprobados"), pageable);
     		
     	}
         
