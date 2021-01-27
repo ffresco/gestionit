@@ -27,7 +27,7 @@ public class RiesgoSearchDTO extends SearchDTO<Riesgo>{
 	private boolean onlyOneUser;
 	private Long id;
 	private String filtro;
-	private Map<Integer, Map<Integer, Long>> matrizDeRiesgo;
+	private Map<Integer, Map<Integer, List<Riesgo>>> matrizDeRiesgo;
 	private Map<String, Integer> page = new HashMap<>();
 	private List<Riesgo> riesgos;
 
@@ -35,13 +35,13 @@ public class RiesgoSearchDTO extends SearchDTO<Riesgo>{
 	public RiesgoSearchDTO(){
     }
    
-	public Map<Integer, Map<Integer, Long>> getMatrizDeRiesgo() {
+	public Map<Integer, Map<Integer, List<Riesgo>>> getMatrizDeRiesgo() {
 		return matrizDeRiesgo;
 	}
 
 
 
-	public void setMatrizDeRiesgo(Map<Integer, Map<Integer, Long>> matrizDeRiesgo) {
+	public void setMatrizDeRiesgo(Map<Integer, Map<Integer, List<Riesgo>>> matrizDeRiesgo) {
 		this.matrizDeRiesgo = matrizDeRiesgo;
 	}
 

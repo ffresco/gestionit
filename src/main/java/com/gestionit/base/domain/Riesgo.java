@@ -392,12 +392,16 @@ public class Riesgo implements Serializable{
 	public void setActivosFisicos(List<ActivoFisico> activosFisicos) {
 		this.activosFisicos = activosFisicos;
 	}
-
-
+	
+	public String getAmenazaStr() {
+		return   amenaza.getOrigen().getOrigen()+ " "+ amenaza.getTipo()+", Riesgo Residual: "+this.getRiesgoResidualValor().getValor() ;
+	}
     
-    
-
-   
-    
-    
+	public String getDescripcionLarga() {
+		return "Riesgo NRO: "+this.getId()+", Amenaza: "+getAmenazaStr();
+	}
+	
+	public String getDescripcionCorta() {
+		return "Riesgo NRO: "+this.getId()+", Amenaza: "+ amenaza.getOrigen().getOrigen()+ " "+ amenaza.getTipo();
+	}
 }

@@ -15,13 +15,17 @@ package com.gestionit.base.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -74,8 +78,7 @@ public class ActivoFisicoController extends CrudControllerPaginationInterface<Ac
     	ModelAndView mav = new ModelAndView("activos_fisicos");
         mav.addObject("activosFisicos", activoFisicoService.findAll());
         final Page<ActivoFisico> paginatedActivos = activoFisicoService.getPaginatedActivos(pageNumber, pageSize);
-        mav.addObject("searchDTO", getResponseDto(paginatedActivos, pageNumber, searchDTO));
-        
+        mav.addObject("searchDTO", getResponseDto(paginatedActivos, pageNumber, searchDTO)); 
         mav.addObject("searchDTO", searchDTO);
 		return mav;
 	}
@@ -102,7 +105,6 @@ public class ActivoFisicoController extends CrudControllerPaginationInterface<Ac
 	        activoFisico.setRiesgos(riesgos);
 	        activoFisicoDTO.setActivoFisico(activoFisico);
 	        LOGGER.info("Cree el siguiente dto para operar : " + activoFisicoDTO);
-	        //Preparo el moddel and view
 	        ModelAndView mav = new ModelAndView("activo_fisico_create");
 	        mav.addObject("riesgos", riesgos);
 	        mav.addObject("activoFisicoDTO", activoFisicoDTO);
@@ -118,6 +120,7 @@ public class ActivoFisicoController extends CrudControllerPaginationInterface<Ac
         //Completo el codigo del activo con el id que le asigno la base de datos
         String codigo = getCodigo(activoFisicoDTO.getActivoFisico());
 	    activoFisicoDTO.getActivoFisico().setCodigo(codigo);
+	    activoFisicoDTO.getActivoFisico().setRiesgoResidual(getRiesgoResidual(activoFisicoDTO.getActivoFisico()));
 	    activoFisicoService.saveOrUpdate(activoFisicoDTO.getActivoFisico());
 	    ModelAndView mav = new ModelAndView("activo_fisico_create");
 	    mav.addObject("riesgos", activoFisicoDTO.getActivoFisico().getRiesgos());
@@ -125,6 +128,19 @@ public class ActivoFisicoController extends CrudControllerPaginationInterface<Ac
         return mav;
 	}
 	
+
+
+	private Integer getRiesgoResidual(ActivoFisico activoFisico) {
+		Integer riesgoResidual = 0;
+		for (Iterator<Riesgo> iterator = activoFisico.getRiesgos().iterator(); iterator.hasNext();) {
+			Riesgo riesgo = (Riesgo) iterator.next();
+			if(riesgoResidual < riesgo.getRiesgoResidualValor().getValor() ) {
+				riesgoResidual = riesgo.getRiesgoResidualValor().getValor();
+			}
+
+		}
+		return riesgoResidual;
+	}
 
 
 	private String getCodigo(ActivoFisico activoFisico) {
@@ -146,7 +162,8 @@ public class ActivoFisicoController extends CrudControllerPaginationInterface<Ac
         ActivoFisicoDTO activoFisicoDTO = new ActivoFisicoDTO();
         activoFisicoDTO.setActivoFisico(activoFisicoAEditar);
         activoFisicoDTO.setFechaClasificacion(activoFisicoAEditar.getFechaClasificacion().format(DateTimeFormatter.ISO_LOCAL_DATE));
-        ModelAndView mav = new ModelAndView("activo_fisico_create", "activoFisicoDTO", activoFisicoDTO);
+        ModelAndView mav = new ModelAndView("activo_fisico_create");
+        mav.addObject("activoFisicoDTO", activoFisicoDTO);
         mav.addObject("riesgos", activoFisicoAEditar.getRiesgos());
         LOGGER.info("DTO a editar "+activoFisicoDTO);
         return mav;
@@ -159,8 +176,15 @@ public class ActivoFisicoController extends CrudControllerPaginationInterface<Ac
 		return dataMaster;
 	}
 
+	//https://stackoverflow.com/questions/48891551/thymeleaf-refresh-value-with-ajax
+	@RequestMapping(value="/riesgo_residual", method=RequestMethod.GET)
+	public String getRiesgoResidual(ModelMap map) {
+	    // TODO: retrieve the new value here so you can add it to model map
+	    map.addAttribute("riesgoResidual", 9);
+
+	    return "activo_fisico_create :: #riesgoResidual";
+	}
 	
 
-	
 		
 }

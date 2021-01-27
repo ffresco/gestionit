@@ -26,6 +26,7 @@ import com.gestionit.base.repository.RiesgoInherenteRepo;
 import com.gestionit.base.repository.RiesgoRepository;
 import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.repository.SalvaguardaTipoRepository;
+import com.gestionit.base.utils.KeyGenerator;
 
 import java.util.Iterator;
 import java.util.List;
@@ -439,6 +440,11 @@ public class DataMaster {
 
 	public List<Parametro> getTipoDeActivos() {
 		return tipoDeActivos;
+	}
+	
+	public String getComputerIdentifier() {
+		KeyGenerator generator = new KeyGenerator();
+		return KeyGenerator.getComputerIdentifier();
 	}
 
 }

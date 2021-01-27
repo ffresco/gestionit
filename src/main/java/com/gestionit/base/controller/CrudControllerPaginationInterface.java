@@ -16,14 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gestionit.base.domain.dto.RiesgoSearchDTO;
+
 import com.gestionit.base.domain.dto.SearchDTO;
 
 /**
  *
  * @author fafre
  * @param T1: un searhDTO el objeto que se usa para la busqueda
- * @param T2: representa a el modelo
+ * @param T2: un modelDTO el objeto que se usa para CRUD
+ * @param T3: un objecto que representa  el modelo
  * Example: Envio CotizacionSearchDTO y el Objeto Cotizacion
  */
 public abstract class CrudControllerPaginationInterface<T1 ,T2, T3> {

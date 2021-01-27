@@ -8,6 +8,7 @@ package com.gestionit.base.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +95,8 @@ public class ActivoFisico implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "riesgo_id")}
     )
     private List<Riesgo> riesgos;
+    
+    private Integer riesgoResidual;
 
 
 	public Long getId() {
@@ -209,6 +212,13 @@ public class ActivoFisico implements Serializable {
 	public void setRiesgos(List<Riesgo> riesgos) {
 		this.riesgos = riesgos;
 	} 
-    
-    
+
+    public Integer getRiesgoResidual() {
+    	return riesgoResidual;
+    }
+
+
+	public void setRiesgoResidual(Integer riesgoResidual) {
+		this.riesgoResidual = riesgoResidual;
+	}
 }

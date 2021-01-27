@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gestionit.base.domain.Proyecto;
+import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.ProyectoSearchDTO;
 import com.gestionit.base.repository.ProyectoRepository;
 
@@ -55,6 +56,15 @@ public class ProyectoService implements BasicService<Proyecto>{
 		return (List<Proyecto>) proyectoRepo.findAll();
 	}
 
+	@Transactional
+	public Proyecto addRiesgo(Proyecto proyecto, Riesgo riesgo) {
+		proyecto = this.getById(proyecto.getId());
+		proyecto.getRiesgos().clear();
+		proyecto.getRiesgos().add(riesgo);
+		
+		return this.saveOrUpdate(proyecto);
+		
+	}
 
 
 }

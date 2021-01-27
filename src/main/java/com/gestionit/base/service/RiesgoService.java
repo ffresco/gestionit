@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author fafre
+ * @author cbova
  */
 @Service
 public class RiesgoService implements BasicService<Riesgo>{
@@ -46,7 +46,7 @@ public class RiesgoService implements BasicService<Riesgo>{
     private ProyectoRepository proyectoRepo;
     private EventoService eventoService;
     private ActivoFisicoRepository activoFisicoRepo;
-
+    
     
     private AuditReader reader;
 
@@ -223,7 +223,7 @@ public class RiesgoService implements BasicService<Riesgo>{
    	        MyRevision dre = (MyRevision) obj[1];
    	        RevisionType revType = (RevisionType) obj[2];
    	        RiesgoAuditDTO auditDTO = new RiesgoAuditDTO(riesgo, dre, revType);
-   	       	auditDTO.setPreviousVersion(previousVersion);
+   	       	auditDTO.setPreviousVersion(previousVersion==null?riesgo:previousVersion); //si no tiene annterior seteo el mismo objeto
    	        audits.add(auditDTO);
    	        previousVersion = riesgo;
    	    }
@@ -234,31 +234,45 @@ public class RiesgoService implements BasicService<Riesgo>{
    	    return audits;
     }
     
-   public Map<Integer, Map<Integer, Long>> getMatrizDeRiesgo() {
-	   Map<Integer, Map<Integer, Long>> result = initMap();
+   public Map<Integer, Map<Integer, List<Riesgo>>> getMatrizDeRiesgo() {
+	   Map<Integer, Map<Integer, List<Riesgo>>> result = initMap();
 	  for (Iterator<Riesgo> iterator = this.findAll().iterator(); iterator.hasNext();) {
 		Riesgo riesgo = (Riesgo) iterator.next();
-		Map<Integer, Long> probabilidades = result.get(riesgo.getSalvaguarda().getProbabilidadFinal().getValor());
-		Long cant = probabilidades.get(riesgo.getImpacto().getValor());
-		probabilidades.put(riesgo.getImpacto().getValor(), cant+1);
+		Map<Integer, List<Riesgo>> probabilidades = result.get(riesgo.getSalvaguarda().getProbabilidadFinal().getValor());
+		List<Riesgo> riesgos = probabilidades.get(riesgo.getSalvaguarda().getImpactoFinal().getValor());
+		riesgos.add(riesgo);
+		probabilidades.put(riesgo.getSalvaguarda().getImpactoFinal().getValor(), riesgos);
 		result.put(riesgo.getSalvaguarda().getProbabilidadFinal().getValor(), probabilidades);
 	}
 	   return result;
 	   
    }
    
-   private Map<Integer, Map<Integer, Long>> initMap(){
-	   Map<Integer, Map<Integer, Long>> result = new LinkedHashMap<Integer, Map<Integer, Long>>();
+   @Transactional
+   public Riesgo removeProyectos(Long id) {
+	   Riesgo riesgo = this.getById(id);
+	   for (Proyecto proyecto : riesgo.getProyectos()) {
+		proyecto.getRiesgos().clear();
+		proyectoRepo.save(proyecto);
+	}
+	   return this.saveOrUpdate(riesgo);
+   }
+   
+   private Map<Integer, Map<Integer, List<Riesgo>>> initMap(){
+	   Map<Integer, Map<Integer, List<Riesgo>>> result = new LinkedHashMap<Integer, Map<Integer, List<Riesgo>>>();
 	   
 	   for (int i = 5; i > 0; i--) {
-		Map<Integer, Long> probabilidades = new HashMap<Integer, Long>();   
+		Map<Integer, List<Riesgo>> probabilidades = new HashMap<Integer, List<Riesgo>>();   
 		 for (int j = 0; j < 5; j++) {
-			 probabilidades.put(j+1, 0L);
+			 List<Riesgo> riesgos = new ArrayList<Riesgo>();
+			 probabilidades.put(j+1, riesgos);
 		 }
 		result.put(i, probabilidades);
 	}
 	   
 	   return result;
    }
+
+
     
 }

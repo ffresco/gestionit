@@ -64,7 +64,7 @@ and open the template in the editor.
 												<select id="riesgo" required onchange="enableSaveButton()" th:field="*{evento.riesgo}"  class="form-control"  >
 													<option value=""></option>
 													<option  th:each="riesgo : ${dataMaster.riesgos}" 
-												th:value="${riesgo.id}" th:text="${riesgo.id}">  </option>
+												th:value="${riesgo.id}" th:text="${riesgo.descripcionLarga}">  </option>
 												</select>
 											</div>
                                         </div>

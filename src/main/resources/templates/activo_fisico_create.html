@@ -47,7 +47,7 @@ and open the template in the editor.
 					</div>
 					<div class="panel-body">
 					   
-							<form class="form-horizontal" method="POST" th:action="@{/activos_fisicos/save}" th:object="${activoFisicoDTO}" onsubmit="return validation()">
+							<form class="form-horizontal" id="activoFisicoForm" method="POST" th:action="@{/activos_fisicos/save}" th:object="${activoFisicoDTO}" onsubmit="return validation()">
 							<fieldset>
 
 								<!-- Form Name -->
@@ -64,7 +64,7 @@ and open the template in the editor.
 
 									</div>
 								</div>
-
+								
 								<!-- Text input-->
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="txtFecha">Fecha de Clasificacion</label>  
@@ -102,7 +102,7 @@ and open the template in the editor.
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="slctUbicacion">Ubicacion</label>
 									<div class="col-md-4">
-										<select id="ubicacion" th:field="*{activoFisico.ubicacion}"  class="form-control" required="required" onchange="completarCodigo()">
+										<select id="ubicacion" th:field="*{activoFisico.ubicacion}"  class="form-control" required="required" onchange="completarCodigo(this)">
 											<option value=""></option>
 											<option th:each="ubicacionOption : ${dataMaster.ubicaciones}" 
 											th:value="${ubicacionOption.id}" th:text="${ubicacionOption.valor}">  </option>
@@ -148,19 +148,27 @@ and open the template in the editor.
 
 									</div>
 								</div>
-								
-								<!-- Select Multiple -->
+									<!-- Select Multiple -->
 								<div class="form-group">
-									<label class="col-md-4 control-label" for="slctUbicacion">Riesgos</label>
+									<label class="col-md-4 control-label" for="slctUbicacion">Riesgos/Amenzas</label>
 									<div class="col-md-4">
-										<select id="riesgos" th:field="*{activoFisico.riesgos}" multiple="multiple" class="form-control"  >
+										<select id="riesgos" th:field="*{activoFisico.riesgos}" multiple="multiple" class="form-control" onmouseup="updateRiesgoResidual()" >
 											<option th:each="riesgo : ${dataMaster.riesgos}" 
 											th:selected="${riesgos.contains(riesgo)}"
-											th:value="${riesgo.id}" th:text="${riesgo.id}">  </option>
+											th:value="${riesgo.id}" th:text="${riesgo.amenazaStr}">  </option>
 
 										</select>
 									</div>
 								</div>
+								
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtCargo">Riesgo Residual</label>  
+									<div class="col-md-4">
+										<input id="riesgoResidual" th:field="*{activoFisico.riesgoResidual}" name="riesgoResidual" type="text" class="form-control input-md" disabled="disabled" >
+									</div>
+								</div>
+							
 		
 							<!-- Button (Double) -->
 								<div class="form-group">
@@ -185,7 +193,7 @@ and open the template in the editor.
 	</div>	<!-- fin contenedor de pagina-->
 	
 	<script>
-	
+
 	//solo la ejecuto cuando el submit viene del boton guardar por eso pregunto por el parametro #procesar
 	function validation() {
 	$('#spinner').show();
@@ -213,6 +221,25 @@ and open the template in the editor.
 	        el.parentNode.parentNode.replaceChild(select, el.parentNode);
 	    }
 	}
+	
+	function updateRiesgoResidual() {
+	    var riesgo = 0;
+		  for (var option of document.getElementById('riesgos').options) {
+		    if (option.selected) {
+		      if(riesgo < parseInt(getRiesgoResidual(option.text))){
+		    	  riesgo = parseInt(getRiesgoResidual(option.text));
+		      }
+		    }
+		  }
+		  $("#riesgoResidual").val(riesgo)
+	}
+	
+
+	
+	function getRiesgoResidual(descripcion){		
+		return descripcion.substring(descripcion.indexOf("Riesgo Residual:")+17, descripcion.length);
+	}
+
 	</script>
 
 </body>

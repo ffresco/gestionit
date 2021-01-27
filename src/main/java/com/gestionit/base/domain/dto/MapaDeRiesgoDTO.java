@@ -1,21 +1,26 @@
 package com.gestionit.base.domain.dto;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
+import com.gestionit.base.domain.Riesgo;
 
 public class MapaDeRiesgoDTO {
 	
-	private Map<Integer, Map<Integer, Long>> mapaDeRiesgo;
+	private Map<Integer, Map<Integer, List<Riesgo>>> mapaDeRiesgo;
 	
-	public MapaDeRiesgoDTO(Map<Integer, Map<Integer, Long>> mapaDeRiesgo) {
+	
+	public MapaDeRiesgoDTO(Map<Integer, Map<Integer, List<Riesgo>>> mapaDeRiesgo) {
 		super();
 		this.mapaDeRiesgo = mapaDeRiesgo;
 	}
 
-	public Map<Integer, Map<Integer, Long>> getMapaDeRiesgo() {
+	public Map<Integer, Map<Integer, List<Riesgo>>> getMapaDeRiesgo() {
 		return mapaDeRiesgo;
 	}
 
-	public void setMapaDeRiesgo(Map<Integer, Map<Integer, Long>> mapaDeRiesgo) {
+	public void setMapaDeRiesgo(Map<Integer, Map<Integer, List<Riesgo>>> mapaDeRiesgo) {
 		this.mapaDeRiesgo = mapaDeRiesgo;
 	}
 	
@@ -73,5 +78,21 @@ public class MapaDeRiesgoDTO {
 		}
 	}
 	
+	public String getDivId(Integer key, List<Riesgo> riesgos){
+
+		return riesgos.isEmpty()?String.valueOf(Math.random()):getDivIdStr(key, riesgos);
+	}
+	
+	public String getDivFunction(Integer key, List<Riesgo> riesgos){
+		return riesgos.isEmpty()?"hideElements();":"hideElements();document.getElementById('"+ getDivIdStr(key, riesgos)+"').style.display = 'block';";
+	}
+	
+private String getDivIdStr(Integer key, List<Riesgo> riesgos) {
+	Integer id = key;
+	for (Riesgo riesgo : riesgos) {
+		id = id + riesgo.getId().intValue();
+	}
+	return id.toString();
+}
 	}
 

@@ -144,17 +144,14 @@ public class RiesgoController extends CrudControllerPaginationInterface<RiesgoSe
 		if(riesgoDTO.getRiesgo().getId()==null) {
 			riesgoDTO.getRiesgo().setUsuarioCreador(userService.getCurrentUser());
 		}
-		List<Proyecto> proyectos = new ArrayList<Proyecto>();
-		riesgoDTO.getRiesgo().setProyectos(proyectos);
 		if(riesgoDTO.getProyecto()!=null) {
 			//Asumo que solo puede tener asignado un solo proyecto
-			if(riesgoDTO.getProyecto().getRiesgos().isEmpty()) {
-				riesgoDTO.getProyecto().getRiesgos().add(riesgoDTO.getRiesgo());
+			if(riesgoDTO.getRiesgo().getId()!=null) {
+				riesgoService.removeProyectos(riesgoDTO.getRiesgo().getId());
 			}
-			else {
-				riesgoDTO.getProyecto().getRiesgos().set(0,riesgoDTO.getRiesgo());
-			}
-			proyectoService.saveOrUpdate(riesgoDTO.getProyecto());//por cascada tambien se salva el Riesgo
+			riesgoDTO.getProyecto().getRiesgos().add(riesgoDTO.getRiesgo());
+			proyectoService.saveOrUpdate(riesgoDTO.getProyecto()); //por cascada tambien se salva el Riesgo
+
 		}else {//Viene sin proyecto asociado
 			if(riesgoDTO.getProyectoCopy()!=null) {//si ya tenia proyecto asociado lo elimino, asumo que solo tiene uno
 				riesgoDTO.getProyectoCopy().getRiesgos().clear();

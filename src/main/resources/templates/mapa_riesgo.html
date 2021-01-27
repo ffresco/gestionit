@@ -9,14 +9,14 @@
 							<div class="panel-heading"><h2>Mapa de Riesgo</h2></div>
 							<div class="panel-body">
 							
-							<table style="width:70%" border="1">
+							<table style="width:70%" border="1" onmouseout="hideElements();">
 							<tr >
 								<th class="text-center" colspan="1">Probabilidad</th>
 								<th class="text-center" colspan="5" align="center"> Impacto</th>
 							</tr>
 							<tr>
 							    <td align="right"></td>
-								<td align="center">Insignificante </td>
+								<td align="center" >Insignificante </td>
 								<td align="center">Menor </td>
 								<td align="center">Moderado </td>
 								<td align="center">Mayor </td>
@@ -24,23 +24,63 @@
 							</tr>
 							<tr th:each="probabilidades : ${dto.mapaDeRiesgo}">
 								<td th:text="${dto.getProbabilidad(probabilidades.key)}" ></td>
-			   					<td th:bgcolor="${dto.getColor(probabilidades.key,1)}" align="center" th:text="${probabilidades.value.get(1)==0?'':probabilidades.value.get(1)}"></td>
-			   					<td th:bgcolor="${dto.getColor(probabilidades.key,2)}" align="center" th:text="${probabilidades.value.get(2)==0?'':probabilidades.value.get(2)}"></td>
-			   					<td th:bgcolor="${dto.getColor(probabilidades.key,3)}" align="center" th:text="${probabilidades.value.get(3)==0?'':probabilidades.value.get(3)}"></td>
-			   					<td th:bgcolor="${dto.getColor(probabilidades.key,4)}" align="center" th:text="${probabilidades.value.get(4)==0?'':probabilidades.value.get(4)}"></td>
-			   					<td th:bgcolor="${dto.getColor(probabilidades.key,5)}" align="center" th:text="${probabilidades.value.get(5)==0?'':probabilidades.value.get(5)}"></td>
+			   					<td  th:onmouseover="${dto.getDivFunction(probabilidades.key,probabilidades.value.get(1))}"  th:bgcolor="${dto.getColor(probabilidades.key,1)}" align="center" th:text="${#lists.size(probabilidades.value.get(1))==0?'':#lists.size(probabilidades.value.get(1))}"></td>
+			   					<td  th:onmouseover="${dto.getDivFunction(probabilidades.key,probabilidades.value.get(2))}"  th:bgcolor="${dto.getColor(probabilidades.key,2)}" align="center" th:text="${#lists.size(probabilidades.value.get(2))==0?'':#lists.size(probabilidades.value.get(2))}"></td>
+			   					<td  th:onmouseover="${dto.getDivFunction(probabilidades.key,probabilidades.value.get(3))}"  th:bgcolor="${dto.getColor(probabilidades.key,3)}" align="center" th:text="${#lists.size(probabilidades.value.get(3))==0?'':#lists.size(probabilidades.value.get(3))}"></td>
+			   					<td  th:onmouseover="${dto.getDivFunction(probabilidades.key,probabilidades.value.get(4))}"  th:bgcolor="${dto.getColor(probabilidades.key,4)}" align="center" th:text="${#lists.size(probabilidades.value.get(4))==0?'':#lists.size(probabilidades.value.get(4))}"></td>
+			   					<td  th:onmouseover="${dto.getDivFunction(probabilidades.key,probabilidades.value.get(5))}"  th:bgcolor="${dto.getColor(probabilidades.key,5)}" align="center" th:text="${#lists.size(probabilidades.value.get(5))==0?'':#lists.size(probabilidades.value.get(5))}"></td>
 			   					
 							</tr>
 							</table>
+							<div id="riesgoDescripcion">
+									<div  th:each="probabilidades : ${dto.mapaDeRiesgo}">
+									        
+									         <div th:id="${dto.getDivId(probabilidades.key,probabilidades.value.get(1))}" hidden="">
+									            <div  th:each="riesgo : ${probabilidades.value.get(1)}">
+									            	<h4   th:text="${riesgo}"></h4>
+									            </div>
+		    								 </div>
+		    								 
+		    								 <div th:id="${dto.getDivId(probabilidades.key,probabilidades.value.get(2))}" hidden="">
+		    									 <div  th:each="riesgo : ${probabilidades.value.get(2)}">
+									            	<h4   th:text="${riesgo.descripcionLarga}"></h4>
+									            </div>
+		    								</div>
+		    								 
+		    									 <div th:id="${dto.getDivId(probabilidades.key,probabilidades.value.get(3))}" hidden="">
+		    									 <div  th:each="riesgo : ${probabilidades.value.get(3)}">
+									            	<h4   th:text="${riesgo.descripcionLarga}"></h4>
+									            </div>
+		    								</div>
+		    								
+		    									 <div th:id="${dto.getDivId(probabilidades.key,probabilidades.value.get(4))}" hidden="">
+									            	 <div  th:each="riesgo : ${probabilidades.value.get(4)}">
+									            	<h4   th:text="${riesgo.descripcionLarga}"></h4>
+									            </div>
+		    								</div>
+		    								
+		    									 <div th:id="${dto.getDivId(probabilidades.key,probabilidades.value.get(5))}" hidden="">
+		    									  <div  th:each="riesgo : ${probabilidades.value.get(5)}">
+									            	<h4   th:text="${riesgo.descripcionLarga}"></h4>
+									            </div>
+		    								</div>
+		    								
+		    						</div>		
 									
-							
-							
-							
-								
+							</div>
 							</div>
 						</div>
 					</div>
 		
 			</div> <!-- Fin Contenido principal 9 columnas -->
 
-	
+	<script>
+	function hideElements(){
+	 $("#riesgoDescripcion div").each(function(){
+		 if($(this).attr("id")){
+			 $(this).hide()
+		 }
+ 	    
+ 	});
+	}
+	</script>

@@ -40,7 +40,7 @@ and open the template in the editor.
 									<table class="table table-responsive table-sm table-striped table-hover table-bordered" id="searchTable">
 										<thead class="bg-success">
 											<tr>
-												<th>Nro de Riesgo</th>
+												<th>Riesgo</th>
 												<th>Fecha</th>
 												<th>Descripcion</th>
 												
@@ -49,7 +49,7 @@ and open the template in the editor.
 										</thead>
 										<tbody>
 											<tr th:each="evento : ${eventos}">
-												<td th:text="${evento.riesgo.id}"></td>
+												<td th:text="${evento.riesgo.descripcionCorta}"></td>
 												<td th:text="${#temporals.format(evento.fecha, 'dd-MM-yyyy')}"></td>							
 												<td th:text="${evento.descripcion}"></td>
 												<td>	
