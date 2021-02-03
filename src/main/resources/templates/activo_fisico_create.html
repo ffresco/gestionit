@@ -263,7 +263,7 @@ and open the template in the editor.
 		      }
 		  }
 		   
-
+		 orderSelectMultiple();
 	    $("#riesgoResidual").val(riesgo)
 			     
 	}
@@ -285,13 +285,24 @@ and open the template in the editor.
 		      }
 		  }
 		  
-		  
+		  orderSelectMultiple();
 		  $("#riesgoResidual").val(riesgo)
 	}
 	
 	function getRiesgoResidual(descripcion){		
 		return descripcion.substring(descripcion.indexOf("Riesgo Residual:")+17, descripcion.length);
 	}
+	
+	function orderSelectMultiple(){
+		$("#riesgosActivoFisico").html($("#riesgosActivoFisico option").sort(function (a, b) {
+		    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1
+		}))
+		
+		$("#riesgos").html($("#riesgos option").sort(function (a, b) {
+		    return a.text == b.text ? 0 : a.text < b.text ? -1 : 1
+		}))
+	}
+  
 
 	</script>
 
