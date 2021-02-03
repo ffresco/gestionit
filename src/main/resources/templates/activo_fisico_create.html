@@ -163,7 +163,7 @@ and open the template in the editor.
 									<!-- Select Multiple -->
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="slctUbicacion">Riesgos/Amenzas Generales</label>
-									<div  class="col-md-4">
+									<div  class="col-md-6">
 										<select id="riesgos"  multiple="multiple" class="form-control" onmouseup="updateRiesgoResidual()" >
 											<option th:each="riesgo : ${dataMaster.riesgos}" 
 											th:value="${riesgo.id}" th:text="${riesgo.amenazaStr}" th:if="${!riesgos.contains(riesgo)}" >  </option>
@@ -175,7 +175,7 @@ and open the template in the editor.
 								
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="slctUbicacion">Riesgos/Amenzas del Activo</label>
-									<div  class="col-md-4">
+									<div  class="col-md-6">
 										<select  id="riesgosActivoFisico"  th:field="*{activoFisico.riesgos}" multiple="multiple" class="form-control" onmouseup="updateRiesgoResidualActivoFisico()"" >
 											<option th:each="riesgo : *{activoFisico.riesgos}" 
 											th:value="${riesgo.id}" th:text="${riesgo.amenazaStr}">  </option>

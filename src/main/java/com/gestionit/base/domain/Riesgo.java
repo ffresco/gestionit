@@ -404,4 +404,8 @@ public class Riesgo implements Serializable{
 	public String getDescripcionCorta() {
 		return "Riesgo NRO: "+this.getId()+", Amenaza: "+ amenaza.getOrigen().getOrigen()+ " "+ amenaza.getTipo();
 	}
+
+	public int compareToAmenazaStr(Riesgo riesgo) {
+		return this.getAmenazaStr().compareTo(riesgo.getAmenazaStr());
+	}
 }

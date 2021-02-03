@@ -28,6 +28,7 @@ import com.gestionit.base.repository.RiesgoResidualRepo;
 import com.gestionit.base.repository.SalvaguardaTipoRepository;
 import com.gestionit.base.utils.KeyGenerator;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -228,6 +229,12 @@ public class DataMaster {
 
 	public List<Riesgo> getRiesgos(){
 		this.riesgos = (List<Riesgo>) riesgoRepo.findAll();
+		this.riesgos.sort(new Comparator<Riesgo>() {
+		    @Override
+		    public int compare(Riesgo o1, Riesgo o2) {
+		        return o1.compareToAmenazaStr(o2);
+		    }
+		});
 		return this.riesgos;
 	}
 	
