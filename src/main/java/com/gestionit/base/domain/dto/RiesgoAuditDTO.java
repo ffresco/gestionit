@@ -205,9 +205,9 @@ public class RiesgoAuditDTO extends RiesgoDTO {
 		
 	}
 	
-	//Asumo que los dos riesgos tienen proyecto
+	//Asumo que riesgo tiene proyecto
 	private Boolean diffProyecto(Riesgo riesgo) {
-		return previousVersion.getProyectos().get(0).equals(riesgo.getProyectos().get(0));
+		return !previousVersion.getProyectos().isEmpty() && previousVersion.getProyectos().get(0).equals(riesgo.getProyectos().get(0));
 	}
 	
 	private Boolean diffPrevious(String methodName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
