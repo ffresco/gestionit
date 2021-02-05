@@ -189,7 +189,8 @@ and open the template in the editor.
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="txtCargo">Riesgo Residual del Activo</label>  
 									<div class="col-md-4">
-										<input id="riesgoResidual" th:field="*{activoFisico.riesgoResidual}" name="riesgoResidual" type="text" class="form-control input-md" disabled="disabled" >
+										<input id="riesgoResidualDesc" th:field="*{riesgoResidual}"  name="riesgoResidualDesc" type="text" class="form-control input-md" disabled="disabled" >
+										<input id="riesgoResidual" type="hidden" th:field="*{activoFisico.riesgoResidual}" name="riesgoResidual"  >
 									</div>
 								</div>
 							
@@ -247,6 +248,7 @@ and open the template in the editor.
 	
 	function updateRiesgoResidual() {
 	    var riesgo = 0;
+	    var riesgoDesc="";
 		  for (var option of document.getElementById('riesgos').options) {
 		    if (option.selected) {
 		    	 $('#riesgos option:selected').remove();
@@ -260,16 +262,19 @@ and open the template in the editor.
 		   for (var option of document.getElementById('riesgosActivoFisico').options) {
 				  if(riesgo < parseInt(getRiesgoResidual(option.text))){
 		    	  riesgo = parseInt(getRiesgoResidual(option.text));
+		    	  riesgoDesc = getRiesgoResidualDesc(option.text);
 		      }
 		  }
 		   
 		 orderSelectMultiple();
 	    $("#riesgoResidual").val(riesgo)
+	    $("#riesgoResidualDesc").val(riesgoDesc)
 			     
 	}
 	
 	function updateRiesgoResidualActivoFisico() {
 	    var riesgo = 0;
+	    var riesgoDesc="";
 		  for (var option of document.getElementById('riesgosActivoFisico').options) {
 		    if (option.selected) {
 		    	 $('#riesgosActivoFisico option:selected').remove();
@@ -282,15 +287,22 @@ and open the template in the editor.
 		  for (var option of document.getElementById('riesgosActivoFisico').options) {
 				  if(riesgo < parseInt(getRiesgoResidual(option.text))){
 		    	  riesgo = parseInt(getRiesgoResidual(option.text));
+		    	  riesgoDesc = getRiesgoResidualDesc(option.text);
 		      }
 		  }
 		  
 		  orderSelectMultiple();
-		  $("#riesgoResidual").val(riesgo)
+		  $("#riesgoResidual").val(riesgo);
+		  $("#riesgoResidualDesc").val(riesgoDesc);
 	}
 	
 	function getRiesgoResidual(descripcion){		
 		return descripcion.substring(descripcion.indexOf("Riesgo Residual:")+17, descripcion.length);
+	}
+	
+	function getRiesgoResidualDesc(descripcion){		
+		descripcion = descripcion.substring(descripcion.indexOf("Riesgo Residual:")+17, descripcion.length);
+		return descripcion.substring(descripcion.indexOf(","),descripcion.length);
 	}
 	
 	function orderSelectMultiple(){

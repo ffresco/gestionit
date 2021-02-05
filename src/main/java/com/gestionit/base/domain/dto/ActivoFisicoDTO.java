@@ -16,6 +16,7 @@ public class ActivoFisicoDTO {
 
 	private ActivoFisico activoFisico;
 	private String fechaClasificacion;
+	private String riesgoResidual;
 
 	public ActivoFisicoDTO() {
 		
@@ -47,6 +48,16 @@ public class ActivoFisicoDTO {
 
 	public String getFechaClasificacion() {
 		return fechaClasificacion;
+	}
+
+
+	public String getRiesgoResidual() {
+		return this.getActivoFisico().getRiesgos().isEmpty()?"":this.getActivoFisico().getRiesgoResidualDescripcion();
+	}
+
+
+	public void setRiesgoResidual(String riesgoResidual) {
+		this.riesgoResidual = riesgoResidual;
 	}
 
 	

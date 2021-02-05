@@ -221,4 +221,18 @@ public class ActivoFisico implements Serializable {
 	public void setRiesgoResidual(Integer riesgoResidual) {
 		this.riesgoResidual = riesgoResidual;
 	}
+
+	//Me devuelve el valor del riesgo residual mas alto
+	public String getRiesgoResidualDescripcion() {
+		String result = "";
+		Riesgo riesgo_ = null;
+		for (Riesgo riesgo : this.getRiesgos()) {
+			if(riesgo_== null || riesgo.getRiesgoResidualValor().getValor()>riesgo_.getRiesgoResidualValor().getValor()) {
+				riesgo_=riesgo;
+				result=riesgo.getRiesgoResidualValor().getRiesgoResidual().getCalificacion();
+			}
+			
+		}
+		return result;
+	}
 }

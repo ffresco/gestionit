@@ -394,7 +394,7 @@ public class Riesgo implements Serializable{
 	}
 	
 	public String getAmenazaStr() {
-		return   amenaza.getOrigen().getOrigen()+ " "+ amenaza.getTipo()+", Riesgo Residual: "+this.getRiesgoResidualValor().getValor() ;
+		return   amenaza.getOrigen().getOrigen()+ " "+ amenaza.getTipo()+", Riesgo Residual: "+this.getRiesgoResidualValor().getValor()+", "+this.getRiesgoResidualValor().getRiesgoResidual().getCalificacion() ;
 	}
     
 	public String getDescripcionLarga() {
