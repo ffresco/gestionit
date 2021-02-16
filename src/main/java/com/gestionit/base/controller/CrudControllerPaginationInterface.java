@@ -35,8 +35,8 @@ public abstract class CrudControllerPaginationInterface<T1 ,T2, T3> {
     @RequestMapping(value = "/")
 	abstract String getMainPage(@ModelAttribute T1 searchDTO, BindingResult bindingResult);
     
-    abstract ModelAndView getMainPagePaginated( @PathVariable(name = "page") final int pageNumber,
-    @PathVariable(name = "page-size") final int pageSize,@ModelAttribute T1 searchDTO, BindingResult bindingResult);
+    abstract ModelAndView getMainPagePaginated( @PathVariable(name = "page") final Integer pageNumber,
+    @PathVariable(name = "page-size") final Integer pageSize,@ModelAttribute T1 searchDTO, BindingResult bindingResult);
   
     @RequestMapping(value = "/search", method = RequestMethod.POST)
 	abstract

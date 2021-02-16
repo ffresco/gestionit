@@ -66,8 +66,10 @@
             <li><a href="#" onClick="cargarContenido('/proyectos/');return false;">Proyectos</a></li>
             <li><a href="#" onClick="cargarContenido('/eventos/');return false;">Eventos</a></li>
             <li><a href="#" onClick="cargarContenido('/activos_fisicos/');return false;">Activos</a></li> 
+            <li><a href="#" onClick="cargarContenido('/requerimientos/');return false;">Requerimientos</a></li> 
             <li><a href="#" onClick="cargarContenido('/reportes/');return false;">Reportes</a></li>
             <li><a href="#" onClick="cargarContenido('/usuarios/');return false;">Seguridad</a></li>
+            
             
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -631,6 +633,56 @@
 </form>
 </div>
 <!-- Fin Menu lateral Activos -->
+
+
+<!-- Menu lateral Requerimientos -->
+<div th:fragment="navbarside_requerimientos">
+<form class="" th:action="@{'/requerimientos/search/'+${pageNumber}+'/'+${pageSize}}" th:object="${searchDTO}" method="POST">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Busqueda</legend>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="codigo">Solicitante</label>
+  <div class="">
+    <input id="codigoActivos" th:field="*{solicitante}" type="search"  class="form-control input-md">    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="numDoc">Area</label>
+  <div class="">
+    <input id="nombre" th:field="*{area}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+<!-- Search input-->
+<div class="form-group">
+  <label class=" control-label" for="propietrio">Categoria</label>
+  <div class="">
+    <input id="propietario" th:field="*{categoria}"  onkeydown="upperCaseF(this)" type="search" placeholder="" class="form-control input-md">
+    
+  </div>
+</div>
+
+
+<!-- Button -->
+<div class="form-group">
+
+  <div class="">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Buscar</button>
+    <button type="reset" id="singlebutton"  class="btn btn-default" >Limpiar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+</div>
+<!-- Fin Menu lateral requerimientos -->
 
 
 

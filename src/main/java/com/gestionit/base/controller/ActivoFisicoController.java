@@ -73,8 +73,8 @@ public class ActivoFisicoController extends CrudControllerPaginationInterface<Ac
     
     @Override
     @GetMapping(value = "/paginated/{page}/{page-size}")
-	ModelAndView getMainPagePaginated( @PathVariable(name = "page") final int pageNumber,
-		    @PathVariable(name = "page-size") final int pageSize,@ModelAttribute ActivoFisicoSearchDTO searchDTO, BindingResult bindingResult) {
+	ModelAndView getMainPagePaginated( @PathVariable(name = "page") final Integer pageNumber,
+		    @PathVariable(name = "page-size") final Integer pageSize,@ModelAttribute ActivoFisicoSearchDTO searchDTO, BindingResult bindingResult) {
     	ModelAndView mav = new ModelAndView("activos_fisicos");
         mav.addObject("activosFisicos", activoFisicoService.findAll());
         final Page<ActivoFisico> paginatedActivos = activoFisicoService.getPaginatedActivos(pageNumber, pageSize);

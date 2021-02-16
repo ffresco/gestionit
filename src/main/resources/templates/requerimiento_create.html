@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
+
+<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+
+
+</head>
+<body>
+	<div class="container-fluid"> <!-- contenedor de pagina-->
+
+		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
+
+		<div id="result"  class="row"> <!-- fila contine menuj lateral 3 col,  principal 9 col -->
+			 
+
+			<!-- Contenido principal full page -->
+			<div class="col-sm-12">
+				
+				<div class="panel-group">
+					<div class="panel panel-default">
+						<div class="panel-heading"><h4>Requerimiento</h4>
+					</div>
+					<div class="panel-body">
+				
+
+	    <!--<iframe name="formFrame" th:src="@{/requerimientos/save}" frameborder="0" style="display:none"></iframe>--> 
+							<form class="form-horizontal" method="POST" th:action="@{/requerimientos/save}" th:object="${requerimientoDTO}" >
+							<fieldset>
+
+								<!-- Form Name -->
+								<legend>Nuevo Requerimiento</legend>
+
+								<input id="id" th:field="*{requerimiento.id}" type="hidden"/>
+								
+								<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4  control-label" for="txtOrigen">Solicitante</label>  
+											<div class="col-md-4">
+												<input id="txtOrigen" th:field="*{requerimiento.id}" disabled="disabled"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" >
+
+											</div>
+										</div>
+								
+								<!-- Textarea -->
+									<div class="form-group">
+										<label class="col-md-4  control-label" for="descripcion">Area</label>
+										<div class="col-md-4">                     
+											<textarea class="form-control" id="objetivo" required th:field="*{requerimiento.area}"  onchange ="enableSaveButton()"></textarea>
+										</div>
+									</div>
+
+								<!-- Textarea -->
+									<div class="form-group">
+										<label class=" col-md-4 control-label" for="descripcion">Categoria</label>
+										<div class="col-md-4">                     
+											<textarea class="form-control" id="descripcion" required th:field="*{requerimiento.categoria}"  onchange ="enableSaveButton()"></textarea>
+										</div>
+									</div>
+								
+								
+								<!-- Textarea -->
+									<div class="form-group">
+										<label class="col-md-4 control-label" for="descripcion">Tipo de solicitud</label>
+										<div class="col-md-4">                     
+											<textarea class="form-control" id="recursosTecnicos" required th:field="*{requerimiento.tipoSolicitud}"  onchange ="enableSaveButton()"></textarea>
+										</div>
+									</div>
+									
+									<!-- Textarea -->
+									<div class="form-group">
+										<label class=" col-md-4  control-label" for="severidad">Tipo de Severidad</label>
+										<div class="col-md-4">                     
+											<textarea class="form-control" id="severidad" required th:field="*{requerimiento.tipoSeveridad}"  onchange ="enableSaveButton()"></textarea>
+										</div>
+									</div>
+
+								<!-- Text input-->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="txtCotizacionCmp">Detalle</label>  
+									<div class="col-md-4">
+									     <textarea class="form-control" id="detalle" required th:field="*{requerimiento.detalle}"  onchange ="enableSaveButton()"></textarea>
+									
+									</div>
+								</div>
+							
+										
+								<!-- Button (Double) -->
+								<div class="form-group">
+									<label class="col-md-4 control-label" for="btnGuardar"></label>
+									<div class="col-md-4">
+										<button id="btnGuardar" name="guardar" class="btn btn-success" type="submit">Guardar</button>
+										<a href="#" onClick="cargarContenido('/requerimientos/');return false;" class="btn btn-danger">Cancelar</a>
+										<span th:if="*{requerimiento.id!=null}">
+								               <a class="btn btn-success" th:href="@{/requerimientos/create}"  id="nuevo" >Nuevo</a>
+										</span>
+										
+									</div>
+								</div>
+
+							</fieldset>
+						</form>
+	
+		
+						 </div>
+						</div>
+					</div>
+
+			</div> <!-- Fin Contenido principal 9 columnas -->
+
+		</div>	<!-- fila contine menuj lateral 3 col,  principal 9 col -->
+		
+
+	</div>	<!-- fin contenedor de pagina-->
+
+</body>
+</html>

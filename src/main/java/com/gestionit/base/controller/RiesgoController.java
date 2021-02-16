@@ -91,8 +91,8 @@ public class RiesgoController extends CrudControllerPaginationInterface<RiesgoSe
     
     @Override
     @GetMapping(value = "/paginated/{page}/{page-size}")
-    public ModelAndView getMainPagePaginated(@PathVariable(name = "page") final int pageNumber,
-            @PathVariable(name = "page-size") final int pageSize,RiesgoSearchDTO searchDTO, BindingResult bindingResult) {
+    public ModelAndView getMainPagePaginated(@PathVariable(name = "page") final Integer pageNumber,
+            @PathVariable(name = "page-size") final Integer pageSize,RiesgoSearchDTO searchDTO, BindingResult bindingResult) {
         ModelAndView mav = new ModelAndView("riesgos");
         final Page<Riesgo> paginatedRiesgos = riesgoService.getPaginatedRiesgos(pageNumber, pageSize);
         searchDTO.setCurrentUser(userService.getCurrentUser());
