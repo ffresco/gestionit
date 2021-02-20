@@ -56,8 +56,8 @@ public class RequerimientoResultado implements Serializable {
     @Column(name="nombre_participante")
     private String nombreParticipante;
     
-    @ManyToOne
-    @JoinColumn(name = "fk_requerimiento", nullable = false, updatable = false)
+    @ManyToOne()
+    @JoinColumn(name = "fk_requerimiento")
     private Requerimiento requerimiento;
 
 	public Long getId() {
@@ -90,6 +90,14 @@ public class RequerimientoResultado implements Serializable {
 
 	public void setNombreParticipante(String nombreParticipante) {
 		this.nombreParticipante = nombreParticipante;
+	}
+
+	public Requerimiento getRequerimiento() {
+		return requerimiento;
+	}
+
+	public void setRequerimiento(Requerimiento requerimiento) {
+		this.requerimiento = requerimiento;
 	}
     
   

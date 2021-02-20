@@ -19,8 +19,6 @@ import javax.persistence.Id;
 
 import javax.persistence.OneToMany;
 
-import org.hibernate.envers.Audited;
-
 
 
 
@@ -59,7 +57,7 @@ public class Requerimiento implements Serializable {
     
     private String Detalle;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requerimiento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "requerimiento", orphanRemoval = true)
     private List<RequerimientoResultado> resultados;
 
 	public Long getId() {

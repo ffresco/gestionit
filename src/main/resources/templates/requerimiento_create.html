@@ -6,8 +6,20 @@ and open the template in the editor.
 -->
 <html xmlns="http://www.w3.org/1999/xhtml"      xmlns:th="http://www.thymeleaf.org">
 
-<head><div th:replace="fragments ::app_head('titulo')"></div></head>
+<head><div th:replace="fragments ::app_head('titulo')"></div>
 
+<style>
+table, td, th {
+  border: 1px solid black;
+  width: 100%; 
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+</style>
 
 </head>
 <body>
@@ -41,10 +53,13 @@ and open the template in the editor.
 										<div class="form-group">
 											<label class="col-md-4  control-label" for="txtOrigen">Solicitante</label>  
 											<div class="col-md-4">
-												<input id="txtOrigen" th:field="*{requerimiento.id}" disabled="disabled"  name="txtOrigen" type="text" placeholder="" class="form-control input-md" tabIndex="-1" >
+											<input id="txtSolicitante" th:field="*{requerimiento.solicitante}"
+												name="txtSolicitante" type="text" placeholder=""
+												class="form-control input-md" tabIndex="-1">
 
-											</div>
 										</div>
+										</div>
+										
 								
 								<!-- Textarea -->
 									<div class="form-group">
@@ -82,12 +97,62 @@ and open the template in the editor.
 								<!-- Text input-->
 								<div class="form-group">
 									<label class="col-md-4 control-label" for="txtCotizacionCmp">Detalle</label>  
-									<div class="col-md-4">
+									<div class="col-md-6">
 									     <textarea class="form-control" id="detalle" required th:field="*{requerimiento.detalle}"  onchange ="enableSaveButton()"></textarea>
 									
 									</div>
 								</div>
 							
+							    <!-- Table https://www.baeldung.com/thymeleaf-list-->
+										<div class="form-group">
+											<label class="col-md-4  control-label" for="txtOrigen">Resultados</label>  
+											<div class="col-md-6">
+											<table border="3" id="tableResultados" >
+												<thead>
+													<tr>
+														<th>Conforme</th>
+														<th>&ensp;&ensp;&ensp;Comentario</th>
+														<th>Participante</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="resultado, stat: *{requerimiento.resultados}" >
+														<td hidden="hidden">
+															<input  class="form-check-input" th:name="|requerimiento.resultados[${stat.index}].id|" type="hidden"   th:value="${resultado.id}"  >
+														</td>
+														<td align="center">
+															<input  class="form-check-input" th:name="|requerimiento.resultados[${stat.index}].conforme|" type="checkbox" th:checked="${resultado.conforme}"  >
+														</td>
+														<td >
+															<textarea  class="form-check-input" th:name="|requerimiento.resultados[${stat.index}].comentarios|"    th:text="${resultado.comentarios}" > </textarea>
+														</td>
+														<td >
+															<input  class="form-check-input" th:name="|requerimiento.resultados[${stat.index}].nombreParticipante|" type="text"   th:value="${resultado.nombreParticipante}"  >
+														</td>
+														
+														<td >
+															<a class="btn btn-sm btn-primary" onclick="deleteRow(this)"  >Eliminar</a>	
+														</td>
+													</tr>
+													<tr >
+														<td align="center">
+															<input class="form-check-input" type="checkbox" id="afconfCheck"  th:field="*{nuevoResultado.conforme}"  >
+														</td>
+														<td align="right" >
+															<textarea class="form-control" id="comentario"  th:field="*{nuevoResultado.comentarios}"  onchange ="enableSaveButton()"></textarea>
+														</td>
+														<td align="right" >
+															<textarea class="form-control" id="participante"  th:field="*{nuevoResultado.nombreParticipante}"  onchange ="enableSaveButton()"></textarea>
+														</td>
+														<td >
+															<a     ></a>	
+														</td>	
+													</tr>
+												</tbody>
+											</table>
+
+										</div>
+										</div>
 										
 								<!-- Button (Double) -->
 								<div class="form-group">
@@ -118,4 +183,15 @@ and open the template in the editor.
 	</div>	<!-- fin contenedor de pagina-->
 
 </body>
+<script type="text/javascript">
+
+
+function deleteRow(row){
+
+	 var i = row.parentNode.parentNode.rowIndex;
+	    document.getElementById("tableResultados").deleteRow(i);
+}
+
+
+</script>
 </html>

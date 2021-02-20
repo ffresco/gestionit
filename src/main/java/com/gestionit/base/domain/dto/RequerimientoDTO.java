@@ -1,11 +1,13 @@
 package com.gestionit.base.domain.dto;
 
 import com.gestionit.base.domain.Requerimiento;
+import com.gestionit.base.domain.RequerimientoResultado;
 
 public class RequerimientoDTO {
 
 	
 private Requerimiento requerimiento;
+private RequerimientoResultado nuevoResultado;
 
 public RequerimientoDTO(Requerimiento requerimiento) {
 	super();
@@ -23,6 +25,14 @@ public Requerimiento getRequerimiento() {
 
 public void setRequerimiento(Requerimiento requerimiento) {
 	this.requerimiento = requerimiento;
+}
+
+public RequerimientoResultado getNuevoResultado() {
+	return nuevoResultado;
+}
+
+public void setNuevoResultado(RequerimientoResultado nuevoResultado) {
+	this.nuevoResultado = nuevoResultado;
 }
 
     

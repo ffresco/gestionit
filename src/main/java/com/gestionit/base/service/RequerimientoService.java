@@ -11,9 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gestionit.base.domain.Requerimiento;
-import com.gestionit.base.domain.Riesgo;
+import com.gestionit.base.domain.RequerimientoResultado;
 import com.gestionit.base.domain.dto.RequerimientoSearchDTO;
 import com.gestionit.base.repository.RequerimientoRepository;
+import com.gestionit.base.repository.RequerimientoResultadoRepository;
 
 @Service
 public class RequerimientoService implements BasicService<Requerimiento>{
@@ -21,9 +22,12 @@ public class RequerimientoService implements BasicService<Requerimiento>{
 
 	private RequerimientoRepository requerimientoRepository;
 	
+	private RequerimientoResultadoRepository requerimientoResultadoRepository;
+	
 	@Autowired
-    public RequerimientoService(RequerimientoRepository requerimientoRepository) {
+    public RequerimientoService(RequerimientoRepository requerimientoRepository, RequerimientoResultadoRepository requerimientoResultadoRepository) {
         this.requerimientoRepository = requerimientoRepository;
+        this.requerimientoResultadoRepository = requerimientoResultadoRepository;
        
         
     }
@@ -62,12 +66,12 @@ public Page<Requerimiento> findAllContaining(RequerimientoSearchDTO searchDTO, P
 
 	@Override
 	public Requerimiento getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return requerimientoRepository.findOne(id);
 	}
 
 
-	public Object getPaginatedRequerimientos(int pageNumber, int pageSize) {
+	public Page<Requerimiento> getPaginatedRequerimientos(int pageNumber, int pageSize) {
 		final Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
         return requerimientoRepository.findAll(pageable);
 	}
@@ -78,6 +82,15 @@ public Page<Requerimiento> findAllContaining(RequerimientoSearchDTO searchDTO, P
 		 final Pageable pageable = new PageRequest(pageNumber - 1, pageSize);
 	        return this.findAllContaining(searchDTO, pageable);
 	}
+
+	@Transactional
+	public Requerimiento saveOrUpdate(Requerimiento requerimiento, List<RequerimientoResultado> resultadosToRetain) {
+		
+		requerimiento.getResultados().clear();
+		requerimiento.getResultados().addAll(resultadosToRetain);
+		return this.saveOrUpdate(requerimiento);
+	}
+
 
 
 }
