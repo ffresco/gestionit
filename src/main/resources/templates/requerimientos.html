@@ -55,10 +55,10 @@ and open the template in the editor.
 							<tbody>
 								<tr th:each="requerimiento : ${searchDTO.contents}">
 									<td th:text="${requerimiento.solicitante}"></td>
-									<td th:text="${requerimiento.area}"></td>
-									<td th:text="${requerimiento.categoria}"></td>
-									<td th:text="${requerimiento.tipoSolicitud}"></td>
-									<td th:text="${requerimiento.tipoSeveridad}"></td>
+									<td th:text="${requerimiento.area.valor}"></td>
+									<td th:text="${requerimiento.categoria.valor}"></td>
+									<td th:text="${requerimiento.tipoSolicitud.valor}"></td>
+									<td th:text="${requerimiento.tipoSeveridad.valor}"></td>
 									<td th:text="${requerimiento.detalle}"></td>
 									<td th:text="${not #lists.isEmpty(requerimiento.resultados) ? requerimiento.resultados[0]?.conforme : ''}"></td> <!-- Asumo que solo tiene un proyecto asociado -->
 									<td>

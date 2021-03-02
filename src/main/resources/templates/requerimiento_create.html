@@ -11,7 +11,6 @@ and open the template in the editor.
 <style>
 table, td, th {
   border: 1px solid black;
-  width: 100%; 
 }
 
 table {
@@ -22,7 +21,7 @@ table {
 </style>
 
 </head>
-<body>
+<body onload="onLoad()">
 	<div class="container-fluid"> <!-- contenedor de pagina-->
 
 		<div th:replace="fragments ::navbartop"></div> <!-- Menu superior --> 	
@@ -61,36 +60,52 @@ table {
 										</div>
 										
 								
-								<!-- Textarea -->
+								<!-- BASIC SELECT -->
 									<div class="form-group">
-										<label class="col-md-4  control-label" for="descripcion">Area</label>
-										<div class="col-md-4">                     
-											<textarea class="form-control" id="objetivo" required th:field="*{requerimiento.area}"  onchange ="enableSaveButton()"></textarea>
+										<label class="col-md-4  control-label" for="area">Area</label>
+										<div class="col-md-4">               
+										<select id="tipo" th:field="*{requerimiento.area}"   class="form-control" required="required">
+											<option value=""></option>
+											<option th:each="area : ${dataMaster.requerimientosArea}" 
+											th:value="${area.id}" th:text="${area.valor}">  </option>
+										</select>      
 										</div>
 									</div>
 
-								<!-- Textarea -->
+								<!-- BASIC SELECT -->
 									<div class="form-group">
-										<label class=" col-md-4 control-label" for="descripcion">Categoria</label>
-										<div class="col-md-4">                     
-											<textarea class="form-control" id="descripcion" required th:field="*{requerimiento.categoria}"  onchange ="enableSaveButton()"></textarea>
+										<label class=" col-md-4 control-label" for="categoria">Categoria</label>
+										<div class="col-md-4">    
+										<select id="tipo" th:field="*{requerimiento.categoria}"   class="form-control" required="required">
+											<option value=""></option>
+											<option th:each="categoria : ${dataMaster.requerimientosCategoria}" 
+											th:value="${categoria.id}" th:text="${categoria.valor}">  </option>
+										</select>                       
 										</div>
 									</div>
 								
 								
-								<!-- Textarea -->
+								<!-- Basic Select -->
 									<div class="form-group">
-										<label class="col-md-4 control-label" for="descripcion">Tipo de solicitud</label>
-										<div class="col-md-4">                     
-											<textarea class="form-control" id="recursosTecnicos" required th:field="*{requerimiento.tipoSolicitud}"  onchange ="enableSaveButton()"></textarea>
+										<label class="col-md-4 control-label" for="solicitud">Tipo de solicitud</label>
+										<div class="col-md-4">   
+										<select id="tipo" th:field="*{requerimiento.tipoSolicitud}"   class="form-control" required="required">
+											<option value=""></option>
+											<option th:each="solicitud : ${dataMaster.requerimientosSolicitud}" 
+											th:value="${solicitud.id}" th:text="${solicitud.valor}">  </option>
+										</select>                        
 										</div>
 									</div>
 									
-									<!-- Textarea -->
+									<!-- Basic Select -->
 									<div class="form-group">
 										<label class=" col-md-4  control-label" for="severidad">Tipo de Severidad</label>
-										<div class="col-md-4">                     
-											<textarea class="form-control" id="severidad" required th:field="*{requerimiento.tipoSeveridad}"  onchange ="enableSaveButton()"></textarea>
+										<div class="col-md-4">  
+										<select id="tipo" th:field="*{requerimiento.tipoSeveridad}"   class="form-control" required="required">
+											<option value=""></option>
+											<option th:each="severidad : ${dataMaster.requerimientosSeveridad}" 
+											th:value="${severidad.id}" th:text="${severidad.valor}">  </option>
+										</select>                       
 										</div>
 									</div>
 
@@ -113,12 +128,16 @@ table {
 														<th>Conforme</th>
 														<th>&ensp;&ensp;&ensp;Comentario</th>
 														<th>Participante</th>
+														<th><a class="btn btn-sm btn-primary" onclick="addRow()"  >Agregar Fila</a>	</th>
 													</tr>
 												</thead>
 												<tbody>
 													<tr th:each="resultado, stat: *{requerimiento.resultados}" >
 														<td hidden="hidden">
 															<input  class="form-check-input" th:name="|requerimiento.resultados[${stat.index}].id|" type="hidden"   th:value="${resultado.id}"  >
+														</td>
+														<td hidden="hidden">
+															<input  class="form-check-input" th:name="|requerimiento.resultados[${stat.index}].requerimiento.id|" type="hidden"   th:value="${resultado.requerimiento.id}"  >
 														</td>
 														<td align="center">
 															<input  class="form-check-input" th:name="|requerimiento.resultados[${stat.index}].conforme|" type="checkbox" th:checked="${resultado.conforme}"  >
@@ -131,23 +150,11 @@ table {
 														</td>
 														
 														<td >
-															<a class="btn btn-sm btn-primary" onclick="deleteRow(this)"  >Eliminar</a>	
+																
+															<a class="btn btn-sm btn-danger" onclick="deleteRow(this)"  >Eliminar</a>	
 														</td>
 													</tr>
-													<tr >
-														<td align="center">
-															<input class="form-check-input" type="checkbox" id="afconfCheck"  th:field="*{nuevoResultado.conforme}"  >
-														</td>
-														<td align="right" >
-															<textarea class="form-control" id="comentario"  th:field="*{nuevoResultado.comentarios}"  onchange ="enableSaveButton()"></textarea>
-														</td>
-														<td align="right" >
-															<textarea class="form-control" id="participante"  th:field="*{nuevoResultado.nombreParticipante}"  onchange ="enableSaveButton()"></textarea>
-														</td>
-														<td >
-															<a     ></a>	
-														</td>	
-													</tr>
+													
 												</tbody>
 											</table>
 
@@ -192,6 +199,34 @@ function deleteRow(row){
 	    document.getElementById("tableResultados").deleteRow(i);
 }
 
+function onLoad(){
+	var length = document.getElementById("tableResultados").rows.length;
+	if(length == 1){
+		addOneRow(0 );
+	}
+}
+
+function addRow(){
+	   //var index = row.parentNode.parentNode.rowIndex;
+	   var index = document.getElementById("tableResultados").rows.length;
+	   addOneRow(index  - 1 );
+	 
+}
+
+function addOneRow(index){
+	  var table = document.getElementById("tableResultados");
+	  var row = table.insertRow(index+1);
+	  var cell1 = row.insertCell(0);
+	  cell1.style.textAlign = "center";
+	  cell1.innerHTML = '<input class="form-check-input" type="checkbox"  name="nuevosResultados['+index+'].conforme" >';
+	  var cell2 = row.insertCell(1);
+	  cell2.innerHTML = '<textarea class="form-control" name="nuevosResultados['+index+'].comentarios"  onchange ="enableSaveButton()"></textarea>';
+	  var cell3 = row.insertCell(2);
+	  cell3.innerHTML = '<textarea class="form-control" name="nuevosResultados['+index+'].nombreParticipante"  onchange ="enableSaveButton()"></textarea>';
+	  var cell4 = row.insertCell(3);
+	  cell4.innerHTML = ' <a class="btn btn-sm btn-danger" onclick="deleteRow(this)"  >Eliminar</a>';
+	
+}
 
 </script>
 </html>

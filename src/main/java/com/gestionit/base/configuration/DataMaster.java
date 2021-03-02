@@ -83,6 +83,15 @@ public class DataMaster {
 
 	//creado para pantalla operaciones especialmente
     private List<Parametro> tipoSubOps;
+    
+  //para requerimientos
+    private List<Parametro>  requerimientosArea;
+	
+    private List<Parametro>  requerimientosSeveridad;
+	
+    private List<Parametro>  requerimientosSolicitud;
+	
+    private List<Parametro>  requerimientosCategoria;
 
     public static final String MONEDAS = "MONEDAS";
     public static final String ENTIDADES = "ENTIDADES";
@@ -140,6 +149,15 @@ public class DataMaster {
     public static final String SOFTWARE_DE_BASE = "SOFTWARE DE BASE";
     public static final String TELECOMUNICACIONES = "TELECOMUNICACIONES";
     
+    
+  //para Abm de requerimientos
+    
+    public static final String REQUERIMIENTO_AREA = "REQUERIMIENTO_AREA";
+    public static final String REQUERIMIENTO_CATEGORIA = "REQUERIMIENTO_CATEGORIA";
+    public static final String REQUERIMIENTO_TIPO_SOLICITUD = "REQUERIMIENTO_TIPO_SOLICITUD";
+    public static final String REQUERIMIENTO_TIPO_SEVERIDAD = "REQUERIMIENTO_TIPO_SEVERIDAD";
+
+    
 
     
 
@@ -163,6 +181,8 @@ public class DataMaster {
     private final RiesgoRepository riesgoRepo;
     
     private final ProyectoRepository proyectoRepo;
+	
+
 
     @Autowired
     public DataMaster(ImpactoRepo impactoRepo, ProbabilidadOcurrenciaRepo proOcuRepo,
@@ -221,6 +241,14 @@ public class DataMaster {
         this.amenazas = (List<Amenaza>) amenazaRepo.findByOrigenIdOrderByTipoAsc(1l);
         this.origenAmenazas = (List<OrigenAmenaza>) origenAmenazaRepo.findAll();
         this.tiposSalvaguarda = (List<SalvaguardaTipo>) salvaTipoRepo.findAll();
+        
+        //Requerimientos
+        
+        this.requerimientosArea = parametroRepo.findByTipo(REQUERIMIENTO_AREA);
+        this.requerimientosSeveridad = parametroRepo.findByTipo(REQUERIMIENTO_TIPO_SEVERIDAD);
+        this.requerimientosSolicitud = parametroRepo.findByTipo(REQUERIMIENTO_TIPO_SOLICITUD);
+        this.requerimientosCategoria = parametroRepo.findByTipo(REQUERIMIENTO_CATEGORIA);
+        
         
         
 
@@ -452,6 +480,26 @@ public class DataMaster {
 	public String getComputerIdentifier() {
 		KeyGenerator generator = new KeyGenerator();
 		return KeyGenerator.getComputerIdentifier();
+	}
+
+
+	public List<Parametro> getRequerimientosArea() {
+		return requerimientosArea;
+	}
+
+
+	public List<Parametro> getRequerimientosSeveridad() {
+		return requerimientosSeveridad;
+	}
+
+
+	public List<Parametro> getRequerimientosSolicitud() {
+		return requerimientosSolicitud;
+	}
+
+
+	public List<Parametro> getRequerimientosCategoria() {
+		return requerimientosCategoria;
 	}
 
 }

@@ -16,8 +16,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 
 
@@ -45,15 +49,25 @@ public class Requerimiento implements Serializable {
  
     private String solicitante;
     
-    private String area;
+    @OneToOne
+    @JoinColumn(name="fk_area")
+    private Parametro area;
+
     
-    private String categoria;
+    @OneToOne
+    @JoinColumn(name="fk_categoria")
+    private Parametro categoria;
+
     
-    @Column(name="tipo_de_solicitud")
-    private String tipoSolicitud;
+    @OneToOne
+    @JoinColumn(name="fk_tipo_de_solicitud")
+    private Parametro tipoSolicitud;
     
-    @Column(name="tipo_de_severidad")
-    private String tipoSeveridad;
+   
+    @OneToOne
+    @JoinColumn(name="fk_tipo_de_severidad")
+    private Parametro tipoSeveridad;
+
     
     private String Detalle;
     
@@ -68,19 +82,19 @@ public class Requerimiento implements Serializable {
 		return solicitante;
 	}
 
-	public String getArea() {
+	public Parametro getArea() {
 		return area;
 	}
 
-	public String getCategoria() {
+	public Parametro getCategoria() {
 		return categoria;
 	}
 
-	public String getTipoSolicitud() {
+	public Parametro getTipoSolicitud() {
 		return tipoSolicitud;
 	}
 
-	public String getTipoSeveridad() {
+	public Parametro getTipoSeveridad() {
 		return tipoSeveridad;
 	}
 
@@ -96,19 +110,19 @@ public class Requerimiento implements Serializable {
 		this.solicitante = solicitante;
 	}
 
-	public void setArea(String area) {
+	public void setArea(Parametro area) {
 		this.area = area;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(Parametro categoria) {
 		this.categoria = categoria;
 	}
 
-	public void setTipoSolicitud(String tipoSolicitud) {
+	public void setTipoSolicitud(Parametro tipoSolicitud) {
 		this.tipoSolicitud = tipoSolicitud;
 	}
 
-	public void setTipoSeveridad(String tipoSeveridad) {
+	public void setTipoSeveridad(Parametro tipoSeveridad) {
 		this.tipoSeveridad = tipoSeveridad;
 	}
 

@@ -7,7 +7,19 @@ and open the template in the editor.
 <html>
   <!-- Pagination control -->
     <!-- Hardcoding the default page-size as 10. User can create a dropdown to select the different page-sizes. -->
-    
+    <head>
+    <style>
+table, td, th {
+  border: 0px solid black;
+}
+
+table {
+  border-collapse: separate;
+  width: 10%;
+}
+
+</style>
+    </head>
 
     <div class="row" align="center">
         <div th:if="${searchDTO.page['totalPages'] > 1}">
@@ -16,7 +28,7 @@ and open the template in the editor.
                 Elementos Totales: <h4 class="modal-title"  th:text="${searchDTO.page['totalPages']}" > </h4> 
             </div>  -->
             <div class="col-sm-3 form-group">
-            	<table>
+            	<table border="0">
             	<tr>
                 <span th:each="i: ${#numbers.sequence(1, searchDTO.page['totalPages'])}">
                 

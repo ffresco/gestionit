@@ -1,5 +1,7 @@
 package com.gestionit.base.domain.dto;
 
+import java.util.List;
+
 import com.gestionit.base.domain.Requerimiento;
 import com.gestionit.base.domain.RequerimientoResultado;
 
@@ -7,7 +9,8 @@ public class RequerimientoDTO {
 
 	
 private Requerimiento requerimiento;
-private RequerimientoResultado nuevoResultado;
+private List<RequerimientoResultado> nuevosResultados;
+
 
 public RequerimientoDTO(Requerimiento requerimiento) {
 	super();
@@ -27,12 +30,13 @@ public void setRequerimiento(Requerimiento requerimiento) {
 	this.requerimiento = requerimiento;
 }
 
-public RequerimientoResultado getNuevoResultado() {
-	return nuevoResultado;
+
+public List<RequerimientoResultado> getNuevosResultados() {
+	return nuevosResultados;
 }
 
-public void setNuevoResultado(RequerimientoResultado nuevoResultado) {
-	this.nuevoResultado = nuevoResultado;
+public void setNuevosResultados(List<RequerimientoResultado> nuevoResultados) {
+	this.nuevosResultados = nuevoResultados;
 }
 
     

@@ -8,11 +8,10 @@ package com.gestionit.base.controller;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.lucene.util.ArrayUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ import com.gestionit.base.configuration.DataMaster;
 
 import com.gestionit.base.domain.Requerimiento;
 import com.gestionit.base.domain.RequerimientoResultado;
-import com.gestionit.base.domain.Riesgo;
 import com.gestionit.base.domain.dto.RequerimientoDTO;
 import com.gestionit.base.domain.dto.RequerimientoSearchDTO;
 import com.gestionit.base.service.RequerimientoService;
@@ -89,7 +87,6 @@ public class RequerimientoController extends CrudControllerPaginationInterface<R
 
 	        //Genero el DTO
 	        RequerimientoDTO requerimientoDTO = new RequerimientoDTO(new Requerimiento());
-	        requerimientoDTO.setNuevoResultado(new RequerimientoResultado());
 	        LOGGER.info("Cree el siguiente dto para operar : " + requerimientoDTO);
 
 	        //Preparo el moddel and view
@@ -103,27 +100,39 @@ public class RequerimientoController extends CrudControllerPaginationInterface<R
 	public ModelAndView save(RequerimientoDTO objetDTO, BindingResult bindingResult) {
 		LOGGER.info("-----Entre al save de Proyectos------");
 	   ModelAndView mav = new ModelAndView("requerimiento_create");
-	   if(!objetDTO.getNuevoResultado().getComentarios().isEmpty()) {//si tiene el campo conforme con datos lo agrego a la lista de resultados
-		   objetDTO.getNuevoResultado().setRequerimiento(objetDTO.getRequerimiento());
-		   if(objetDTO.getRequerimiento().getResultados()==null) {//es el primer resultado cargado
-			   List<RequerimientoResultado> resultados = new ArrayList<RequerimientoResultado>();
-			   resultados.add(objetDTO.getNuevoResultado());
-			   objetDTO.getRequerimiento().setResultados(resultados);
-		   }else {
-			   objetDTO.getRequerimiento().getResultados().add(objetDTO.getNuevoResultado());
-		   }
-	   }else if (objetDTO.getRequerimiento().getResultados()==null) {//si no cargaron resultados o borraron el unico que habia le seteo una lista vacia para que no pinche hibernate 
-		   objetDTO.getRequerimiento().setResultados(new ArrayList<RequerimientoResultado>());
-	} 
+	   objetDTO.setNuevosResultados(getNuevosResultados(objetDTO));
 	   //hago un tratamiento especial por que la tabla de resultados cuando se borra un objeto me lo devuelve con todos los campos nulos
-	   objetDTO.setRequerimiento(updateResultados(objetDTO.getRequerimiento()));
-	   objetDTO.setNuevoResultado(new RequerimientoResultado());
+	   objetDTO.setRequerimiento(updateResultados(objetDTO.getRequerimiento(), objetDTO.getNuevosResultados()));
         mav.addObject("requerimientoDTO", objetDTO);
         return mav;
 	}
 	
+	private List<RequerimientoResultado> getNuevosResultados(RequerimientoDTO requerimientoDTO) {
+
+		List<RequerimientoResultado> nuevosResultados_ = new ArrayList<RequerimientoResultado>();
+		if(requerimientoDTO.getNuevosResultados()!=null) {
+			for (Iterator<RequerimientoResultado> iterator = requerimientoDTO.getNuevosResultados().iterator(); iterator.hasNext() ;) {
+				RequerimientoResultado requerimientoResultado = (RequerimientoResultado) iterator.next();
+				if(requerimientoResultado.getComentarios()!=null && requerimientoResultado.getComentarios().length()>0 &&
+						requerimientoResultado.getComentarios()!=null && requerimientoResultado.getNombreParticipante().length()>0) {
+					requerimientoResultado.setRequerimiento(requerimientoDTO.getRequerimiento());
+					nuevosResultados_ .add(requerimientoResultado);
+				}
+
+			}
+		}
+		return nuevosResultados_;
+	}
+
 	//Elimino los objetos que tienen id null, ya que son los que fueron eliminados en la vista
-	private Requerimiento updateResultados(Requerimiento requerimiento) {
+	private Requerimiento updateResultados(Requerimiento requerimiento, List<RequerimientoResultado> nuevosResultados) {
+		
+		if(requerimiento.getResultados()==null) {
+			requerimiento.setResultados(nuevosResultados);
+		}else if (!nuevosResultados.isEmpty()) {
+			requerimiento.getResultados().addAll(nuevosResultados);
+		}
+		//saco de la lista los que fueron eliminados, que son los que tienen todos los campos nulos
 		List<RequerimientoResultado> resultadosToRetain = new ArrayList<RequerimientoResultado>();
 		for (int i = 0; i < requerimiento.getResultados().size(); i++) {
 			RequerimientoResultado resultado = requerimiento.getResultados().get(i);
@@ -135,7 +144,8 @@ public class RequerimientoController extends CrudControllerPaginationInterface<R
 				resultadosToRetain.add(resultado);
 			}
 		}
-		return resultadosToRetain.isEmpty()?requerimientoService.saveOrUpdate(requerimiento):requerimientoService.saveOrUpdate(requerimiento, resultadosToRetain);
+		requerimiento.setResultados(resultadosToRetain);
+		return requerimientoService.saveOrUpdate(requerimiento);
 	}
 
 	@ModelAttribute("dataMaster")
@@ -157,7 +167,7 @@ public class RequerimientoController extends CrudControllerPaginationInterface<R
         LOGGER.info("Estoy en edit este es el id " + id);
         Requerimiento requerimientoAEditar = requerimientoService.getById(id);
         RequerimientoDTO dto = new RequerimientoDTO(requerimientoAEditar);
-        dto.setNuevoResultado(new RequerimientoResultado());
+
         //habilito la aprobacion si hay un solo usuario o es distinto al que lo creo
 
         LOGGER.info("DTO a editar "+dto);
